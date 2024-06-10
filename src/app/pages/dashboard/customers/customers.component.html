@@ -1,0 +1,136 @@
+<div class="main-body-content dashboard account-tab accounts">
+
+    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+        style="justify-content: flex-start; column-gap: 40px;">
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">{{totalCustomers}}</div>
+                <div _ngcontent-hqb-c160="" class="description">Total Customers</div>
+            </div>
+        </div>
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">{{totalCustomers - 20}}</div>
+                <div _ngcontent-hqb-c160="" class="description">Loyal Customers</div>
+            </div>
+        </div>
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">20</div>
+                <div _ngcontent-hqb-c160="" class="description">Other Customers</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <div class="left">
+            <div class="select-container">
+                <select class="ng-pristine ng-valid ng-touched">
+                    <option selected>All Customer</option>
+                    <option>Loyal Customers</option>
+                    <option>Other Manager</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="right">
+            <div class="password-container">
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                <img src="assets/images/search.svg" alt="">
+            </div>
+            <button (click)="toggleAddModal()" class="btn-primary">
+                + Add Customer
+            </button>
+        </div>
+    </div>
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <ng-container *ngIf="fetchingCustomers">
+            <table class="data-table mt-4">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th nzWidth="21%">Email</th>
+                        <th nzWidth="20%">Phone</th>
+                        <th nzWidth="10%">Role</th>
+                        <th nzWidth="10%">Date Registered</th>
+                        <th nzWidth="10%">Added By</th>
+                        <th nzWidth="10%">Status</th>
+                        <th nzWidth="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of [1,2,3]">
+                        <td *ngFor="let item of [1,2,3,4,5,6,7,8]">
+                            <ngx-skeleton-loader style="width: 100%;"
+                                [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
+                            </ngx-skeleton-loader>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+        <ng-container *ngIf="!fetchingCustomers">
+            <div class="top-heading">
+                <p class="list-result">
+                    Showing
+                    <span>{{customersStart +' - '+ customersStop}}</span> of
+                    <span>{{totalCustomers}}</span>
+                    {{ totalCustomers > 1 ? 'Active': 'Active'}}
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table mt-4">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th nzWidth="21%">Email</th>
+                            <th nzWidth="20%">Phone</th>
+                            <th nzWidth="10%">Role</th>
+                            <th nzWidth="10%">Date Registered</th>
+                            <th nzWidth="10%">Added By</th>
+                            <th nzWidth="10%">Status</th>
+                            <th nzWidth="10%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngIf="customers.length > 0">
+                        <tr class="hoverable" *ngFor="let item of customers"
+                            [routerLink]="['/dashboard/doctors', item._id]">
+                            <td>{{item?.firstName + ' ' + item?.surname + " " + item?.otherName}}</td>
+                            <td>{{item.emailAddress}}</td>
+                            <td>{{item.phoneNumber}}</td>
+                            <td>{{item.role}}</td>
+                            <td>{{item.createdAt | date: 'medium'}}</td>
+                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
+                            <td>{{item.status | titlecase}}</td>
+                            <td><button (click)="editCustomer(item)" class="btn-primary-outline2"><img
+                                        src="assets/images/edit-icon.svg" alt=""></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="customers.length === 0" style="border:none">
+                        <tr>
+                            <td colspan="6">
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any active customer.">
+                                </app-no-result>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="customers.length > 0" class="pagination mt-4">
+                <app-pagination class="pagination" *ngIf="!this.fetchingCustomers && this.totalCustomers > 0"
+                    [totalItems]="this.totalCustomers" [(pageSize)]="this.customersLimit"
+                    [(currentPage)]="this.customersPage" (pageSizeChange)="this.refreshList()"
+                    (currentPageChange)="this.getAllCustomers()"></app-pagination>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<app-add-customer [visible]="this.showAddModal" (createdUser)="onCreated()"
+    (visibleChange)="this.toggleAddModal()"></app-add-customer>
+
+<app-edit-customer [visible]="this.showEditModal" [customer]="this.selectedCustomer" (updatedUser)="onUpdated()"
+    (visibleChange)="this.toggleEditModal()"></app-edit-customer>

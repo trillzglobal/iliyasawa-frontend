@@ -1,0 +1,107 @@
+<div class="main-body-content dashboard account-tab accounts">
+
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <div class="left">
+            <div class="select-container">
+                <select class="ng-pristine ng-valid ng-touched">
+                    <option selected>All Outlets</option>
+                </select>
+            </div>
+        </div>
+        <div class="right">
+            <div class="password-container">
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                <img src="assets/images/search.svg" alt="">
+            </div>
+            <button (click)="toggleAddModal()" class="btn-primary">
+                + Add Outlet
+            </button>
+        </div>
+    </div>
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <ng-container *ngIf="fetchingOutlet">
+            <table class="data-table mt-4">
+                <thead>
+                    <tr>
+                        <th>Outlet Name</th>
+                        <th nzWidth="21%">Location</th>
+                        <th nzWidth="21%">Address</th>
+                        <th nzWidth="10%">Date Registered</th>
+                        <th nzWidth="10%">Added By</th>
+                        <th nzWidth="10%">Status</th>
+                        <th nzWidth="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of [1,2,3]">
+                        <td *ngFor="let item of [1,2,3,4,5,6]">
+                            <ngx-skeleton-loader style="width: 100%;"
+                                [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
+                            </ngx-skeleton-loader>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+        <ng-container *ngIf="!fetchingOutlet">
+            <div class="top-heading">
+                <p class="list-result">
+                    Showing
+                    <span>{{outletStart +' - '+ outletStop}}</span> of
+                    <span>{{totalOutlet}}</span>
+                    {{ totalOutlet > 1 ? 'Active': 'Active'}}
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table mt-4">
+                    <thead>
+                        <tr>
+                            <th>Outlet Name</th>
+                            <th nzWidth="21%">Location</th>
+                            <th nzWidth="21%">Address</th>
+                            <th nzWidth="10%">Date Registered</th>
+                            <th nzWidth="10%">Added By</th>
+                            <th nzWidth="10%">Status</th>
+                            <th nzWidth="10%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngIf="outlets.length > 0">
+                        <tr class="hoverable" *ngFor="let item of outlets"
+                            [routerLink]="['/dashboard/doctors', item._id]">
+                            <td>{{item?.name}}</td>
+                            <td>{{item.location}}</td>
+                            <td>{{item.address}}</td>
+                            <td>{{item.createdAt | date: 'medium'}}</td>
+                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
+                            <td>{{item.status | titlecase}}</td>
+                            <td><button (click)="editOutlet(item)" class="btn-primary-outline2"><img
+                                        src="assets/images/edit-icon.svg" alt=""></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="outlets.length === 0" style="border:none">
+                        <tr>
+                            <td colspan="6">
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any active outlets.">
+                                </app-no-result>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="outlets.length > 0" class="pagination mt-4">
+                <app-pagination class="pagination" *ngIf="!this.fetchingOutlet && this.totalOutlet > 0"
+                    [totalItems]="this.totalOutlet" [(pageSize)]="this.outletLimit" [(currentPage)]="this.outletPage"
+                    (pageSizeChange)="this.refreshList()" (currentPageChange)="this.getOutlet()"></app-pagination>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<app-add-outlet [visible]="this.showAddModal" (createdUser)="onCreated()"
+    (visibleChange)="this.toggleAddModal()"></app-add-outlet>
+
+<app-edit-outlet [visible]="this.showEditModal" [outlet]="this.selectedOutlet" (updatedUser)="onUpdated()"
+    (visibleChange)="this.toggleEditModal()"></app-edit-outlet>

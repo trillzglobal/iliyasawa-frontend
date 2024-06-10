@@ -1,0 +1,120 @@
+<div class="main-body-content dashboard account-tab accounts">
+
+    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+        style="justify-content: flex-start; column-gap: 40px;">
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
+                <div _ngcontent-hqb-c160="" class="description">Total Product</div>
+            </div>
+        </div>
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
+                <div _ngcontent-hqb-c160="" class="description">Available items</div>
+            </div>
+        </div>
+        <div _ngcontent-hqb-c160="" class="onequarter-width">
+            <div _ngcontent-hqb-c160="" class="cards">
+                <div _ngcontent-hqb-c160="" class="digit">0</div>
+                <div _ngcontent-hqb-c160="" class="description">Out of Stock</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <div class="left">
+            <div class="select-container">
+                <select class="ng-pristine ng-valid ng-touched">
+                    <option selected>All Product</option>
+                </select>
+            </div>
+        </div>
+        <div class="right">
+            <div class="password-container">
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                <img src="assets/images/search.svg" alt="">
+            </div>
+            <!-- <button (click)="toggleAddModal()" class="btn-primary">
+                + Add Product
+            </button> -->
+        </div>
+    </div>
+    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+        <ng-container *ngIf="fetchingStore">
+            <table class="data-table mt-4">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th nzWidth="21%">Quantity</th>
+                        <!-- <th nzWidth="21%">Description</th> -->
+                        <th nzWidth="10%">Date Added</th>
+                        <th nzWidth="10%">Added By</th>
+                        <th nzWidth="10%">Status</th>
+                        <th nzWidth="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of [1,2,3]">
+                        <td *ngFor="let item of [1,2,3,4,5]">
+                            <ngx-skeleton-loader style="width: 100%;"
+                                [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
+                            </ngx-skeleton-loader>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+        <ng-container *ngIf="!fetchingStore">
+            <div class="top-heading">
+                <p class="list-result">
+                    Showing
+                    <span>{{storeStart +' - '+ storeStop}}</span> of
+                    <span>{{totalStore}}</span>
+                    {{ totalStore > 1 ? 'Items': 'Items'}}
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table data-table mt-4">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th nzWidth="21%">Quantity</th>
+                            <!-- <th nzWidth="21%">Description</th> -->
+                            <th nzWidth="10%">Date Added</th>
+                            <th nzWidth="10%">Added By</th>
+                            <th nzWidth="10%">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngIf="store.length > 0">
+                        <tr class="hoverable" *ngFor="let item of store"
+                            [routerLink]="['/dashboard/doctors', item._id]">
+                            <td>{{item?.name}}</td>
+                            <td><span class="quantity">{{item.quantity | number}}</span></td>
+                            <!-- <td>{{item?.description}}</td> -->
+                            <td>{{item.createdAt | date: 'medium'}}</td>
+                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
+                            <td>{{item.status | titlecase}}</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="store.length === 0" style="border:none">
+                        <tr>
+                            <td colspan="6">
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any product in store.">
+                                </app-no-result>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="store.length > 0" class="pagination mt-4">
+                <app-pagination class="pagination" *ngIf="!this.fetchingStore && this.totalStore > 0"
+                    [totalItems]="this.totalStore" [(pageSize)]="this.storeLimit" [(currentPage)]="this.storePage"
+                    (pageSizeChange)="this.refreshList()" (currentPageChange)="this.getStore()"></app-pagination>
+            </div>
+        </ng-container>
+    </div>
+</div>

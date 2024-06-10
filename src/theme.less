@@ -1,0 +1,256 @@
+// Custom Theming for NG-ZORRO
+// For more information: https://ng.ant.design/docs/customize-theme/en
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+
+// Override less variables to here
+// View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
+
+@primary-color: #228E27;
+@font-size-base: 100%;
+@font-size-lg: @font-size-base;
+@font-size-sm: 100%;
+@switch-min-width: 38px;
+@switch-sm-min-width: 22px;
+
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.ant-modal-wrap {
+  display: flex !important;
+
+  .ant-modal {
+    width: auto;
+
+    .ant-modal-content {
+      border-radius: 10px;
+
+      .ant-modal-body {
+        padding: 0%;
+      }
+    }
+  }
+}
+
+.ant-menu-submenu-arrow::after,
+.ant-menu-submenu-arrow::before {
+  width: 0 !important;
+}
+
+.ant-menu-submenu-title .anticon {
+  font-size: 22px;
+}
+
+.ant-modal-close {
+  display: none;
+}
+
+.ant-drawer-content-wrapper {
+  width: 450px;
+
+  @media screen and (max-width:425px) {
+    width: 90% !important;
+  }
+}
+
+.settings-tab {
+  height: 100%;
+
+  .ant-tabs-tab-btn,
+  .ant-tabs-tab {
+    color: #6B7280 !important;
+    font-weight: 400;
+
+    a {
+      color: #6B7280 !important;
+      font-weight: 500;
+    }
+  }
+
+  .ant-tabs-tab-active {
+    a {
+      color: 228E27 !important;
+    }
+  }
+
+  .ant-tabs-ink-bar {
+    @media screen and (min-width: 1024px) {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      width: 4px !important;
+    }
+
+    @media screen and (max-width: 1024px) {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      min-width: 42px !important;
+    }
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    font-weight: 800;
+  }
+
+  .ant-tabs {
+    // position: relative;
+  }
+
+  .ant-tabs-nav {
+    padding: 40px 0;
+    background: white;
+    border-right: solid 1px rgb(245, 245, 245);
+
+    @media screen and (max-width: 1024px) {
+      padding: 0;
+      border-right: none;
+      border-bottom: solid 1px rgb(245, 245, 245);
+    }
+  }
+}
+
+.account-tab {
+  .ant-tabs {
+    overflow: visible !important;
+  }
+
+  .ant-tabs-tab-btn {
+    color: #6B7280;
+    font-weight: 400;
+  }
+
+  .ant-tabs-ink-bar {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 4px !important;
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    font-weight: 800;
+  }
+}
+
+.cdk-overlay-container {
+  transition: none !important;
+
+  * {
+    transition: none !important;
+  }
+}
+
+.dropdown1,
+.dropdown2,
+.dropdown3 {
+  min-width: 250px !important;
+  padding: 10px 16px !important;
+
+  .text1 {
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    padding: 0px 16px;
+    margin-top: 16px;
+  }
+
+  .text2 {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding: 0px 16px;
+    margin-bottom: 16px;
+  }
+
+  li {
+    font-size: 0.85em !important;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 15px;
+      margin-right: 10px;
+    }
+  }
+
+  .filter-box {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    flex-grow: 1;
+    padding: 5px;
+
+    .filter-heading {
+      text-align: left;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--color-4);
+      line-height: 1.2;
+    }
+
+    .filter-subheading {
+      text-align: left;
+      font-weight: normal;
+      font-size: 12px;
+      color: var(--color-6);
+    }
+  }
+
+  .tick {
+    width: 12px;
+    height: 5px;
+    content: '';
+    border-bottom: solid 3px var(--primary-color);
+    border-left: solid 3px var(--primary-color);
+    transform: rotate(-45deg);
+    border-radius: 1px;
+    margin: 0 10px;
+  }
+}
+
+.dropdown2 {
+  padding: 0px 16px !important;
+}
+
+.dropdown3 {
+  padding: 0px !important;
+}
+
+.notification1 {
+  // p:last-child {
+  //     font-size: .1em !important;
+  // }
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  font-size: 16px;
+  font-weight: 600 !important;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-description {
+  font-size: 14px;
+  font-weight: 400 !important;
+}
+
+.info-tooltip {
+  .ant-tooltip-inner {
+    padding: 12px;
+  }
+
+  .ant-tooltip-inner,
+  .ant-tooltip-arrow-content {
+    background: white !important;
+    color: var(--color-4);
+    font-size: 14px;
+    font-weight: 400;
+    box-shadow: var(--box-shadow1-hover);
+
+    .link {
+      color: var(--primary-color);
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+}
+
+.ant-popover-message-title {
+  padding-left: 0 !important;
+}

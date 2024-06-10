@@ -1,0 +1,111 @@
+<div class="layout">
+    <div class="side-bar" [ngClass]="!this.openSideBar ? '': 'openSideBar'">
+        <div class="icon" routerLink="/dashboard">
+            <img src="assets/images/logo.png" class="logo" />
+        </div>
+        <div class="link-list">
+            <ng-container *ngIf="this.fetchingData">
+                <div class="preloader full-width" *ngFor="let n of [1,2,3,4,5,6]">
+                    <ngx-skeleton-loader style="width: 100%;"
+                        [theme]="{'width':'80%','height':'30px','margin-bottom':'0px','background-color': '#e9eff7', 'border-radius': '7px'}"
+                        appearance="line">
+                    </ngx-skeleton-loader>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!this.fetchingData">
+                <div class="link" routerLink="/dashboard/" routerLinkActive="active-link"
+                    [routerLinkActiveOptions]="{exact: true}" #dashboardLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon">
+                            <img
+                                [src]="dashboardLink.isActive ? 'assets/images/dashboard-active.svg' : 'assets/images/dashboard.svg'" />
+                        </div>
+                        <p>Dashboard</p>
+                    </div>
+                </div>
+
+
+
+                <div class="link" routerLink="/dashboard/staff" routerLinkActive="active-link"
+                    #staffLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="staffLink.isActive ? 'assets/images/staff-active.svg' : 'assets/images/staff.svg'" />
+                        </div>
+                        <p>Staff</p>
+                    </div>
+                </div>
+
+                <!-- Accounts Page Link -->
+                <div class="link" routerLink="/dashboard/outlets" routerLinkActive="active-link"
+                    #outletsLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="outletsLink.isActive ? 'assets/images/schools-active.svg' : 'assets/images/schools.svg'" />
+                        </div>
+                        <p>Outlets</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/products" routerLinkActive="active-link"
+                    #productLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="productLink.isActive ? 'assets/images/product-active.svg' : 'assets/images/product.svg'" />
+                        </div>
+                        <p>Products</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/reports" routerLinkActive="active-link"
+                    #reportsLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="reportsLink.isActive ? 'assets/images/report-active.svg' : 'assets/images/report.svg'" />
+                        </div>
+                        <p>Reports</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/customers" routerLinkActive="active-link"
+                    #customersLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="customersLink.isActive ? 'assets/images/customers-active.svg' : 'assets/images/customers.svg'" />
+                        </div>
+                        <p>Customers</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/store" routerLinkActive="active-link"
+                    #storeLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="storeLink.isActive ? 'assets/images/store-active.svg' : 'assets/images/store.svg'" />
+                        </div>
+                        <p>Store</p>
+                    </div>
+                </div>
+
+                <!-- Settings Page Link -->
+                <div class="link" routerLink="/dashboard/settings" routerLinkActive="active-link"
+                    #settingsLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="settingsLink.isActive ? 'assets/images/settings-active.svg' : 'assets/images/settings.svg'" />
+                        </div>
+                        <p>Settings</p>
+                    </div>
+                </div>
+
+            </ng-container>
+        </div>
+    </div>
+    <div class="main-page-content">
+        <app-header [title]="this.headerTitle" [(openSideBar)]="this.openSideBar" [fetchingData]="this.fetchingData"
+            [currentUser]="this.currentUser" [showBackButton]="this.showHeaderBackButton" [backUrl]="this.backUrl"
+            [urlQuery]="this.urlQuery"></app-header>
+        <router-outlet></router-outlet>
+    </div>
+</div>

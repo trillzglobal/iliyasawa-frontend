@@ -1,0 +1,50 @@
+<div class="page-content body">
+    <div class="heading">
+        <!-- <div class="logo" [routerLink]="['/']">
+      <img src="assets/images/healme.svg" />
+    </div> -->
+    </div>
+    <div class="content-body">
+        <div class="background">
+            <div class="image">
+                <!-- <img src="assets/images/background-circle.svg" /> -->
+            </div>
+        </div>
+        <div class="main-body-content router">
+            <div class="page form-body" *ngIf="!this.successMessage">
+                <div class="form-box" style="overflow: hidden;">
+                    <h1 class="form-heading">Sign In to your account</h1>
+                    <!-- <p class="form-subheading">Welcome back! Login to proceed</p> -->
+                    <div class="account-tab sign-in">
+                        <app-error-message [message]="this.errorMessage"></app-error-message>
+                        <div class="full-width form-content">
+                            <div class="full-width input-box">
+                                <label>Email Address</label>
+                                <input type="email" placeholder="johndoe@example.com" [(ngModel)]="this.emailAddress"
+                                    (keyup.enter)="signIn()" />
+                            </div>
+                            <div class="full-width input-box">
+                                <label>Password</label>
+                                <div class="password-container full-width">
+                                    <input type="password" #passwordField1 placeholder="********"
+                                        [(ngModel)]="this.password" (keyup.enter)="signIn()" />
+                                    <i nz-icon nzType="eye-invisible" nzTheme="outline"
+                                        *ngIf="passwordField1.type == 'text'"
+                                        (click)="passwordField1.type = 'password'"></i>
+                                    <i nz-icon nzType="eye" nzTheme="outline" *ngIf="passwordField1.type == 'password'"
+                                        (click)="passwordField1.type = 'text'"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary full-width" [ladda]="processLoading" (click)="signIn()">Sign In</button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

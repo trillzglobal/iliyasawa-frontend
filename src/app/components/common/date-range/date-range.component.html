@@ -1,0 +1,18 @@
+<div class="con2 ranges">
+    <div class="range" (click)="datePicker1.open()">
+        <span>{{this.formatedFromDate}}</span>
+        <nz-date-picker [nzInputReadOnly]="true" [nzFormat]="'DD/MM/YYYY'" [(ngModel)]="this.fromDate"
+            (ngModelChange)="this.dateChanged($event, 'fromDate')" #datePicker1>
+        </nz-date-picker>
+    </div>
+    <span class="to">-</span>
+    <div class="range" (click)="datePicker2.open()">
+        <span>{{this.formatedToDate}}</span>
+        <nz-date-picker [nzInputReadOnly]="true" [nzFormat]="'DD/MM/YYYY'" [(ngModel)]="this.toDate"
+            (ngModelChange)="this.dateChanged($event, 'toDate')" #datePicker2>
+        </nz-date-picker>
+    </div>
+    <div class="arrow">
+        <img src="assets/images/chevron-down.svg" />
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="pagination" *ngIf="this.totalItems > 0">
+    <!-- <div class="show half-width">
+        <p class="show-text">Show results</p>
+        <div class="select-container2">
+            <select [(ngModel)]="this.pageSize" (ngModelChange)="this.changePageSize()">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+            </select>
+        </div>
+    </div> -->
+    <div class="pages">
+        <div class="arrow" [ngClass]="this.currentPage > 1 ? 'active-arrow' : ''" (click)="this.goBack()">
+            <img src="assets/images/chevron-left2.svg" />
+        </div>
+
+        <div class="page-list">
+            <p [ngClass]="this.currentPage == page ? 'active' : ''" *ngFor="let page of this.pagesToShow"
+                (click)="this.currentPage == page ? null : this.gotToPage(page)">{{page}}</p>
+        </div>
+
+        <div class="arrow" [ngClass]="this.currentPage < this.pages ? 'active-arrow' : ''" (click)="this.goForward()">
+            <img src="assets/images/chevron-right1.svg" />
+        </div>
+    </div>
+</div>

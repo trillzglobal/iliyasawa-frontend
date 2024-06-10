@@ -1,0 +1,90 @@
+<nz-modal [(nzVisible)]="this.visible" [nzContent]="modalContent" [nzFooter]="null" [nzClassName]="'modal'"
+    (nzOnCancel)="handleCancel()" [nzClosable]="false">
+    <ng-template #modalContent class="modal">
+        <div class="modal-container">
+            <div class="form-modal">
+                <div class="top">
+                    <h1 class="form-heading">Update Staff Information</h1>
+                    <div class="close" (click)="this.handleCancel()">
+                        <span>&times;</span>
+                    </div>
+                </div>
+                <div class="form-box full-width">
+                    <p class="form-subheading">Fill the form to update user.</p>
+                    <app-error-message [message]="this.errorMessage"></app-error-message>
+                    <div class="sub-form form1">
+                        <div class="half-width input-box">
+                            <label>First Name</label>
+                            <input type="text" placeholder="first name" autofocus [(ngModel)]="this.user.firstName">
+                        </div>
+                        <div class="half-width input-box">
+                            <label>Last Name</label>
+                            <input type="text" placeholder="last name" autofocus [(ngModel)]="this.user.surname">
+                        </div>
+
+                        <div class="half-width input-box">
+                            <label>Other Name</label>
+                            <input type="text" placeholder="Othername (optional)" autofocus
+                                [(ngModel)]="this.user.otherName">
+                        </div>
+                        <div class="half-width input-box">
+                            <label>Phone</label>
+                            <input type="tel" placeholder="+234 806624****" autofocus
+                                [(ngModel)]="this.user.phoneNumber">
+                        </div>
+                        <div class="full-width input-box">
+                            <label>Email</label>
+                            <input type="email" placeholder="user@tsb.com" autofocus
+                                [(ngModel)]="this.user.emailAddress">
+                        </div>
+                        <div class="half-width input-box">
+                            <label>Role</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.user.role">
+                                    <option value="">Choose Role</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Sales Manager">Sales Manager</option>
+                                    <option value="Production Manager">Production Manager</option>
+                                    <option value="Procurement Officer">Procurement Officer</option>
+                                    <option value="Store Keeper">Store Keeper</option>
+                                    <option value="Outlet Manager">Outlet Manager</option>
+                                    <option value="General Manager">General Manager</option>
+                                    <option value="Outlet Sales Rep">Outlet Sales Rep</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="half-width input-box">
+                            <label>Status</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.user.status">
+                                    <option value="Active">Active</option>
+                                    <option value="Bloked">Blocked</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="full-width input-box">
+                            <label>Permissions</label>
+                            <div class="check-cont">
+                                <div>
+                                    <input type="checkbox" [(ngModel)]="this.isSelectAll"
+                                        (ngModelChange)="permissionCheckAll(this.permissions)">
+                                    SELECT ALL PERMISSIONS
+                                </div>
+
+                                <div class="permission" *ngFor="let item of this.permissions">
+                                    <input type="checkbox" value="{{item.id}}" [(ngModel)]="item.isSelected">
+                                    {{item.name | uppercase}}
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <button (click)="updateUser()" class="btn-primary full-width" style="margin-top:25px"
+                        [ladda]="processLoading">
+                        Update Staff
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</nz-modal>

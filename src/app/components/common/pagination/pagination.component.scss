@@ -1,0 +1,107 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    @media screen and (max-width: 425px) {
+        // flex-flow: column-reverse;
+        // align-items: flex-start;
+    }
+
+    .show {
+        display: flex;
+        align-items: center;
+
+        @media screen and (max-width: 425px) {
+            justify-content: flex-start;
+        }
+
+        .show-text {
+            font-weight: 300;
+            font-size: 14px;
+            margin-right: 10px;
+            color: var(--text-color1);
+
+            @media screen and (max-width: 425px) {
+                flex-shrink: 0;
+            }
+        }
+
+    }
+
+    .pages {
+        display: flex;
+        align-items: center;
+
+        @media screen and (max-width: 425px) {
+            margin-bottom: 20px;
+        }
+
+        .arrow,
+        .active-arrow {
+            width: 25px !important;
+            margin: 0 20px 0 0;
+            cursor: not-allowed;
+            background-color: #ececec;
+            border-radius: 3px;
+
+            &:last-child {
+                margin: 0 0 0 20px;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .active-arrow {
+            cursor: pointer;
+            background-color: white;
+            opacity: .9;
+            color: white;
+        }
+
+        .page-list {
+            display: flex;
+            align-items: center;
+
+            p {
+                font-weight: 300;
+                font-size: 14px;
+                color: var(--text-color1);
+                width: 25px;
+                height: 25px;
+                border-radius: 3px;
+                background-color: transparent;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                &:not(:last-child) {
+                    margin-right: 10px;
+                }
+
+                &:hover {
+                    background-color: var(--input-background-color1);
+                }
+            }
+
+            .active {
+                color: white;
+                background-color: var(--primary-color);
+                font-weight: 500;
+
+                &:hover {
+                    background-color: var(--primary-color);
+                }
+            }
+
+            .more {
+                cursor: pointer;
+                margin-right: 10px;
+            }
+        }
+    }
+}

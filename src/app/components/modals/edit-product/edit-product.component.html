@@ -1,0 +1,35 @@
+<nz-modal [(nzVisible)]="this.visible" [nzContent]="modalContent" [nzFooter]="null" [nzClassName]="'modal'"
+    (nzOnCancel)="handleCancel()" [nzClosable]="false">
+    <ng-template #modalContent class="modal">
+        <div class="modal-container">
+            <div class="form-modal">
+                <div class="top">
+                    <h1 class="form-heading">Edit Product Info</h1>
+                    <div class="close" (click)="this.handleCancel()">
+                        <span>&times;</span>
+                    </div>
+                </div>
+                <div class="form-box full-width">
+                    <p class="form-subheading">Fill the form to update outlet information.</p>
+                    <app-error-message [message]="this.errorMessage"></app-error-message>
+
+                    <div class="full-width input-box">
+                        <label>Product Name</label>
+                        <input type="text" placeholder="producy name" autofocus [(ngModel)]="this.product.name">
+                    </div>
+
+                    <div class="full-width input-box">
+                        <label>Description</label>
+                        <textarea type="text" placeholder="description" autofocus
+                            [(ngModel)]="this.product.description"></textarea>
+                    </div>
+
+                    <button (click)="update()" class="btn-primary full-width" style="margin-top:25px"
+                        [ladda]="processLoading">
+                        Update Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</nz-modal>

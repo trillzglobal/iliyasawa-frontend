@@ -1,0 +1,114 @@
+<div class="overall">
+  <div class="header">
+    <div class="title">
+      <div class="hambuger" [ngClass]="this.openSideBar ? 'opened': ''" (click)="this.toggleSidebar()">
+        <div class="h1"></div>
+        <div class="h2"></div>
+      </div>
+      <ng-container>
+        <div class="logo" routerLink="/dashboard/home">
+          <img src="assets/images/logo.png" />
+        </div>
+        <p class="text-big" *ngIf="!this.showBackButton">{{ this.title}}</p>
+        <div class="nav-big" *ngIf="this.showBackButton && this.backUrl == ''" (click)="this.generalService.goBack()">
+          <div class="back-icon">
+            <img src="assets/images/arrow-back.svg" />
+          </div>
+          <span>Back</span>
+        </div>
+        <div class="nav-big" *ngIf="this.showBackButton && this.backUrl != ''" [routerLink]="[this.backUrl]"
+          [queryParams]="this.urlQuery">
+          <div class="back-icon">
+            <img src="assets/images/arrow-back.svg" />
+          </div>
+          <span>Back</span>
+        </div>
+      </ng-container>
+    </div>
+    <!-- Loading state -->
+    <div class="right-con" *ngIf="this.fetchingData">
+      <div class="switch">
+        <ngx-skeleton-loader [theme]="{'width':'70px','height':'30px','margin-bottom':'0px'}" appearance="line">
+        </ngx-skeleton-loader>
+      </div>
+      <div class="right">
+        <div class="avatar">
+          <ngx-skeleton-loader [theme]="{'width':'40px','height':'40px', 'border-radius': '50%', 'margin-bottom':'0px'}"
+            appearance="line"></ngx-skeleton-loader>
+        </div>
+        <div class="name">
+          <div class="details">
+            <p class="heading">
+              <ngx-skeleton-loader [theme]="{'width':'80px','height':'10px','margin-bottom':'0px'}"
+                appearance="line"></ngx-skeleton-loader>
+            </p>
+            <p class="subheading">
+              <ngx-skeleton-loader [theme]="{'width':'60px','height':'10px','margin-bottom':'0px'}"
+                appearance="line"></ngx-skeleton-loader>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Loaded state -->
+    <div class="right-con" *ngIf="!this.fetchingData">
+      <span class="headway-container"></span>
+
+      <div class="right" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" [nzOverlayClassName]="'dropdown1'"
+        [nzPlacement]="'bottomLeft'">
+        <div class="avatar">
+          <!-- <ngx-avatars class="big-avatar" [name]="this.currentUser.firstName+ ' '+ this.currentUser.lastName"
+                        size="42" [round]="true"></ngx-avatars>
+                    <ngx-avatars class="small-avatar"
+                        [name]="this.currentUser.firstName+ ' '+ this.currentUser.lastName" size="38"
+                        [round]="true"></ngx-avatars>
+                    <ngx-avatars class="smaller-avatar"
+                        [name]="this.currentUser.firstName+ ' '+ this.currentUser.lastName" size="35" [round]="true">
+                    </ngx-avatars> -->
+          <img src="assets/images/profile.svg" alt="">
+        </div>
+        <div class="name">
+          <div class="details">
+            <p class="heading">{{this.currentUser.emailAddress}}</p>
+            <p class="subheading">{{this.currentUser.firstName+ ' '+ this.currentUser.lastName}}</p>
+          </div>
+          <div class="arrow"><img src="assets/images/chevron-down1.svg" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Title for smaller screens -->
+<div class="space">
+  <!-- Title -->
+  <div class="text-small" *ngIf="!this.showBackButton">{{ this.title}}</div>
+  <!-- Back button to go to previous page -->
+  <div class="nav-small" *ngIf="this.showBackButton && this.backUrl == ''" (click)="this.generalService.goBack()">
+    <div class="back-icon">
+      <img src="assets/images/arrow-back.svg" />
+    </div>
+    <span>Back</span>
+  </div>
+  <!-- Back button to go to specific url -->
+  <div class="nav-small" *ngIf="this.showBackButton && this.backUrl != ''" [routerLink]="[this.backUrl]"
+    [queryParams]="this.urlQuery">
+    <div class="back-icon">
+      <img src="assets/images/arrow-back.svg" />
+    </div>
+    <span>Back</span>
+  </div>
+  <div class="line" *ngIf="!this.showBackButton"></div>
+</div>
+
+<!-- Dropdown -->
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item class="action logout">
+      <img class="small-icons" src="assets/images/user.svg" />Switch Role
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item class="action logout" (click)="this.generalService.logoutUser()"><img class="small-icons"
+        src="assets/images/log-out.svg" />Sign out </li>
+  </ul>
+</nz-dropdown-menu>

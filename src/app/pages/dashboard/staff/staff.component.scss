@@ -1,0 +1,42 @@
+.d-flex {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.right {
+    display: flex !important;
+    flex-flow: row;
+    align-items: center;
+    column-gap: 10px;
+}
+
+
+.block {
+    color: #FF0606 !important;
+}
+
+.unblock {
+    color: var(--primary-color) !important;
+}
+
+.list-result {
+    margin: 10px 0 0 0;
+    color: #9fa6b2;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cards {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    padding: 10px;
+
+    .digit {
+        font-size: 2.5rem;
+        font-weight: 500;
+    }
+
+}

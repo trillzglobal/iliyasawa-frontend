@@ -1,0 +1,310 @@
+<div class="main-body-content dashboard account-tab accounts">
+    <nz-tabset [nzSelectedIndex]="this.selectedIndex">
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'sales' }"
+                queryParamsHandling="merge">Sale Report</a>
+
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Sales</option>
+                            <!-- <option>Pulmologist</option>
+                            <option>Pediatricians</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchActiveTerm" (blur)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+                    <!-- <button (click)="toggleAddDoctorModal()" class="btn-primary">
+                        + Add Doctor
+                    </button> -->
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingActive">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th nzWidth="21%">Quantity</th>
+                                <th nzWidth="20%">Price</th>
+                                <th nzWidth="10%">Trnx Type</th>
+                                <th nzWidth="10%">Customer</th>
+                                <th nzWidth="10%">Trnx Type</th>
+                                <th nzWidth="10%">Date Sold</th>
+                                <th nzWidth="10%">Sold By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingActive">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{activeStart +' - '+ activeStop}}</span> of
+                            <span>{{totalActive}}</span>
+                            {{ totalActive > 1 ? 'Sales': 'Sale'}}
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th nzWidth="21%">Quantity</th>
+                                    <th nzWidth="20%">Price</th>
+                                    <th nzWidth="10%">Trnx Type</th>
+                                    <th nzWidth="10%">Customer</th>
+                                    <th nzWidth="10%">Date Sold</th>
+                                    <th nzWidth="10%">Sold By</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="active.length > 0">
+                                <tr class="hoverable" *ngFor="let item of active"
+                                    [routerLink]="['/dashboard/doctors', item._id]">
+                                    <td>Dr. {{item.firstName + ' ' + item.surname + " " + item.otherName}}</td>
+                                    <td>{{item.emailAddress}}</td>
+                                    <td>{{item.phoneNumber}}</td>
+                                    <td>{{item.profession}}</td>
+                                    <td>{{item.createdAt | date: 'medium'}}</td>
+                                    <td>{{item?.approvedAt | date: 'medium'}}</td>
+                                    <td>{{item?.approver.firstName + ' ' + item?.approver.surname}}</td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody *ngIf="active.length === 0" style="border:none">
+                                <tr>
+                                    <td colspan="7">
+                                        <app-no-result class="full-width" title="No data found"
+                                            description="You currently don't have any sale.">
+                                        </app-no-result>
+                                    </td>
+                                </tr>
+                            </tbody> -->
+                        </table>
+                        <ng-container *ngIf="active.length === 0" style="border:none">
+                            <div>
+                                <!-- <td colspan="6"> -->
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any sales data.">
+                                </app-no-result>
+                                <!-- </td> -->
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="active.length > 0" class="pagination">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingActive && this.totalActive > 0"
+                            [totalItems]="this.totalActive" [(pageSize)]="this.activeLimit"
+                            [(currentPage)]="this.activePage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getReports()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab>
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'production' }"
+                queryParamsHandling="merge">Production Report</a>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Production</option>
+                            <!-- <option>Pulmologist</option>
+                            <option>Pediatricians</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchBlockedTerm" (blur)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingBlocked">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                                <th nzWidth="10%">Date Approved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5,6]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingBlocked">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{blockedStart +' - '+ blockedStop}}</span> of
+                            <span>{{totalBlocked}}</span>
+                            {{ totalBlocked > 1 ? 'Blocked': 'Blocked'}}
+                        </p>
+                    </div>
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                                <th nzWidth="10%">Date Approved</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="blocked.length > 0">
+                            <tr class="hoverable" *ngFor="let item of blocked"
+                                [routerLink]="['/dashboard/doctors', item._id]">
+                                <td>Dr. {{item.firstName + ' ' + item.surname + " " + item.otherName}}</td>
+                                <td>{{item.emailAddress}}</td>
+                                <td>{{item.phoneNumber}}</td>
+                                <td>{{item.profession}}</td>
+                                <td>{{item.createdAt | date: 'medium'}}</td>
+                                <td>{{item?.appovedDate | date: 'medium'}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="blocked.length === 0" style="border:none">
+                            <tr>
+                                <td colspan="6">
+                                    <app-no-result class="full-width" title="No data found"
+                                        description="You currently don't have any blocked doctor.">
+                                    </app-no-result>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="blocked.length > 0" class="pagination">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingActive && this.totalActive > 0"
+                            [totalItems]="this.totalActive" [(pageSize)]="this.activeLimit"
+                            [(currentPage)]="this.activePage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getReports()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab>
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'income' }"
+                queryParamsHandling="merge">Income Report</a>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Income</option>
+                            <!-- <option>Pulmologist</option>
+                            <option>Pediatricians</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchRequestTerm" (blur)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingRequests">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingRequests">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{requestsStart +' - '+ requestsStop}}</span> of
+                            <span>{{totalRequests}}</span>
+                            {{ totalRequests > 1 ? 'Requests': 'Request'}}
+                        </p>
+                    </div>
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="requests.length > 0">
+                            <tr class="hoverable" *ngFor="let item of requests"
+                                [routerLink]="['/dashboard/doctors', item._id]">
+                                <td>Dr. {{item.firstName + ' ' + item.surname + " " + item.otherName}}</td>
+                                <td>{{item.emailAddress}}</td>
+                                <td>{{item.phoneNumber}}</td>
+                                <td>{{item.profession}}</td>
+                                <td>{{item.createdAt | date: 'medium'}}</td>
+
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="requests.length === 0" style="border:none">
+                            <tr>
+                                <td colspan="6">
+                                    <app-no-result class="full-width" title="No data found"
+                                        description="You currently don't have any doctor's account request.">
+                                    </app-no-result>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="requests.length > 0" class="pagination">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingActive && this.totalActive > 0"
+                            [totalItems]="this.totalActive" [(pageSize)]="this.activeLimit"
+                            [(currentPage)]="this.activePage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getReports()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+
+</div>
