@@ -45,38 +45,39 @@ export class AddProductComponent implements OnInit {
     }
 
     const payload = {
-      name: this.description.trim(),
-      description: this.description.trim(),
-      location: this.name.trim(),
+      product_name: this.name.trim(),
+      product_description: this.description.trim(),
+      measurement_unit: this.unit,
+      quantity: this.quantity
     }
 
-    // this.outletService.createSchool(payload).subscribe(
-    //   (res: any) => {
+    this.productService.createProductStore(payload).subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
-    //       this.location = '';
-    //       this.name = '';
-    //       this.address = '';
-    //       this.createdSchool.emit();
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
+          this.unit = '';
+          this.name = '';
+          this.quantity = 0;
+          this.createdSchool.emit();
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 
   ngOnChanges() {

@@ -15,4 +15,13 @@ export class StaffService {
   getUserRoles() {
     return this.apiService.get(`admin/user/roles`);
   }
+
+  addUserRole(data: any) {
+    return this.apiService.post(`admin/create/user/role`, data);
+  }
+
+  addRole(data: any) {
+    return this.apiService.post(`admin/create/role`, data);
+  }
+
 }
