@@ -36,6 +36,12 @@
         justify-content: center;
         position: relative;
 
+
+        @media screen and (max-width:768px) {
+            display: block;
+            padding: 0 30px;
+        }
+
         .background {
             position: absolute;
             z-index: 0;

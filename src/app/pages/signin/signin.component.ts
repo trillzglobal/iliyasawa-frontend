@@ -43,56 +43,50 @@ export class SigninComponent implements OnInit {
       this.processLoading = false;
     }
     else {
-      //  console.log(this.user);
+
       const data = {
-        emailAddress: this.emailAddress.trim(),
+        email: this.emailAddress.trim(),
         password: this.password
       }
 
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']);
-      }, 500);
+      this.authService.login(data).subscribe(
+        async (res: any) => {
+          console.log(res);
+          if (res.status === "success") {
+            this.processLoading = false;
+            this.notification.success(
+              'Account signin successful.',
+              '' + "Success",
+              { nzClass: 'notification1' }
+            );
 
-      this.processLoading = false;
+            this.generalService.setUserData(res.user);
 
-      // this.authService.staffLogin(data).subscribe(
-      //   async (res: any) => {
-      //     console.log(res);
-      //     if (res.statusCode === 200) {
-      //       this.processLoading = false;
-      //       this.notification.success(
-      //         'Account signin successful.',
-      //         '' + res.message,
-      //         { nzClass: 'notification1' }
-      //       );
+            // add user data to localstorage
+            this.generalService.setData('user-data', res.user);
 
-      //       this.generalService.setUserData(res.data);
+            console.log('token', res.authorisation.token);
+            this.generalService.setToken(res.authorisation.token);
 
-      //       // add user data to localstorage
-      //       this.generalService.setData('user-data', res.data);
-
-      //       console.log('token', res.data.token);
-      //       this.generalService.setToken(res.data.token);
-
-      //       setTimeout(() => {
-      //         this.router.navigate(['/dashboard']);
-      //       }, 500);
-      //     } else {
-      //       this.notification.warning(
-      //         'Error signin successful.',
-      //         '' + res.message,
-      //         { nzClass: 'notification1' }
-      //       );
-      //       this.errorMessage = '' + res.message;
-      //       this.processLoading = false;
-      //     }
-      //   },
-      //   (error: any) => {
-      //     console.log(error);
-      //     this.errorMessage = 'An error occured. Please try again later';
-      //     this.processLoading = false;
-      //   }
-      // )
+            setTimeout(() => {
+              this.router.navigate(['/dashboard']);
+            }, 500);
+          } else {
+            this.notification.warning(
+              'Error signin successful.',
+              '' + res.message,
+              { nzClass: 'notification1' }
+            );
+            this.errorMessage = '' + res.message;
+            this.processLoading = false;
+          }
+        },
+        (error: any) => {
+          console.log(error);
+          this.errorMessage = 'An error occured. Please try again later';
+          this.processLoading = false;
+        }
+      )
     }
 
 

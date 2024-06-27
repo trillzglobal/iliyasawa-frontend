@@ -13,6 +13,8 @@ export class AddProductComponent implements OnInit {
   processLoading: boolean = false;
   description: string = "";
   name: string = "";
+  unit: string = "";
+  quantity: number = 0;
 
   @Input() visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();

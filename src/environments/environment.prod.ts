@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:8080",
+  apiUrl: "http://157.245.119.74/api/v1/",
   privateKey: 'fkdjgodjfkjgvdpfjkpdogijeoirhjsfgjacverdf'
 };

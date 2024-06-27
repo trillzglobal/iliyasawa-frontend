@@ -80,6 +80,8 @@
                         <tr>
                             <th>Product Name</th>
                             <th nzWidth="21%">Description</th>
+                            <th nzWidth="10%">Quantity</th>
+                            <th nzWidth="10%">Unit</th>
                             <th nzWidth="10%">Date Added</th>
                             <th nzWidth="10%">Added By</th>
                             <th nzWidth="10%">Status</th>
@@ -92,6 +94,8 @@
                             [routerLink]="['/dashboard/doctors', item._id]">
                             <td>{{item?.name}}</td>
                             <td>{{item?.description}}</td>
+                            <td><span class="quantity">{{item.quantity | number}}</span></td>
+                            <td>{{item.unit}}</td>
                             <td>{{item.createdAt | date: 'medium'}}</td>
                             <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
                             <td>{{item.status | titlecase}}</td>

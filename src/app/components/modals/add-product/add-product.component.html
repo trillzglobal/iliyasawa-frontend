@@ -9,12 +9,22 @@
                         <span>&times;</span>
                     </div>
                 </div>
-                <div class="form-box full-width">
+                <div class="form-box full-width sub-form form1">
                     <p class="form-subheading">Fill the form to create a new product.</p>
                     <app-error-message [message]="this.errorMessage"></app-error-message>
                     <div class="full-width input-box">
                         <label>Product Name</label>
                         <input type="text" placeholder="product name" autofocus [(ngModel)]="this.name">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Quantity</label>
+                        <input type="text" placeholder="quantity" [(ngModel)]="this.quantity">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Measurement Unit</label>
+                        <input type="text" placeholder="measurement unit" [(ngModel)]="this.unit">
                     </div>
 
                     <div class="full-width input-box">

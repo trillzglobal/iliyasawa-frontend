@@ -11,15 +11,16 @@ import { StaffService } from '../../../services/staff.service';
 export class AddUserComponent implements OnInit {
   errorMessage: string = "";
   processLoading: boolean = false;
-  firstName: string = "";
-  lastName: string = "";
-  otherName: string = "";
+  first_name: string = "";
+  last_name: string = "";
+  company_name: string = "";
   email: string = "";
-  phone: string = "";
-  role: string = "";
+  phone_number: string = "";
+  company_address: string = "";
+  user_role: string = "";
   password: string = "";
   isSelectAll: boolean = false;
-  permissions: any = []
+  roles: any = []
 
   @Input() visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -31,7 +32,7 @@ export class AddUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllPermissions()
+    this.getuserRole()
   }
 
   ngOnChanges() {
@@ -44,48 +45,54 @@ export class AddUserComponent implements OnInit {
     this.visibleChange.emit(this.visible);
   }
 
-  permissionCheckAll(data: any) {
+  roleCheckAll(data: any) {
     data.forEach((el: any) => {
       el.isSelected = this.isSelectAll
     });
   }
 
-  getAllPermissions() {
-    // this.settingsService.getAllPermissions().subscribe(
-    //   (res: any) => {
+  roleCheck(item: any, parent: any) {
+    // console.log(parent);
+  }
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+  getuserRole() {
+    this.staffService.getUserRoles().subscribe(
+      (res: any) => {
 
-    //       res.data.forEach((el: any) => {
-    //         el.isSelected = false
-    //       })
+        console.log(res)
 
-    //       this.permissions = res.data
-    //       this.errorMessage = ''
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.permissions = [];
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+          res.data.forEach((el: any) => {
+            el.isSelected = false
+          })
+
+          this.roles = res.data
+          this.errorMessage = ''
+
+        } else {
+          this.processLoading = false;
+          this.roles = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 
   createUser() {
     this.processLoading = false;
 
-    if (this.firstName === '') {
+    if (this.first_name === '') {
       this.errorMessage = "First name is required";
       this.processLoading = false;
       return
     }
 
-    if (this.lastName === '') {
+    if (this.last_name === '') {
       this.errorMessage = "Last name is required";
       this.processLoading = false;
       return
@@ -101,52 +108,52 @@ export class AddUserComponent implements OnInit {
       return
     }
 
-    if (this.phone === '') {
+    if (this.phone_number === '') {
       this.errorMessage = "Phone number is required";
       this.processLoading = false;
       return
     }
 
-    if (this.role === '') {
-      this.errorMessage = "Role is required";
+    if (this.user_role === '') {
+      this.errorMessage = "User role is required";
       this.processLoading = false;
       return
     }
 
     const payload = {
-      firstName: this.firstName.trim(),
-      surname: this.lastName,
-      otherName: this.otherName.trim(),
+      first_name: this.first_name.trim(),
+      surname: this.last_name,
+      company_name: this.company_name.trim(),
       emailAddress: this.email.trim(),
-      phoneNumber: this.phone.trim(),
+      phoneNumber: this.phone_number.trim(),
       password: this.password.trim(),
-      role: this.role.trim()
+      user_role: this.user_role.trim()
     }
 
-    // this.staffService.createUser(payload).subscribe(
-    //   (res: any) => {
+    this.staffService.createUser(payload).subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
 
-    //       this.createdUser.emit();
+          this.createdUser.emit();
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 }

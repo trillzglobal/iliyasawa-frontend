@@ -42,7 +42,7 @@ export class LayoutComponent {
   }
 
   ngOnInit(): void {
-    // this.getUserData();
+    this.getUserData();
     this.setTitle(this.location.path());
 
     this.env = this.generalService.getEnvironment();
@@ -159,6 +159,8 @@ export class LayoutComponent {
   async getUserData() {
     this.fetchingData = true;
     this.currentUser = await this.generalService.getUserData();
+
+    console.log(this.currentUser);
 
     this.fetchingData = false;
   }
