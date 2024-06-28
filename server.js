@@ -5,11 +5,11 @@ const app = express();
 app.use(compression());
 
 // Serve static files....
-app.use(express.static(__dirname + '/dist/iliyasawa'));
+app.use(express.static(__dirname + '/dist/iliyasawa/browser'));
 
 // Send all requests to index.html
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/dist/iliyasawa/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/iliyasawa/server/index.html'));
 });
 
 // default PORT
