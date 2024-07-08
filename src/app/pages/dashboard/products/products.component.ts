@@ -26,76 +26,10 @@ export class ProductsComponent {
   productsStart: number = 0;
   productsStop: number = 0;
   productsPage: number = 1;
-  productsLimit: number = 25;
+  productsLimit: number = 20;
   totalProducts: number = 0;
   searchTerm: string = ""
-
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "WUSE 2 ",
-      "quantity": "123",
-      "unit": "kg",
-      "description": "Very good product",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Outlet 123",
-      "quantity": "1234",
-      "description": "some good product 3",
-      "unit": "kg",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Albert place",
-      "quantity": "2222222",
-      "unit": "kg",
-      "description": "some good product 1",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
-
+  type: string = ""
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
@@ -112,9 +46,11 @@ export class ProductsComponent {
 
 
   search() {
-
     this.getAllProducts()
+  }
 
+  filterProduct() {
+    this.getAllProducts()
   }
 
 
@@ -122,50 +58,33 @@ export class ProductsComponent {
 
     this.fetchingProducts = true;
 
-    // this.outletService.getAllOutlet(this.productsPage - 1, this.productsLimit, 'Available', this.searchTerm, this.fromDate, this.toDate).subscribe(
-    //   async (res: any) => {
-    //     // console.log(res);
-    //     if (res.statusCode === 200) {
-    //       this.fetchingProducts = false;
+    this.productsService.getAllProducts(this.productsPage, this.type, this.searchTerm).subscribe(
+      async (res: any) => {
+        // console.log(res);
+        if (res.status === "success") {
+          this.fetchingProducts = false;
+          this.products = res.data.data
+          this.totalProducts = res.data.total;
+          this.productsStart = (this.productsPage) * this.productsLimit;
+          this.productsStop = this.productsStart + this.products.length;
 
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
+        } else {
 
-    //       this.products = res.data
-    //       this.totalProducts = res.pagination.total;
-    //       this.productsStart = (this.productsPage - 1) * this.productsLimit;
-    //       this.productsStop = this.productsStart + this.products.length;
-
-    //     } else {
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-    //       this.errorMessage = '' + res.message;
-    //       this.fetchingProducts = false;
-    //       this.totalProducts = 0;
-    //       this.productsStart = 0;
-    //       this.productsStop = 0;
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.fetchingProducts = false;
-    //     this.totalProducts = 0;
-    //     this.productsStart = 0;
-    //     this.productsStop = 0;
-    //   }
-    // )
-
-    this.products = this.sample
-    this.totalProducts = 50;
-    this.productsPage = 1;
-
-    this.fetchingProducts = false;
+          this.errorMessage = '' + res.message;
+          this.fetchingProducts = false;
+          this.totalProducts = 0;
+          this.productsStart = 0;
+          this.productsStop = 0;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingProducts = false;
+        this.totalProducts = 0;
+        this.productsStart = 0;
+        this.productsStop = 0;
+      }
+    )
 
   }
 
@@ -186,14 +105,16 @@ export class ProductsComponent {
   editProduct(data: any) {
     this.selectedProduct = data;
 
-    this.toggleEditModal();
+    // this.toggleEditModal();
   }
 
   onCreated() {
-
+    this.toggleAddModal()
+    this.getAllProducts()
   }
 
   onUpdated() {
-
+    this.toggleEditModal()
+    this.getAllProducts()
   }
 }

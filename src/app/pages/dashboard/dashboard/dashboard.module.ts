@@ -8,7 +8,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { ErrorMessageModule } from '../../../components/error-message/error-message.module';
-
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -28,7 +29,10 @@ import { ErrorMessageModule } from '../../../components/error-message/error-mess
       spinnerColor: "white",
       spinnerLines: 12
     }),
-    DasboardRoutingModule
+    DasboardRoutingModule,
+    NzIconModule,
+    NgxSkeletonLoaderModule,
+    NzTabsModule
   ]
 })
 export class DashboardModule { }

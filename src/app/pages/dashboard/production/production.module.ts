@@ -8,6 +8,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { ErrorMessageModule } from '../../../components/error-message/error-message.module';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NoResultModule } from '../../../components/common/no-result/no-result.module';
+import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 
 
 
@@ -28,7 +32,11 @@ import { ErrorMessageModule } from '../../../components/error-message/error-mess
       spinnerColor: "white",
       spinnerLines: 12
     }),
-    ProductionRoutingModule
+    ProductionRoutingModule,
+    NzTabsModule,
+    NoResultModule,
+    PaginationModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class ProductionModule { }

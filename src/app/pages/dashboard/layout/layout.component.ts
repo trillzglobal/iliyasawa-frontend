@@ -35,9 +35,11 @@ export class LayoutComponent {
     private location: Location
   ) {
     this.currentUser = {
-      emailAddress: "admin@app.com",
-      firstName: "Admin",
-      lastName: "User",
+      user: {
+        emailAddress: "admin@app.com",
+        firstName: "Admin",
+        lastName: "User",
+      }
     }
   }
 
@@ -68,90 +70,70 @@ export class LayoutComponent {
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Dashboard | TSB Promotion System');
+      this.titleService.setTitle('Dashboard | Iliyasawa');
     }
-    else if (url.includes("/dashboard/zones?") || url.includes("/dashboard/zones") && !url.includes("/dashboard/zones/")) {
-      this.headerTitle = "ZONES";
+    else if (url.includes("/dashboard/outlets?") || url.includes("/dashboard/outlets") && !url.includes("/dashboard/outlets/")) {
+      this.headerTitle = "Outlets";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Zones | TSB Promotion System');
+      this.titleService.setTitle('Outlets | Iliyasawa');
     }
-    else if (url.includes("/dashboard/schools?") || url.includes("/dashboard/schools") && !url.includes("/dashboard/schools/")) {
-      this.headerTitle = "SCHOOLS";
+    else if (url.includes("/dashboard/products?") || url.includes("/dashboard/products") && !url.includes("/dashboard/products/")) {
+      this.headerTitle = "Products";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Schools - Dashboard | TSB Promotion System');
+      this.titleService.setTitle('Products - Dashboard | Iliyasawa');
     }
-    else if (url.includes("/dashboard/teachers") && !url.includes("/dashboard/teachers/")) {
-      this.headerTitle = "TEACHERS";
+    else if (url.includes("/dashboard/customers") && !url.includes("/dashboard/customers/")) {
+      this.headerTitle = "Customers";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Teachers | TSB Promotion System');
+      this.titleService.setTitle('Customers | Iliyasawa');
     }
-    else if (url.includes("/dashboard/departments") && !url.includes("/dashboard/departments/")) {
-      this.headerTitle = "DEPARTMENTS";
+    else if (url.includes("/dashboard/store") && !url.includes("/dashboard/store/")) {
+      this.headerTitle = "Store";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Departments | TSB Promotion System');
+      this.titleService.setTitle('Store | Iliyasawa');
     }
     else if (url.includes("/dashboard/staff") && !url.includes("/dashboard/staff/")) {
       this.headerTitle = "STAFF";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Staff | TSB Promotion System');
+      this.titleService.setTitle('Staff | Iliyasawa');
     }
     else if (url === "/dashboard/settings" || url === "/dashboard/settings/") {
       this.headerTitle = "SETTINGS";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Settings | TSB Promotion System');
+      this.titleService.setTitle('Settings | Iliyasawa');
     }
     else if (url.includes("/dashboard/settings?tab=")) {
       this.headerTitle = "SETTINGS";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('Settings | TSB Promotion System');
+      this.titleService.setTitle('Settings | Iliyasawa');
     }
     else if (url === "/dashboard/logs" || url === "/dashboard/logs/") {
       this.headerTitle = "LOGS";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('LOGS | TSB Promotion System');
+      this.titleService.setTitle('LOGS | Iliyasawa');
     }
-    else if (url === "/dashboard/eligibility-list" || url === "/dashboard/eligibility-list/") {
-      this.headerTitle = "PROMOTION / ELIGIBLE LIST";
+    else if (url === "/dashboard/notification" || url === "/dashboard/notification/") {
+      this.headerTitle = "NOTIFICATION";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('ELIGIBLE LIST | TSB Promotion System');
-    }
-    else if (url === "/dashboard/brief" || url === "/dashboard/brief/") {
-      this.headerTitle = "PROMOTION / BRIEF";
-      this.showHeaderBackButton = false;
-      this.backUrl = "";
-      this.urlQuery = {};
-      this.titleService.setTitle('BRIEF | TSB Promotion System');
-    }
-    else if (url === "/dashboard/extract" || url === "/dashboard/extract/") {
-      this.headerTitle = "PROMOTION / EXTRACT";
-      this.showHeaderBackButton = false;
-      this.backUrl = "";
-      this.urlQuery = {};
-      this.titleService.setTitle('EXTRACT | TSB Promotion System');
-    } else if (url === "/dashboard/notification" || url === "/dashboard/notification/") {
-      this.headerTitle = "PROMOTION / NOTIFICATION";
-      this.showHeaderBackButton = false;
-      this.backUrl = "";
-      this.urlQuery = {};
-      this.titleService.setTitle('NOTIFICATION  | TSB Promotion System');
+      this.titleService.setTitle('NOTIFICATION  | Iliyasawa');
     }
 
   }
@@ -159,9 +141,6 @@ export class LayoutComponent {
   async getUserData() {
     this.fetchingData = true;
     this.currentUser = await this.generalService.getUserData();
-
-    console.log(this.currentUser);
-
     this.fetchingData = false;
   }
 }

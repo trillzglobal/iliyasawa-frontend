@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
     let secureReq;
     // Don't add header to external APIs
     if (
-      !request.url.includes("157.245.119.74")
+      !request.url.includes("http://157.245.119.74/api/v1") && !request.url.includes("http://127.0.0.1:8000/api/v1")
       && !request.url.includes("localhost")
     ) {
       secureReq = request.clone();
@@ -47,8 +47,8 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(secureReq).pipe(
       catchError((error) => {
-        // console.log(error);
-        if (error.status === 403 && error.error.message == "Forbidden resource") {
+        console.log(error);
+        if (error.status === 403) {
           // this.generalService.logoutUser();
           this.notification.warning(
             'You don\'t have permission to this resource.',
@@ -58,10 +58,11 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         if (
-          (error.error.statusCode == 401 && error.error.message == "Could not validate token with Authentication service - Access Restricted!")
+          (error.error.statusCode == 401 && error.error.message.toLowerCase() == "unauthenticated")
         ) {
           this.generalService.logoutUser();
         }
+
         if (error.status === 500) {
           return throwError({
             statusCode: 500,

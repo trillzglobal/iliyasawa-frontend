@@ -21,52 +21,38 @@
                             <label>Last Name</label>
                             <input type="text" placeholder="last name" [(ngModel)]="this.last_name">
                         </div>
-                        <div class="half-width input-box">
+                        <!-- <div class="half-width input-box">
                             <label>Phone</label>
                             <input type="tel" placeholder="+234 806624****" [(ngModel)]="this.phone_number">
-                        </div>
-                        <div class="half-width input-box">
+                        </div> -->
+                        <div class="full-width input-box">
                             <label>Email</label>
                             <input type="email" placeholder="user@tsb.com" [(ngModel)]="this.email">
                         </div>
-                        <div class="full-width input-box">
+                        <!-- <div class="full-width input-box">
                             <label>Company</label>
                             <input type="text" placeholder="company name" [(ngModel)]="this.company_name">
                         </div>
                         <div class="full-width input-box">
-                            <label>Company Addredd</label>
+                            <label>Company Address</label>
                             <input type="text" placeholder="company address" [(ngModel)]="this.company_address">
-                        </div>
+                        </div> -->
                         <div class="full-width input-box">
                             <label>Role</label>
-                            <!-- <div class="select-container full-width">
-                                <select class="full-width" [(ngModel)]="this.user_role">
-                                    <option value="">Choose Role</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Sales Manager">Sales Manager</option>
-                                    <option value="Production Manager">Production Manager</option>
-                                    <option value="Procurement Officer">Procurement Officer</option>
-                                    <option value="Store Keeper">Store Keeper</option>
-                                    <option value="Outlet Manager">Outlet Manager</option>
-                                    <option value="General Manager">General Manager</option>
-                                    <option value="Outlet Sales Rep">Outlet Sales Rep</option>
-                                </select>
-                            </div> -->
-
                             <div class="check-cont">
-                                <div>
+                                <!-- <div>
                                     <input type="checkbox" [(ngModel)]="this.isSelectAll"
                                         (ngModelChange)="roleCheckAll(this.roles)">
                                     Check All
-                                </div>
+                                </div> -->
 
                                 <div *ngFor="let item of this.roles">
-                                    <input type="checkbox" value="{{item._id}}" [(ngModel)]="item.isSelected"
-                                        (ngModelChange)="roleCheck(item, this.roles)"> {{item.title | titlecase}}
+                                    <input type="checkbox" value="{{item.ulid}}" [(ngModel)]="item.isSelected"
+                                        (ngModelChange)="roleCheck(item, this.roles)"> {{item.name}}
                                 </div>
                             </div>
                         </div>
-                        <div class="full-width input-box">
+                        <!-- <div class="full-width input-box">
                             <label>Password</label>
                             <div class="password-container">
                                 <input type="password" style="border: none" #passwordField1 placeholder="********"
@@ -77,7 +63,7 @@
                                 <i nz-icon nzType="eye" nzTheme="outline" *ngIf="passwordField1.type == 'password'"
                                     (click)="passwordField1.type = 'text'"></i>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="full-width input-box">
                             <label>Permissions</label>
                             <div class="check-cont">

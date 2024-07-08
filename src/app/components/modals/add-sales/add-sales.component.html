@@ -1,0 +1,80 @@
+<nz-modal [(nzVisible)]="this.visible" [nzContent]="modalContent" [nzFooter]="null" [nzClassName]="'modal'"
+    (nzOnCancel)="handleCancel()" [nzClosable]="false">
+    <ng-template #modalContent class="modal">
+        <div class="modal-container">
+            <div class="form-modal-wider">
+                <div class="top">
+                    <h1 class="form-heading">Add New Sales Record</h1>
+                    <div class="close" (click)="this.handleCancel()">
+                        <span>&times;</span>
+                    </div>
+                </div>
+                <div class="form-box full-width">
+                    <p class="form-subheading">Fill the form to add a new sales record.</p>
+                    <app-error-message [message]="this.errorMessage"></app-error-message>
+                    <div class="sub-form form1">
+                        <div class="full-width input-box">
+                            <div class="d-flex">
+                                <span></span>
+                                <button (click)="addProduct()" class="btn-primary-outline-sm">+ Add More
+                                    Product</button>
+                            </div>
+                        </div>
+
+                        <ng-container *ngFor="let item of choosenProducts; let i = index;">
+                            <div class="half-width input-box">
+                                <label>Product </label>
+                                <div class="select-container full-width">
+                                    <select class="full-width" [(ngModel)]="item.product_id">
+                                        <option value="">Choose Product</option>
+                                        <option *ngFor="let item of products" value="{{item.ulid}}">{{item.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="onethird-width input-box">
+                                <label>Quantity</label>
+                                <input type="number" [(ngModel)]="item.quantity" min="1">
+                            </div>
+                            <div class="sm-width input-box">
+                                <label>Remove</label>
+                                <button (click)="removeProduct(i)" class="btn-danger-outline">x</button>
+                            </div>
+                        </ng-container>
+
+                        <div class="full-width input-box">
+                            <label>Transaction Type</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.type">
+                                    <option value="">Choose Type</option>
+                                    <option value="EXPENSE">EXPENSE</option>
+                                    <option value="INCOME">INCOME</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="full-width input-box">
+                            <label>Outlet</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.outlet_id">
+                                    <option value="" selected>Choose Outlet</option>
+                                    <option *ngFor="let item of outlets" value="{{item.ulid}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="full-width input-box">
+                            <label>Description</label>
+                            <textarea type="text" placeholder="description" [(ngModel)]="this.description"></textarea>
+                        </div>
+
+                    </div>
+
+                    <button (click)="createSales()" class="btn-primary full-width" style="margin-top:25px"
+                        [ladda]="processLoading">
+                        Add Sales Record
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</nz-modal>

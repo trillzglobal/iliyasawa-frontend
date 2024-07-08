@@ -17,6 +17,9 @@ export class EditUserComponent implements OnInit {
   email: string = "";
   phone: string = "";
   role: string = "";
+  roles: any = [];
+  rolesCopy: any = [];
+  userRoles: any = [];
 
   isSelectAll: boolean = false;
   permissions: any = []
@@ -32,12 +35,37 @@ export class EditUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllPermissions()
+    this.getAllRoles()
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: any) {
     this.errorMessage = "";
     this.processLoading = false;
+
+    if (changes?.user?.currentValue.roles) {
+
+      let userRoles = changes?.user?.currentValue.roles;
+
+      this.userRoles = userRoles;
+
+      userRoles = userRoles.map((el: any) => el.name);
+
+      let roles: any = [...this.rolesCopy];
+
+      roles.forEach((el: any) => {
+
+        if (userRoles.includes(el.name)) {
+          el.isSelected = true
+        } else {
+          el.isSelected = false
+        }
+
+      })
+
+      roles = roles.sort((a: any, b: any) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).sort((x: any, y: any) => x.isSelected == true ? -1 : y.isSelected == true ? 1 : 0)
+
+      this.roles = roles
+    }
   }
 
   handleCancel() {
@@ -45,30 +73,36 @@ export class EditUserComponent implements OnInit {
     this.visibleChange.emit(this.visible);
   }
 
-  getAllPermissions() {
-    // this.settingsService.getAllPermissions().subscribe(
-    //   (res: any) => {
+  getAllRoles() {
+    this.staffService.getAllRoles().subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        console.log(res)
 
-    //       res.data.forEach((el: any) => {
-    //         el.isSelected = false
-    //       })
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.permissions = res.data
-    //       this.errorMessage = ''
+          res.data.forEach((el: any) => {
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.permissions = [];
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+            el.isSelected = false
+
+          })
+
+          this.roles = res.data;
+          this.rolesCopy = res.data;
+          // this.roles = [...res.data].sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).sort(function (x, y) { return x.isSelected == true ? -1 : y.isSelected == true ? 1 : 0; })
+          this.errorMessage = ''
+
+        } else {
+          this.processLoading = false;
+          this.roles = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 
   permissionCheckAll(data: any) {
@@ -80,73 +114,52 @@ export class EditUserComponent implements OnInit {
   updateUser() {
     this.processLoading = false;
 
-    if (this.user.firstName === '') {
-      this.errorMessage = "First name is required";
+    const roles = this.roles.filter((el: any) => el.isSelected).map((el: any) => el.ulid)
+
+    if (roles.length < 1) {
+      this.errorMessage = "User role is required";
       this.processLoading = false;
       return
     }
 
-    if (this.user.lastName === '') {
-      this.errorMessage = "Last name is required";
-      this.processLoading = false;
-      return
-    }
-
-    if (this.user.email === '') {
-      this.errorMessage = "Email address is required";
-      this.processLoading = false;
-      return
-    } else if (!this.generalService.validateEmailAddress(this.user.email)) {
-      this.errorMessage = "Invalid email address provided";
-      this.processLoading = false;
-      return
-    }
-
-    if (this.user.phone === '') {
-      this.errorMessage = "Phone number is required";
-      this.processLoading = false;
-      return
-    }
-
-    if (this.user.role === '') {
-      this.errorMessage = "Role is required";
-      this.processLoading = false;
-      return
-    }
+    this.userRoles.forEach((el: any) => {
+      const index = roles.indexOf(el.ulid);
+      if (index > -1) { // only splice roles when item is found
+        roles.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    })
 
     const payload = {
-      firstName: this.user.firstName.trim(),
-      lastName: this.user.lastName,
-      otherName: this.user.otherName.trim(),
-      email: this.user.email.trim(),
-      phone: this.user.phone.trim(),
-      role: this.user.role.trim()
+      user_id: this.user.ulid,
+      roles: roles
     }
 
-    // this.staffService.updateUser(payload, this.user.id).subscribe(
-    //   (res: any) => {
+    console.log(payload)
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+    this.staffService.updateUserRole(payload).subscribe(
+      (res: any) => {
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.updatedUser.emit();
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+          this.updatedUser.emit();
+
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 }

@@ -13,6 +13,8 @@ export class StaffComponent {
   errorMessage: string = "";
   isLoading: boolean = false;
   selectedIndex: number = 0;
+  processLoading: boolean = false
+  roles: any = []
 
   fromDate: any = "";
   toDate: any = "";
@@ -24,6 +26,7 @@ export class StaffComponent {
   // active doctors
   fetchingStaff: boolean = false;
   staff: Array<any> = [];
+  staffCopy: Array<any> = [];
   staffStart: number = 0;
   staffStop: number = 0;
   staffPage: number = 1;
@@ -31,181 +34,119 @@ export class StaffComponent {
   totalStaff: number = 0;
   searchTerm: string = ""
 
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Umar",
-      "surname": "Farooq",
-      "otherName": "",
-      "emailAddress": "umaryusufkd@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249688",
-      "gender": "Male",
-      "role": "Sales Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Jane Smith",
-      "surname": "Faroow",
-      "otherName": "",
-      "emailAddress": "janesmith@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249681",
-      "gender": "Male",
-      "role": "Production Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Albert",
-      "surname": "Brown",
-      "otherName": "",
-      "emailAddress": "albertbrown@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249622",
-      "gender": "Male",
-      "role": "Admin",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
-
   constructor(
-    private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private staffService: StaffService,
   ) {
-    // this.route.queryParams.subscribe(p => {
-    //   this.setTabView(p);
-    // });
+
   }
 
   ngOnInit(): void {
     this.getStaff()
+    this.getAllRoles()
   }
 
 
   searchStaff() {
 
-    this.getStaff()
+    if (this.searchTerm != "") {
+      const result = [...this.staffCopy].filter((el: any) => {
+        return el.firstname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) != -1 || el.lastname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) != -1 || el.email.toLowerCase().indexOf(this.searchTerm.toLowerCase()) != -1
+      });
+
+      this.staff = result;
+    } else {
+      this.staff = [...this.staffCopy]
+    }
 
   }
 
+  filterStaff(event: any) {
+    const { value } = event.target;
+
+    if (value != "") {
+
+      let result: any = [];
+      [...this.staffCopy].forEach((el: any) => {
+
+        const roles = el.roles.map((e: any) => e.name).includes(value)
+
+        // result = res
+        if (roles) {
+          result.push(el)
+        }
+      })
+
+      this.staff = result;
+    } else {
+      this.staff = [...this.staffCopy]
+    }
+  }
+
+  getAllRoles() {
+    this.staffService.getAllRoles().subscribe(
+      (res: any) => {
+
+        if (res.status == 'success') {
+          this.processLoading = false;
+
+          res.data.forEach((el: any) => {
+            el.isSelected = false
+          })
+
+          this.roles = res.data
+          this.errorMessage = ''
+
+        } else {
+          this.processLoading = false;
+          this.roles = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
+  }
 
   getStaff() {
 
     this.fetchingStaff = true;
 
-    // this.staffService.getAllStaff(this.staffPage - 1, this.staffLimit, 'active', this.searchTerm, this.fromDate, this.toDate).subscribe(
-    //   async (res: any) => {
-    //     // console.log(res);
-    //     if (res.statusCode === 200) {
-    //       this.fetchingStaff = false;
+    this.staffService.getAllUsers().subscribe(
+      async (res: any) => {
+        if (res.status === 'success') {
+          this.fetchingStaff = false;
 
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
+          this.notification.success(
+            res.message,
+            "",
+            { nzClass: 'notification1' }
+          );
 
-    //       this.staff = res.data
-    //       this.totalStaff = res.pagination.total;
-    //       this.staffStart = (this.staffPage - 1) * this.staffLimit;
-    //       this.staffStop = this.staffStart + this.staff.length;
+          this.staff = res.data
+          this.staffCopy = res.data
+          this.totalStaff = res.data.length;
 
-    //     } else {
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-    //       this.errorMessage = '' + res.message;
-    //       this.fetchingStaff = false;
-    //       this.totalStaff = 0;
-    //       this.staffStart = 0;
-    //       this.staffStop = 0;
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.fetchingStaff = false;
-    //     this.totalStaff = 0;
-    //     this.staffStart = 0;
-    //     this.staffStop = 0;
-    //   }
-    // )
+        } else {
 
-    this.staff = this.sample
-    this.totalStaff = 50;
-    this.staffPage = 1;
-
-    this.fetchingStaff = false;
+          this.notification.success(
+            res.message,
+            "",
+            { nzClass: 'notification1' }
+          );
+          this.errorMessage = '' + res.message;
+          this.fetchingStaff = false;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingStaff = false;
+        this.totalStaff = 0;
+        this.staffStart = 0;
+        this.staffStop = 0;
+      }
+    )
 
   }
 
@@ -230,10 +171,12 @@ export class StaffComponent {
   }
 
   onCreatedStaff() {
-
+    this.toggleAddModal();
+    this.getStaff()
   }
 
   onUpdatedStaff() {
-
+    this.toggleEditModal()
+    this.getStaff()
   }
 }

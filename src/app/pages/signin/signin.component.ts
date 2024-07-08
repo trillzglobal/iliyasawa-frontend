@@ -46,7 +46,9 @@ export class SigninComponent implements OnInit {
 
       const data = {
         email: this.emailAddress.trim(),
-        password: this.password
+        password: this.password,
+        ip_address: "192.168.1.1",
+        user_agent: navigator.userAgent
       }
 
       this.authService.login(data).subscribe(
@@ -60,13 +62,13 @@ export class SigninComponent implements OnInit {
               { nzClass: 'notification1' }
             );
 
-            this.generalService.setUserData(res.user);
+            this.generalService.setUserData(res.data);
 
             // add user data to localstorage
-            this.generalService.setData('user-data', res.user);
+            this.generalService.setData('user-data', res.data);
 
-            console.log('token', res.authorisation.token);
-            this.generalService.setToken(res.authorisation.token);
+            console.log('token', res.data.access_token);
+            this.generalService.setToken(res.data.access_token);
 
             setTimeout(() => {
               this.router.navigate(['/dashboard']);

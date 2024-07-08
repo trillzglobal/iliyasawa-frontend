@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private readonly apiService: ApiService) { }
 
   login(data: any) {
-    return this.apiService.post(`auth/login`, data);
+    return this.apiService.post(`login`, data);
   }
 
   resetPassword(data: any) {

@@ -25,8 +25,6 @@
                     </div>
                 </div>
 
-
-
                 <div class="link" routerLink="/dashboard/staff" routerLinkActive="active-link"
                     #staffLink="routerLinkActive">
                     <div class="left">
@@ -58,13 +56,53 @@
                     </div>
                 </div>
 
+                <div class="link" routerLink="/dashboard/procurement" routerLinkActive="active-link"
+                    #procurementLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="procurementLink.isActive ? 'assets/images/cart-active.svg' : 'assets/images/cart.svg'" />
+                        </div>
+                        <p>Procurement</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/store" routerLinkActive="active-link"
+                    #storeLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="storeLink.isActive ? 'assets/images/store1-active.svg' : 'assets/images/store1.svg'" />
+                        </div>
+                        <p>Raw Materials Store</p>
+                    </div>
+                </div>
+
                 <div class="link" routerLink="/dashboard/reports" routerLinkActive="active-link"
                     #reportsLink="routerLinkActive">
                     <div class="left">
                         <div class="small-icon"><img
-                                [src]="reportsLink.isActive ? 'assets/images/report-active.svg' : 'assets/images/report.svg'" />
+                                [src]="reportsLink.isActive ? 'assets/images/store-active.svg' : 'assets/images/store.svg'" />
                         </div>
-                        <p>Reports</p>
+                        <p>Finished Product Store</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/production" routerLinkActive="active-link"
+                    #productionLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="productionLink.isActive ? 'assets/images/report-active.svg' : 'assets/images/report.svg'" />
+                        </div>
+                        <p>Production</p>
+                    </div>
+                </div>
+
+                <div class="link" routerLink="/dashboard/sales" routerLinkActive="active-link"
+                    #salesLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="salesLink.isActive ? 'assets/images/sales-active.svg' : 'assets/images/sales.svg'" />
+                        </div>
+                        <p>Sales</p>
                     </div>
                 </div>
 
@@ -78,15 +116,7 @@
                     </div>
                 </div>
 
-                <!-- <div class="link" routerLink="/dashboard/store" routerLinkActive="active-link"
-                    #storeLink="routerLinkActive">
-                    <div class="left">
-                        <div class="small-icon"><img
-                                [src]="storeLink.isActive ? 'assets/images/store-active.svg' : 'assets/images/store.svg'" />
-                        </div>
-                        <p>Store</p>
-                    </div>
-                </div> -->
+
 
                 <!-- Settings Page Link -->
                 <div class="link" routerLink="/dashboard/settings" routerLinkActive="active-link"

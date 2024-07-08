@@ -14,11 +14,13 @@ export class AddProductComponent implements OnInit {
   description: string = "";
   name: string = "";
   unit: string = "";
-  quantity: number = 0;
+  quantity: number = 1;
+  price: string = ""
+  type: string = ""
 
   @Input() visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() createdSchool: EventEmitter<any> = new EventEmitter();
+  @Output() createdProduct: EventEmitter<any> = new EventEmitter();
   constructor(
     private generalService: GeneralService,
     private notification: NzNotificationService,
@@ -30,10 +32,29 @@ export class AddProductComponent implements OnInit {
   }
 
   submit() {
-    this.processLoading = false;
+    if (this.processLoading) return
+    this.processLoading = true;
 
     if (this.name === '') {
       this.errorMessage = "product name is required";
+      this.processLoading = false;
+      return
+    }
+
+    if (this.unit === '') {
+      this.errorMessage = "product unit is required";
+      this.processLoading = false;
+      return
+    }
+
+    if (this.type === '') {
+      this.errorMessage = "type is required";
+      this.processLoading = false;
+      return
+    }
+
+    if (this.type == 'FINISHED_PRODUCT' && this.price === '') {
+      this.errorMessage = "price is required";
       this.processLoading = false;
       return
     }
@@ -45,15 +66,16 @@ export class AddProductComponent implements OnInit {
     }
 
     const payload = {
-      product_name: this.name.trim(),
-      product_description: this.description.trim(),
+      name: this.name.trim(),
+      description: this.description,
       measurement_unit: this.unit,
-      quantity: this.quantity
+      quantity: this.quantity,
+      price: this.price,
+      product_type: this.type
     }
 
-    this.productService.createProductStore(payload).subscribe(
+    this.productService.createProduct(payload).subscribe(
       (res: any) => {
-
         if (res.status == 'success') {
           this.processLoading = false;
 
@@ -63,18 +85,22 @@ export class AddProductComponent implements OnInit {
           this.errorMessage = ''
           this.unit = '';
           this.name = '';
+          this.description = '';
           this.quantity = 0;
-          this.createdSchool.emit();
+          this.type = "";
+          this.price = "";
+          this.createdProduct.emit();
 
         } else {
           this.processLoading = false;
+          this.errorMessage = res.message;
           this.notification.error(res.message, '', {
             nzClass: 'notification1',
           });
         }
       },
       (error: any) => {
-        this.errorMessage = 'An error occured. Please try again later';
+        this.errorMessage = "error occured please try again";
         this.processLoading = false;
       }
     )

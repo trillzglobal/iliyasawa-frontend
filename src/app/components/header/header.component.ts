@@ -4,6 +4,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { StaffService } from '../../services/staff.service';
 
 declare var Headway: any;
 
@@ -19,6 +20,11 @@ export class HeaderComponent implements OnInit {
   otherBusinesses: Array<any> = [];
   currentBusiness: any = {};
   currentUserRole: string = "";
+  processLoading: boolean = false
+  roles: Array<any> = [];
+  errorMessage: string = ""
+
+
   @Input() openSideBar: boolean = false;
   @Input() currentUser: any = {};
   @Input() fetchingData: boolean = false;
@@ -33,12 +39,14 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private notification: NzNotificationService,
     private message: NzMessageService,
+    private staffService: StaffService,
     private router: Router
   ) {
     this.environment = this.generalService.getEnvironment() == 'LIVE' ? true : false;
   }
 
   ngOnInit(): void {
+    this.getAllRoles();
   }
 
   ngOnChanges() {
@@ -73,5 +81,37 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  switch(role: any) {
+    console.log(role)
+  }
+
+  getAllRoles() {
+    this.staffService.getUserRoles().subscribe(
+      (res: any) => {
+
+        if (res.status == 'success') {
+          this.processLoading = false;
+
+          if (res.data.length > 0) {
+            const index = res.data.indexOf(this.currentUser.current_role);
+            if (index > -1) { // only splice roles when item is found
+              res.data.splice(index, 1); // 2nd parameter means remove one item only
+            }
+
+          }
+          this.roles = res.data
+          this.errorMessage = ''
+
+        } else {
+          this.processLoading = false;
+          this.roles = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
+  }
 
 }

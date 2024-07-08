@@ -2,15 +2,15 @@
 
     <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
         <div class="left">
-            <div class="select-container">
+            <!-- <div class="select-container">
                 <select class="ng-pristine ng-valid ng-touched">
                     <option selected>All Outlets</option>
                 </select>
-            </div>
+            </div> -->
         </div>
         <div class="right">
             <div class="password-container">
-                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
             <button (click)="toggleAddModal()" class="btn-primary">
@@ -24,8 +24,7 @@
                 <thead>
                     <tr>
                         <th>Outlet Name</th>
-                        <th nzWidth="21%">Location</th>
-                        <th nzWidth="21%">Address</th>
+                        <th nzWidth="21%">Description</th>
                         <th nzWidth="10%">Date Registered</th>
                         <th nzWidth="10%">Added By</th>
                         <th nzWidth="10%">Status</th>
@@ -47,9 +46,9 @@
             <div class="top-heading">
                 <p class="list-result">
                     Showing
-                    <span>{{outletStart +' - '+ outletStop}}</span> of
+                    <span>{{outlets.length}}</span> of
                     <span>{{totalOutlet}}</span>
-                    {{ totalOutlet > 1 ? 'Active': 'Active'}}
+                    {{ totalOutlet > 1 ? 'Outlets': 'Outlet'}}
                 </p>
             </div>
             <div class="table-responsive">
@@ -57,8 +56,7 @@
                     <thead>
                         <tr>
                             <th>Outlet Name</th>
-                            <th nzWidth="21%">Location</th>
-                            <th nzWidth="21%">Address</th>
+                            <th nzWidth="21%">Description</th>
                             <th nzWidth="10%">Date Registered</th>
                             <th nzWidth="10%">Added By</th>
                             <th nzWidth="10%">Status</th>
@@ -67,14 +65,12 @@
                     </thead>
 
                     <tbody *ngIf="outlets.length > 0">
-                        <tr class="hoverable" *ngFor="let item of outlets"
-                            [routerLink]="['/dashboard/doctors', item._id]">
+                        <tr class="hoverable" *ngFor="let item of outlets">
                             <td>{{item?.name}}</td>
-                            <td>{{item.location}}</td>
-                            <td>{{item.address}}</td>
-                            <td>{{item.createdAt | date: 'medium'}}</td>
-                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
-                            <td>{{item.status | titlecase}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.created_at | date: 'medium'}}</td>
+                            <td></td>
+                            <td>{{item.is_active == 1 ? "Active" : "Inactive" | titlecase}}</td>
                             <td><button (click)="editOutlet(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
@@ -82,7 +78,7 @@
                     </tbody>
                     <tbody *ngIf="outlets.length === 0" style="border:none">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <app-no-result class="full-width" title="No data found"
                                     description="You currently don't have any active outlets.">
                                 </app-no-result>
@@ -100,8 +96,8 @@
     </div>
 </div>
 
-<app-add-outlet [visible]="this.showAddModal" (createdUser)="onCreated()"
+<app-add-outlet [visible]="this.showAddModal" [staff]="staff" [user]="this.currentUser" (createdOutlet)="onCreated()"
     (visibleChange)="this.toggleAddModal()"></app-add-outlet>
 
-<app-edit-outlet [visible]="this.showEditModal" [outlet]="this.selectedOutlet" (updatedUser)="onUpdated()"
-    (visibleChange)="this.toggleEditModal()"></app-edit-outlet>
+<app-edit-outlet [visible]="this.showEditModal" [staff]="staff" [user]="this.currentUser" [outlet]="this.selectedOutlet"
+    (updatedUser)="onUpdated()" (visibleChange)="this.toggleEditModal()"></app-edit-outlet>

@@ -11,7 +11,7 @@
                 </div>
                 <div class="form-box full-width sub-form form1">
                     <p class="form-subheading">Fill the form to create a new product.</p>
-                    <app-error-message [message]="this.errorMessage"></app-error-message>
+                    <app-error-message class="full-width" [message]="this.errorMessage"></app-error-message>
                     <div class="full-width input-box">
                         <label>Product Name</label>
                         <input type="text" placeholder="product name" autofocus [(ngModel)]="this.name">
@@ -25,6 +25,22 @@
                     <div class="half-width input-box">
                         <label>Measurement Unit</label>
                         <input type="text" placeholder="measurement unit" [(ngModel)]="this.unit">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Product Type</label>
+                        <div class="select-container full-width">
+                            <select class="ng-pristine ng-valid ng-touched" [(ngModel)]="this.type">
+                                <option value="" selected>Choose Product Type</option>
+                                <option value="FINISHED_PRODUCT">FINISHED PRODUCT</option>
+                                <option value="RAW_MATERIAL">RAW MATERIAL</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Price (finished product)</label>
+                        <input type="text" placeholder="price" [(ngModel)]="this.price">
                     </div>
 
                     <div class="full-width input-box">

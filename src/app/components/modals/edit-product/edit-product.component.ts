@@ -19,7 +19,7 @@ export class EditProductComponent implements OnInit {
   @Input() zones: any = [];
   @Input() product: any = [];
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() updatedSchool: EventEmitter<any> = new EventEmitter();
+  @Output() updatedProduct: EventEmitter<any> = new EventEmitter();
   constructor(
     private generalService: GeneralService,
     private notification: NzNotificationService,
@@ -66,7 +66,7 @@ export class EditProductComponent implements OnInit {
     //       this.principalName = '';
     //       this.address = '';
     //       this.noOfTeachers = '';
-    //       this.updatedSchool.emit();
+    //       this.updatedProduct.emit();
 
     //     } else {
     //       this.processLoading = false;

@@ -13,11 +13,18 @@ export class AddOutletComponent implements OnInit {
   processLoading: boolean = false;
   location: string = "";
   name: string = "";
-  address: string = "";
+  description: string = "";
+
+  currentUser: any = {}
+  fetchingData: boolean = false
+  userData: any = {};
+  user_id: string = ""
 
   @Input() visible: boolean = false;
+  @Input() user: any = {};
+  @Input() staff: any = [];
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() createdSchool: EventEmitter<any> = new EventEmitter();
+  @Output() createdOutlet: EventEmitter<any> = new EventEmitter();
   constructor(
     private generalService: GeneralService,
     private notification: NzNotificationService,
@@ -25,63 +32,75 @@ export class AddOutletComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getUserData()
+  }
 
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData()
+    this.fetchingData = false;
   }
 
   submit() {
-    this.processLoading = false;
+    this.processLoading = true;
 
     if (this.name === '') {
       this.errorMessage = "outlet name is required";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = ""
     }
 
-    if (this.location === '') {
-      this.errorMessage = "Location is required";
+    if (this.description === '') {
+      this.errorMessage = "Description is required";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = ""
     }
 
-    if (this.address === '') {
-      this.errorMessage = "Address is required";
+    if (this.user_id === '') {
+      this.errorMessage = "User must be selected";
       this.processLoading = false;
       return
     }
 
     const payload = {
-      name: this.location.trim(),
-      address: this.address.trim(),
-      location: this.name.trim(),
+      user_id: this.user_id,
+      outlet_name: this.name.trim(),
+      outlet_description: this.description,
     }
 
-    // this.outletService.createSchool(payload).subscribe(
-    //   (res: any) => {
+    console.log(payload)
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+    this.outletService.createOulet(payload).subscribe(
+      (res: any) => {
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
-    //       this.location = '';
-    //       this.name = '';
-    //       this.address = '';
-    //       this.createdSchool.emit();
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
+          this.user_id = '';
+          this.name = '';
+          this.description = '';
+          this.createdOutlet.emit();
+
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = error;
+        this.processLoading = false;
+      }
+    )
   }
 
   ngOnChanges() {

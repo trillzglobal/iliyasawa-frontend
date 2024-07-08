@@ -69,8 +69,9 @@
         </div>
         <div class="name">
           <div class="details">
-            <p class="heading1">{{this.currentUser.first_name+ ' '+ this.currentUser.last_name}}</p>
-            <p class="subheading">{{this.currentUser.email}}</p>
+            <p class="heading1">{{this.currentUser.user.firstname+ ' '+ this.currentUser.user.lastname}}</p>
+            <p class="subheading">{{this.currentUser.user.email}}</p>
+            <!-- <p class="subheading">{{this.currentUser.current_role}}</p> -->
           </div>
           <div class="arrow"><img src="assets/images/chevron-down1.svg" /></div>
         </div>
@@ -105,8 +106,15 @@
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
     <li nz-menu-item class="action logout">
-      <img class="small-icons" src="assets/images/user.svg" />Switch Role
+      <img class="small-icons" src="assets/images/user.svg" />{{this.currentUser.current_role}}
     </li>
+    <li nz-menu-divider></li>
+    <ng-container *ngIf="this.roles.length > 1">
+      <li *ngFor="let item of this.roles; let i = index;" nz-menu-item class="action" (click)="switch(item)">
+        <img class="small-icons" src="assets/images/user.svg" />Switch to {{item}}
+      </li>
+    </ng-container>
+
     <li nz-menu-divider></li>
     <li nz-menu-item class="action logout" (click)="this.generalService.logoutUser()"><img class="small-icons"
         src="assets/images/log-out.svg" />Sign out </li>

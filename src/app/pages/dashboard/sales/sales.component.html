@@ -1,1 +1,251 @@
-<p>sales works!</p>
+<div class="main-body-content dashboard account-tab accounts">
+    <nz-tabset [nzSelectedIndex]="this.selectedIndex">
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'sales' }"
+                queryParamsHandling="merge">Sales Report</a>
+
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <!-- <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Sales</option>
+                             <option>Pulmologist</option>
+                            <option>Pediatricians</option>
+                        </select>
+                    </div> -->
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+                    <button (click)="toggleAddModal()" class="btn-primary">
+                        + Add Record
+                    </button>
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingSales">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Product Type</th>
+                                <th nzWidth="21%">Description</th>
+                                <th nzWidth="21%">Total Quantity</th>
+                                <th nzWidth="20%">Total Amount</th>
+                                <th nzWidth="10%">Reference</th>
+                                <th nzWidth="10%">Trnx Type</th>
+                                <th nzWidth="10%">Date Sold</th>
+                                <th nzWidth="10%">Added By</th>
+                                <th nzWidth="10%">Accepted By</th>
+                                <th nzWidth="10%">Approved By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingSales">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{salesStart +' - '+ salesStart}}</span> of
+                            <span>{{totalSales}}</span>
+                            {{ totalSales > 1 ? 'Sales': 'Sale'}}
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Type</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="21%">Total Quantity</th>
+                                    <th nzWidth="20%">Total Amount</th>
+                                    <th nzWidth="10%">Reference</th>
+                                    <th nzWidth="10%">Trnx Type</th>
+                                    <th nzWidth="10%">Date Sold</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Accepted By</th>
+                                    <th nzWidth="10%">Approved By</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="sales.length > 0">
+                                <tr class="hoverable" *ngFor="let item of sales">
+                                    <td>{{item.product_type}}</td>
+                                    <td>{{item?.description}}</td>
+                                    <td>{{item?.total_quantity}}</td>
+                                    <td>{{item?.total_amount}}</td>
+
+                                    <td>{{item?.reference}}</td>
+                                    <td>{{item?.type}}</td>
+                                    <td>{{item?.created_at | date: 'medium'}}</td>
+                                    <td>{{(item?.created_by?.firstname ?? "") + ' ' + (item?.created_by?.lastname ??
+                                        "")}}
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.accepted_by?.firstname">
+                                            <button class="btn-primary-outline-small">Accept</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.accepted_by?.firstname">
+                                            {{(item?.accepted_by?.firstname ?? "") + ' ' + (item?.accepted_by?.lastname
+                                            ??
+                                            "")}}
+                                        </ng-container>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.approved_by?.firstname">
+                                            <button class="btn-primary-outline-small">Approve</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.approved_by?.firstname">
+                                            {{(item?.approved_by?.firstname ?? "") + ' ' + (item?.approved_by?.lastname
+                                            ??
+                                            "")}}
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody *ngIf="active.length === 0" style="border:none">
+                                <tr>
+                                    <td colspan="7">
+                                        <app-no-result class="full-width" title="No data found"
+                                            description="You currently don't have any sale.">
+                                        </app-no-result>
+                                    </td>
+                                </tr>
+                            </tbody> -->
+                        </table>
+                        <ng-container *ngIf="sales.length === 0" style="border:none">
+                            <div>
+                                <!-- <td colspan="6"> -->
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any sales data.">
+                                </app-no-result>
+                                <!-- </td> -->
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="sales.length > 0" class="pagination">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingSales && this.totalSales > 0"
+                            [totalItems]="this.totalSales" [(pageSize)]="this.salesLimit"
+                            [(currentPage)]="this.salesPage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getSales()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab>
+        <!-- <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'production' }"
+                queryParamsHandling="merge">Production Report</a>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Production</option>
+                            <option>Pulmologist</option>
+                            <option>Pediatricians</option> 
+                        </select>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchTermReport" (blur)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingReport">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                                <th nzWidth="10%">Date Approved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5,6]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingReport">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{reportStart +' - '+ reportStop}}</span> of
+                            <span>{{totalReport}}</span>
+                            {{ totalReport > 1 ? 'Report': 'Report'}}
+                        </p>
+                    </div>
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th nzWidth="21%">Email</th>
+                                <th nzWidth="20%">Phone</th>
+                                <th nzWidth="10%">Profession</th>
+                                <th nzWidth="10%">Date Registered</th>
+                                <th nzWidth="10%">Date Approved</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="reports.length > 0">
+                            <tr class="hoverable" *ngFor="let item of reports"
+                                [routerLink]="['/dashboard/doctors', item._id]">
+                                <td>Dr. {{item.firstName + ' ' + item.surname + " " + item.otherName}}</td>
+                                <td>{{item.emailAddress}}</td>
+                                <td>{{item.phoneNumber}}</td>
+                                <td>{{item.profession}}</td>
+                                <td>{{item.createdAt | date: 'medium'}}</td>
+                                <td>{{item?.appovedDate | date: 'medium'}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="reports.length === 0" style="border:none">
+                            <tr>
+                                <td colspan="6">
+                                    <app-no-result class="full-width" title="No data found"
+                                        description="You currently don't have any report.">
+                                    </app-no-result>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="reports.length > 0" class="pagination">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingSales && this.totalReport > 0"
+                            [totalItems]="this.totalReport" [(pageSize)]="this.reportLimit"
+                            [(currentPage)]="this.reportPage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getSales()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab> -->
+
+    </nz-tabset>
+
+</div>
+
+<app-add-sales [visible]="this.showAddModal" (createdSales)="onCreated()"
+    (visibleChange)="this.toggleAddModal()"></app-add-sales>

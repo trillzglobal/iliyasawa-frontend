@@ -11,6 +11,7 @@ import { ErrorMessageModule } from '../../../components/error-message/error-mess
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 
 
@@ -22,6 +23,7 @@ import { PaginationModule } from '../../../components/common/pagination/paginati
     CommonModule,
     FormsModule,
     NzMessageModule,
+    NzTabsModule,
     NzIconModule,
     NoResultModule,
     PaginationModule,

@@ -8,7 +8,16 @@ export class ProductsService {
 
   constructor(private readonly apiService: ApiService) { }
 
-  createProductStore(data: any) {
-    return this.apiService.post(`admin/create/main-store-product`, data);
+  createProduct(data: any) {
+    return this.apiService.post(`products`, data);
+  }
+
+  getAllProducts(page: any, type: string = "", search: string = "") {
+    return this.apiService.get(`products?page=${page}&type=${type}&search=${search}`);
+  }
+
+
+  getOneProduct(id: string) {
+    return this.apiService.get(`products/${id}`);
   }
 }

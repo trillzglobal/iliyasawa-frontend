@@ -17,15 +17,25 @@
                         <label>Outlet Name</label>
                         <input type="text" placeholder="outlet name" autofocus [(ngModel)]="this.outlet.name">
                     </div>
+                    <!-- <div class="full-width input-box">
+                                            <label>Location</label>
+                                            <input type="text" placeholder="location name"  [(ngModel)]="this.location">
+                                        </div> -->
+
                     <div class="full-width input-box">
-                        <label>Location</label>
-                        <input type="text" placeholder="location name" autofocus [(ngModel)]="this.outlet.location">
+                        <label>Description</label>
+                        <textarea type="text" placeholder="outlet description"
+                            [(ngModel)]="this.outlet.description"></textarea>
                     </div>
 
                     <div class="full-width input-box">
-                        <label>Address</label>
-                        <textarea type="text" placeholder="outlet address" autofocus
-                            [(ngModel)]="this.outlet.address"></textarea>
+                        <div class="select-container full-width">
+                            <select class="ng-pristine ng-valid ng-touched" [(ngModel)]="this.outlet.user_id">
+                                <option value="" selected>Choose Outlet admin</option>
+                                <option *ngFor="let item of staff" value="{{item.ulid}}">{{item.firstname + " " +
+                                    item.lastname}}</option>
+                            </select>
+                        </div>
                     </div>
 
                     <button (click)="update()" class="btn-primary full-width" style="margin-top:25px"

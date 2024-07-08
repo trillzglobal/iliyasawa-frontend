@@ -1,6 +1,6 @@
 <div class="main-body-content dashboard account-tab accounts">
 
-    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+    <!-- <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
         style="justify-content: flex-start; column-gap: 40px;">
         <div _ngcontent-hqb-c160="" class="onequarter-width">
             <div _ngcontent-hqb-c160="" class="cards">
@@ -20,20 +20,22 @@
                 <div _ngcontent-hqb-c160="" class="description">Out of Stock</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
         <div class="left">
             <div class="select-container">
-                <select class="ng-pristine ng-valid ng-touched">
-                    <option selected>All Product</option>
+                <select class="ng-pristine ng-valid ng-touched" (change)="filterProduct()" [(ngModel)]="type">
+                    <option value="" selected>All Products</option>
+                    <option value="FINISHED_PRODUCT">FINISHED PRODUCT</option>
+                    <option value="RAW_MATERIAL">RAW MATERIAL</option>
                 </select>
             </div>
         </div>
         <div class="right">
             <div class="password-container">
-                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
             <button (click)="toggleAddModal()" class="btn-primary">
@@ -48,6 +50,9 @@
                     <tr>
                         <th>Product Name</th>
                         <th nzWidth="21%">Description</th>
+                        <th nzWidth="10%">Quantity</th>
+                        <th nzWidth="10%">Unit</th>
+                        <th nzWidth="10%">Type</th>
                         <th nzWidth="10%">Date Added</th>
                         <th nzWidth="10%">Added By</th>
                         <th nzWidth="10%">Status</th>
@@ -56,7 +61,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of [1,2,3]">
-                        <td *ngFor="let item of [1,2,3,4,5]">
+                        <td *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
                             <ngx-skeleton-loader style="width: 100%;"
                                 [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
                             </ngx-skeleton-loader>
@@ -69,9 +74,8 @@
             <div class="top-heading">
                 <p class="list-result">
                     Showing
-                    <span>{{productsStart +' - '+ productsStop}}</span> of
-                    <span>{{totalProducts}}</span>
-                    {{ totalProducts > 1 ? 'Active': 'Active'}}
+                    <span>{{products.length }}</span>
+                    {{ totalProducts > 1 ? 'Products': 'Product'}}
                 </p>
             </div>
             <div class="table-responsive">
@@ -82,6 +86,7 @@
                             <th nzWidth="21%">Description</th>
                             <th nzWidth="10%">Quantity</th>
                             <th nzWidth="10%">Unit</th>
+                            <th nzWidth="10%">Type</th>
                             <th nzWidth="10%">Date Added</th>
                             <th nzWidth="10%">Added By</th>
                             <th nzWidth="10%">Status</th>
@@ -90,13 +95,13 @@
                     </thead>
 
                     <tbody *ngIf="products.length > 0">
-                        <tr class="hoverable" *ngFor="let item of products"
-                            [routerLink]="['/dashboard/doctors', item._id]">
+                        <tr class="hoverable" *ngFor="let item of products">
                             <td>{{item?.name}}</td>
                             <td>{{item?.description}}</td>
                             <td><span class="quantity">{{item.quantity | number}}</span></td>
-                            <td>{{item.unit}}</td>
-                            <td>{{item.createdAt | date: 'medium'}}</td>
+                            <td>{{item.measurement_unit}}</td>
+                            <td>{{item.type}}</td>
+                            <td>{{item.created_at | date: 'medium'}}</td>
                             <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
                             <td>{{item.status | titlecase}}</td>
                             <td><button (click)="editProduct(item)" class="btn-primary-outline2"><img
@@ -106,7 +111,7 @@
                     </tbody>
                     <tbody *ngIf="products.length === 0" style="border:none">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <app-no-result class="full-width" title="No data found"
                                     description="You currently don't have any active products.">
                                 </app-no-result>
@@ -118,15 +123,15 @@
             <div *ngIf="products.length > 0" class="pagination mt-4">
                 <app-pagination class="pagination" *ngIf="!this.fetchingProducts && this.totalProducts > 0"
                     [totalItems]="this.totalProducts" [(pageSize)]="this.productsLimit"
-                    [(currentPage)]="this.productsPage" (pageSizeChange)="this.refreshList()"
+                    [(currentPage)]="this.productsPage" (pageSizeChange)="refreshList()"
                     (currentPageChange)="this.getAllProducts()"></app-pagination>
             </div>
         </ng-container>
     </div>
 </div>
 
-<app-add-product [visible]="this.showAddModal" (createdUser)="onCreated()"
+<app-add-product [visible]="this.showAddModal" (createdProduct)="onCreated()"
     (visibleChange)="this.toggleAddModal()"></app-add-product>
 
-<app-edit-product [visible]="this.showEditModal" [product]="this.selectedProduct" (updatedUser)="onUpdated()"
+<app-edit-product [visible]="this.showEditModal" [product]="this.selectedProduct" (updatedProduct)="onUpdated()"
     (visibleChange)="this.toggleEditModal()"></app-edit-product>

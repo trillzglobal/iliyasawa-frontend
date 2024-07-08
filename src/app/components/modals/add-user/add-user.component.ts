@@ -32,7 +32,7 @@ export class AddUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getuserRole()
+    this.getAllRoles()
   }
 
   ngOnChanges() {
@@ -55,8 +55,8 @@ export class AddUserComponent implements OnInit {
     // console.log(parent);
   }
 
-  getuserRole() {
-    this.staffService.getUserRoles().subscribe(
+  getAllRoles() {
+    this.staffService.getAllRoles().subscribe(
       (res: any) => {
 
         console.log(res)
@@ -84,18 +84,22 @@ export class AddUserComponent implements OnInit {
   }
 
   createUser() {
-    this.processLoading = false;
+    this.processLoading = true;
 
     if (this.first_name === '') {
       this.errorMessage = "First name is required";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = "";
     }
 
     if (this.last_name === '') {
       this.errorMessage = "Last name is required";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = "";
     }
 
     if (this.email === '') {
@@ -103,32 +107,29 @@ export class AddUserComponent implements OnInit {
       this.processLoading = false;
       return
     } else if (!this.generalService.validateEmailAddress(this.email)) {
-      this.errorMessage = "Invalid email address provided";
+      this.errorMessage = "Invalid email address";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = "";
     }
 
-    if (this.phone_number === '') {
-      this.errorMessage = "Phone number is required";
-      this.processLoading = false;
-      return
-    }
+    const roles = this.roles.filter((el: any) => el.isSelected).map((el: any) => el.ulid)
 
-    if (this.user_role === '') {
+    if (roles.length < 1) {
       this.errorMessage = "User role is required";
       this.processLoading = false;
       return
     }
 
     const payload = {
-      first_name: this.first_name.trim(),
-      surname: this.last_name,
-      company_name: this.company_name.trim(),
-      emailAddress: this.email.trim(),
-      phoneNumber: this.phone_number.trim(),
-      password: this.password.trim(),
-      user_role: this.user_role.trim()
+      firstname: this.first_name.trim(),
+      lastname: this.last_name,
+      email: this.email.trim(),
+      roles: roles
     }
+
+    console.log(payload)
 
     this.staffService.createUser(payload).subscribe(
       (res: any) => {
@@ -140,6 +141,12 @@ export class AddUserComponent implements OnInit {
             nzClass: 'notification1',
           });
           this.errorMessage = ''
+          this.first_name = "";
+          this.last_name = "";
+          this.email = ""
+          this.roles.forEach((el: any) => {
+            el.isSelected = false;
+          })
 
           this.createdUser.emit();
 
@@ -155,5 +162,6 @@ export class AddUserComponent implements OnInit {
         this.processLoading = false;
       }
     )
+
   }
 }

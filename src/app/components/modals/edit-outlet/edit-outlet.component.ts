@@ -15,9 +15,13 @@ export class EditOutletComponent implements OnInit {
   location: string = "";
   address: string = "";
 
+  currentUser: any = {}
+  fetchingData: boolean = false
+
   @Input() visible: boolean = false;
-  @Input() zones: any = [];
   @Input() outlet: any = [];
+  @Input() user: any = {};
+  @Input() staff: any = [];
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
   @Output() updatedSchool: EventEmitter<any> = new EventEmitter();
   constructor(
@@ -27,7 +31,13 @@ export class EditOutletComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getUserData()
+  }
 
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData()
+    this.fetchingData = false;
   }
 
   update() {

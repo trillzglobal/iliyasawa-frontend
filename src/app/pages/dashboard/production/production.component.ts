@@ -30,123 +30,40 @@ export class ProductionComponent {
   totalProduction: number = 0;
   searchTerm: string = ""
 
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Umar",
-      "surname": "Farooq",
-      "otherName": "",
-      "emailAddress": "umaryusufkd@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249688",
-      "gender": "Male",
-      "role": "Sales Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Jane Smith",
-      "surname": "Faroow",
-      "otherName": "",
-      "emailAddress": "janesmith@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249681",
-      "gender": "Male",
-      "role": "Production Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Albert",
-      "surname": "Brown",
-      "otherName": "",
-      "emailAddress": "albertbrown@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249622",
-      "gender": "Male",
-      "role": "Admin",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
+  fetchingReport: boolean = false;
+  reports: Array<any> = [];
+  reportStart: number = 0;
+  reportStop: number = 0;
+  reportPage: number = 1;
+  reportLimit: number = 25;
+  totalReport: number = 0;
+  searchTermReport: string = ""
+
 
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private productionService: ProductionService,
   ) {
-    // this.route.queryParams.subscribe(p => {
-    //   this.setTabView(p);
-    // });
+    this.route.queryParams.subscribe(p => {
+      this.setTabView(p);
+    });
   }
 
   ngOnInit(): void {
     this.getProduction()
+  }
+
+  setTabView(p: any) {
+    if (p.tab == 'sales') {
+      this.selectedIndex = 0;
+      this.getProduction();
+    } else if (p.tab == 'raw') {
+      this.selectedIndex = 1;
+    } else {
+      this.selectedIndex = 0;
+      this.getProduction();
+    }
   }
 
 
@@ -200,12 +117,8 @@ export class ProductionComponent {
     //   }
     // )
 
-    this.production = this.sample
-    this.totalProduction = 50;
-    this.productionPage = 1;
 
     this.fetchingProduction = false;
-
   }
 
   toggleAddModal() {

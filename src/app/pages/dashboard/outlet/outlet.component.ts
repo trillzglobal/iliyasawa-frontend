@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { OutletService } from '../../../services/outlet.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { GeneralService } from '../../../services/general.service';
+import { StaffService } from '../../../services/staff.service';
 
 @Component({
   selector: 'app-outlet',
@@ -23,80 +25,26 @@ export class OutletComponent {
   // active doctors
   fetchingOutlet: boolean = false;
   outlets: Array<any> = [];
+  outletsCopy: Array<any> = [];
   outletStart: number = 0;
   outletStop: number = 0;
   outletPage: number = 1;
   outletLimit: number = 25;
   totalOutlet: number = 0;
   searchTerm: string = ""
+  currentUser: any = {}
+  fetchingData: boolean = false
 
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "WUSE 2 ",
-      "location": "Location 123",
-      "address": "123 Main Road",
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Outlet 123",
-      "location": "New Location 1234",
-      "address": "21A Main Road 2",
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Albert place",
-      "location": "Location xyz",
-      "address": "123 Other Road",
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
+  fetchingStaff: boolean = false
+  staff: any = []
+
 
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private outletService: OutletService,
+    private generalService: GeneralService,
+    private staffService: StaffService
   ) {
     // this.route.queryParams.subscribe(p => {
     //   this.setTabView(p);
@@ -105,64 +53,72 @@ export class OutletComponent {
 
   ngOnInit(): void {
     this.getOutlet()
+    this.getStaff()
   }
 
 
   search() {
+    if (this.searchTerm != "") {
 
-    this.getOutlet()
+      const result = [...this.outletsCopy].filter((el: any) => {
+        return el.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) != -1 || el.description.toLowerCase().indexOf(this.searchTerm.toLowerCase()) != -1
+      });
 
+      this.outlets = result;
+    } else {
+      this.outlets = [...this.outletsCopy]
+    }
   }
 
 
   getOutlet() {
-
     this.fetchingOutlet = true;
 
-    // this.outletService.getAllOutlet(this.outletPage - 1, this.outletLimit, 'active', this.searchTerm, this.fromDate, this.toDate).subscribe(
-    //   async (res: any) => {
-    //     // console.log(res);
-    //     if (res.statusCode === 200) {
-    //       this.fetchingOutlet = false;
+    this.outletService.getOutlets().subscribe(
+      async (res: any) => {
 
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
+        if (res.status === 'success') {
+          this.fetchingOutlet = false;
 
-    //       this.outlets = res.data
-    //       this.totalOutlet = res.pagination.total;
-    //       this.outletStart = (this.outletPage - 1) * this.outletLimit;
-    //       this.outletStop = this.outletStart + this.outlets.length;
+          this.notification.success(
+            res.message,
+            "",
+            { nzClass: 'notification1' }
+          );
 
-    //     } else {
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-    //       this.errorMessage = '' + res.message;
-    //       this.fetchingOutlet = false;
-    //       this.totalOutlet = 0;
-    //       this.outletStart = 0;
-    //       this.outletStop = 0;
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.fetchingOutlet = false;
-    //     this.totalOutlet = 0;
-    //     this.outletStart = 0;
-    //     this.outletStop = 0;
-    //   }
-    // )
+          this.outlets = res.data
+          this.outletsCopy = res.data
+          this.totalOutlet = res.data.length;
+          // this.outletStart = (this.outletPage - 1) * this.outletLimit;
+          // this.outletStop = this.outletStart + this.outlets.length;
 
-    this.outlets = this.sample
-    this.totalOutlet = 50;
-    this.outletPage = 1;
+        } else {
+          this.notification.success(
+            res.message,
+            "",
+            { nzClass: 'notification1' }
+          );
+          this.errorMessage = '' + res.message;
+          this.fetchingOutlet = false;
+          // this.totalOutlet = 0;
+          // this.outletStart = 0;
+          // this.outletStop = 0;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingOutlet = false;
+        // this.totalOutlet = 0;
+        // this.outletStart = 0;
+        // this.outletStop = 0;
+      }
+    )
 
-    this.fetchingOutlet = false;
+    // this.outlets = this.sample
+    // this.totalOutlet = 50;
+    // this.outletPage = 1;
+
+    // this.fetchingOutlet = false;
 
   }
 
@@ -187,10 +143,62 @@ export class OutletComponent {
   }
 
   onCreated() {
-
+    this.toggleAddModal()
+    this.getOutlet()
   }
 
   onUpdated() {
+    this.toggleEditModal()
+    this.getOutlet()
+  }
+
+  getStaff() {
+
+    this.fetchingStaff = true;
+
+    this.staffService.getAllUsers().subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === 'success') {
+          this.fetchingStaff = false;
+
+          if (res.data.length > 0) {
+            let result: any = [];
+            [...res.data].forEach((el: any) => {
+
+              const roles = el.roles.map((e: any) => e.name).includes('OUTLET_ADMIN')
+
+              // result = res
+              if (roles) {
+                result.push(el)
+              }
+            })
+
+            console.log('filter result', result)
+
+            this.staff = result;
+          } else {
+            this.staff = res.data
+          }
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+          this.fetchingStaff = false;
+
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingStaff = false;
+      }
+    )
+
+    // this.staff = this.sample
+    // this.totalStaff = 50;
+    // this.staffPage = 1;
+
+    // this.fetchingStaff = false;
 
   }
 }

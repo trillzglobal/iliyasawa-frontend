@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-reports',
@@ -20,7 +21,16 @@ export class ReportsComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
+  fetchingStore: boolean = false;
+  store: Array<any> = [];
+  storeStart: number = 0;
+  storeStop: number = 0;
+  storePage: number = 1;
+  storeLimit: number = 25;
+  totalStore: number = 0;
+  searchStoreTerm: string = ""
+
+
   fetchingReport: boolean = false;
   reports: Array<any> = [];
   reportStart: number = 0;
@@ -31,7 +41,7 @@ export class ReportsComponent {
   searchTerm: string = ""
 
 
-  // active doctors
+  // active 
   fetchingActive: boolean = false;
   active: Array<any> = [];
   activeStart: number = 0;
@@ -41,17 +51,7 @@ export class ReportsComponent {
   totalActive: number = 0;
   searchActiveTerm: string = ""
 
-  // blocked doctors
-  fetchingBlocked: boolean = false;
-  blocked: Array<any> = [];
-  blockedStart: number = 0;
-  blockedStop: number = 0;
-  blockedPage: number = 1;
-  blockedLimit: number = 25;
-  totalBlocked: number = 0;
-  searchBlockedTerm: string = ""
 
-  // doctors requests
   fetchingRequests: boolean = false;
   requests: Array<any> = [];
   requestsStart: number = 0;
@@ -60,6 +60,8 @@ export class ReportsComponent {
   requestsLimit: number = 25;
   totalRequests: number = 0;
   searchRequestTerm: string = ""
+
+
 
   sample = [
     {
@@ -170,6 +172,7 @@ export class ReportsComponent {
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private reportsService: ReportService,
+    private storeService: StoreService
   ) {
     // this.route.queryParams.subscribe(p => {
     //   this.setTabView(p);
@@ -177,13 +180,13 @@ export class ReportsComponent {
   }
 
   ngOnInit(): void {
-    this.getReports()
+    this.getStore()
   }
 
   setTabView(p: any) {
-    if (p.tab == 'sales') {
+    if (p.tab == 'store') {
       this.selectedIndex = 0;
-      this.getReports();
+      this.getStore();
     } else if (p.tab == 'production') {
       this.selectedIndex = 1;
       this.getReports();
@@ -201,6 +204,10 @@ export class ReportsComponent {
 
     this.getReports()
 
+  }
+
+  searchStore() {
+    this.getStore();
   }
 
 
@@ -252,6 +259,47 @@ export class ReportsComponent {
     this.reportPage = 1;
 
     this.fetchingReport = false;
+
+  }
+
+  getStore() {
+
+    this.fetchingStore = true;
+
+    this.storeService.getStoreProducts("FINISHED_PRODUCT").subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === "success") {
+          this.fetchingStore = false;
+
+          this.store = res.data.data
+          this.totalStore = res.total;
+          this.storeStart = (this.storePage - 1) * this.storeLimit;
+          this.storeStop = this.storeStart + this.store.length;
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+          this.fetchingStore = false;
+          this.totalStore = 0;
+          this.storeStart = 0;
+          this.storeStop = 0;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingStore = false;
+        this.totalStore = 0;
+        this.storeStart = 0;
+        this.storeStop = 0;
+      }
+    )
+
+    this.store = this.sample
+    this.totalStore = 50;
+    this.storePage = 1;
+
+    this.fetchingStore = false;
 
   }
 

@@ -421,3 +421,11 @@
 .logout:hover {
   border-radius: .5rem !important;
 }
+
+.action {
+  font-size: 12px !important;
+
+  .ant-menu-title-content {
+    font-size: 12px !important;
+  }
+}

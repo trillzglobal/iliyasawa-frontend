@@ -1,120 +1,396 @@
 <div class="main-body-content dashboard account-tab accounts">
 
-    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
-        style="justify-content: flex-start; column-gap: 40px;">
-        <div _ngcontent-hqb-c160="" class="onequarter-width">
-            <div _ngcontent-hqb-c160="" class="cards">
-                <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
-                <div _ngcontent-hqb-c160="" class="description">Total Product</div>
-            </div>
-        </div>
-        <div _ngcontent-hqb-c160="" class="onequarter-width">
-            <div _ngcontent-hqb-c160="" class="cards">
-                <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
-                <div _ngcontent-hqb-c160="" class="description">Available items</div>
-            </div>
-        </div>
-        <div _ngcontent-hqb-c160="" class="onequarter-width">
-            <div _ngcontent-hqb-c160="" class="cards">
-                <div _ngcontent-hqb-c160="" class="digit">0</div>
-                <div _ngcontent-hqb-c160="" class="description">Out of Stock</div>
-            </div>
-        </div>
-    </div>
+    <nz-tabset [nzSelectedIndex]="this.selectedIndex">
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'store' }"
+                queryParamsHandling="merge">Store</a>
+            <!-- <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+                style="justify-content: flex-start; column-gap: 40px;">
+                <div _ngcontent-hqb-c160="" class="onequarter-width">
+                    <div _ngcontent-hqb-c160="" class="cards">
+                        <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
+                        <div _ngcontent-hqb-c160="" class="description">Total Product</div>
+                    </div>
+                </div>
+                <div _ngcontent-hqb-c160="" class="onequarter-width">
+                    <div _ngcontent-hqb-c160="" class="cards">
+                        <div _ngcontent-hqb-c160="" class="digit">{{totalStore}}</div>
+                        <div _ngcontent-hqb-c160="" class="description">Available items</div>
+                    </div>
+                </div>
+                <div _ngcontent-hqb-c160="" class="onequarter-width">
+                    <div _ngcontent-hqb-c160="" class="cards">
+                        <div _ngcontent-hqb-c160="" class="digit">0</div>
+                        <div _ngcontent-hqb-c160="" class="description">Out of Stock</div>
+                    </div>
+                </div>
+            </div> -->
 
 
-    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
-        <div class="left">
-            <div class="select-container">
-                <select class="ng-pristine ng-valid ng-touched">
-                    <option selected>All Product</option>
-                </select>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <!-- <div class="select-container">
+                        <select class="ng-pristine ng-valid ng-touched">
+                            <option selected>All Product</option>
+                        </select>
+                    </div> -->
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+                    <!-- <button (click)="toggleAddModal()" class="btn-primary">
+                            + Add Product
+                        </button> -->
+                </div>
             </div>
-        </div>
-        <div class="right">
-            <div class="password-container">
-                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
-                <img src="assets/images/search.svg" alt="">
-            </div>
-            <!-- <button (click)="toggleAddModal()" class="btn-primary">
-                + Add Product
-            </button> -->
-        </div>
-    </div>
-    <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
-        <ng-container *ngIf="fetchingStore">
-            <table class="data-table mt-4">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th nzWidth="21%">Quantity</th>
-                        <!-- <th nzWidth="21%">Description</th> -->
-                        <th nzWidth="10%">Date Added</th>
-                        <th nzWidth="10%">Added By</th>
-                        <th nzWidth="10%">Status</th>
-                        <th nzWidth="10%">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of [1,2,3]">
-                        <td *ngFor="let item of [1,2,3,4,5]">
-                            <ngx-skeleton-loader style="width: 100%;"
-                                [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
-                            </ngx-skeleton-loader>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </ng-container>
-        <ng-container *ngIf="!fetchingStore">
-            <div class="top-heading">
-                <p class="list-result">
-                    Showing
-                    <span>{{storeStart +' - '+ storeStop}}</span> of
-                    <span>{{totalStore}}</span>
-                    {{ totalStore > 1 ? 'Items': 'Items'}}
-                </p>
-            </div>
-            <div class="table-responsive">
-                <table class="table data-table mt-4">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th nzWidth="21%">Quantity</th>
-                            <!-- <th nzWidth="21%">Description</th> -->
-                            <th nzWidth="10%">Date Added</th>
-                            <th nzWidth="10%">Added By</th>
-                            <th nzWidth="10%">Status</th>
-                        </tr>
-                    </thead>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingStore">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th nzWidth="21%">Description</th>
+                                <th nzWidth="10%">Quantity</th>
+                                <th nzWidth="10%">Unit</th>
+                                <th nzWidth="10%">Type</th>
+                                <th nzWidth="10%">Date Added</th>
+                                <th nzWidth="10%">Added By</th>
+                                <th nzWidth="10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingStore">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{storeStart +' - '+ storeStop}}</span> of
+                            <span>{{totalStore}}</span>
+                            {{ totalStore > 1 ? 'Items': 'Items'}}
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="10%">Quantity</th>
+                                    <th nzWidth="10%">Unit</th>
+                                    <th nzWidth="10%">Type</th>
+                                    <th nzWidth="10%">Date Added</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Status</th>
+                                </tr>
+                            </thead>
 
-                    <tbody *ngIf="store.length > 0">
-                        <tr class="hoverable" *ngFor="let item of store"
-                            [routerLink]="['/dashboard/doctors', item._id]">
-                            <td>{{item?.name}}</td>
-                            <td><span class="quantity">{{item.quantity | number}}</span></td>
-                            <!-- <td>{{item?.description}}</td> -->
-                            <td>{{item.createdAt | date: 'medium'}}</td>
-                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
-                            <td>{{item.status | titlecase}}</td>
-                        </tr>
-                    </tbody>
-                    <tbody *ngIf="store.length === 0" style="border:none">
-                        <tr>
-                            <td colspan="6">
+                            <tbody *ngIf="store.length > 0">
+                                <tr class="hoverable" *ngFor="let item of store">
+                                    <td>{{item?.name}}</td>
+                                    <td>{{item?.description}}</td>
+                                    <td><span class="quantity">{{item.quantity | number}}</span></td>
+                                    <td>{{item.measurement_unit}}</td>
+                                    <td>{{item.type}}</td>
+                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{(item?.createdBy?.firstName ?? "") + ' ' + (item?.createdBy?.surname ?? "")}}
+                                    </td>
+                                    <td>{{item.status | titlecase}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="store.length === 0" style="border:none">
+                                <tr>
+                                    <td colspan="6">
+                                        <app-no-result class="full-width" title="No data found"
+                                            description="You currently don't have any product in store.">
+                                        </app-no-result>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="store.length > 0" class="pagination mt-4">
+                        <app-pagination class="pagination" *ngIf="!this.fetchingStore && this.totalStore > 0"
+                            [totalItems]="this.totalStore" [(pageSize)]="this.storeLimit"
+                            [(currentPage)]="this.storePage" (pageSizeChange)="this.refreshList()"
+                            (currentPageChange)="this.getStore()"></app-pagination>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-tab>
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'procurement' }"
+                queryParamsHandling="merge">Procurement Records</a>
+
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <div class="left">
+                    <!-- <div class="select-container">
+                                <select class="ng-pristine ng-valid ng-touched">
+                                    <option selected>All Sales</option>
+                                    <option>Pulmologist</option>
+                                    <option>Pediatricians</option>
+                                </select>
+                            </div> -->
+                </div>
+                <div class="right">
+                    <div class="password-container">
+                        <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="searchProcurement()" />
+                        <img src="assets/images/search.svg" alt="">
+                    </div>
+                    <!-- <button (click)="toggleAddModal()" class="btn-primary">
+                        + Add Record
+                    </button> -->
+                </div>
+            </div>
+            <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                <ng-container *ngIf="fetchingProcurements">
+                    <table class="data-table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Product Type</th>
+                                <th nzWidth="21%">Description</th>
+                                <th nzWidth="21%">Total Quantity</th>
+                                <th nzWidth="20%">Total Amount</th>
+                                <th nzWidth="10%">Reference</th>
+                                <th nzWidth="10%">Trnx Type</th>
+                                <th nzWidth="10%">Date Sold</th>
+                                <th nzWidth="10%">Added By</th>
+                                <th nzWidth="10%">Accepted By</th>
+                                <th nzWidth="10%">Approved By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,2,3]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+                                    <ngx-skeleton-loader style="width: 100%;"
+                                        [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                        appearance="line">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!fetchingProcurements">
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing <strong>{{procurement.length}} </strong> {{ procurement.length > 1 ? 'Records':
+                            'Records'}}
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Type</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="21%">Total Quantity</th>
+                                    <th nzWidth="20%">Total Amount</th>
+                                    <th nzWidth="10%">Reference</th>
+                                    <th nzWidth="10%">Trnx Type</th>
+                                    <th nzWidth="10%">Date Sold</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Accepted By</th>
+                                    <th nzWidth="10%">Approved By</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="procurement.length > 0">
+                                <tr class="hoverable" *ngFor="let item of procurement">
+                                    <td>{{item.product_type}}</td>
+                                    <td>{{item?.description}}</td>
+                                    <td>{{item?.total_quantity}}</td>
+                                    <td>{{item?.total_amount}}</td>
+
+                                    <td>{{item?.reference}}</td>
+                                    <td>{{item?.type}}</td>
+                                    <td>{{item?.created_at | date: 'medium'}}</td>
+                                    <td>{{(item?.created_by?.firstname ?? "") + ' ' + (item?.created_by?.lastname ??
+                                        "")}}
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.accepted_by?.firstname">
+                                            <button class="btn-primary-outline-small">Accept</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.accepted_by?.firstname">
+                                            {{(item?.accepted_by?.firstname ?? "") + ' ' + (item?.accepted_by?.lastname
+                                            ??
+                                            "")}}
+                                        </ng-container>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.approved_by?.firstname">
+                                            <button class="btn-primary-outline-small">Approve</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.approved_by?.firstname">
+                                            {{(item?.approved_by?.firstname ?? "") + ' ' + (item?.approved_by?.lastname
+                                            ??
+                                            "")}}
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody *ngIf="active.length === 0" style="border:none">
+                                                                <tr>
+                                                                    <td colspan="7">
+                                                                        <app-no-result class="full-width" title="No data found"
+                                                                            description="You currently don't have any sale.">
+                                                                        </app-no-result>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody> -->
+                        </table>
+                        <ng-container *ngIf="procurement.length === 0" style="border:none">
+                            <div>
+                                <!-- <td colspan="6"> -->
                                 <app-no-result class="full-width" title="No data found"
-                                    description="You currently don't have any product in store.">
+                                    description="You currently don't have any procurement data.">
                                 </app-no-result>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <!-- </td> -->
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="procurement.length > 0" class="pagination">
+                        <app-pagination class="pagination"
+                            *ngIf="!this.fetchingProcurements && this.totalProcurement > 0"
+                            [totalItems]="this.totalProcurement" [(pageSize)]="this.procurementLimit"
+                            [(currentPage)]="this.procurementPage" (pageSizeChange)="this.refreshProcurementList()"
+                            (currentPageChange)="this.getProcurementTransaction()"></app-pagination>
+                    </div>
+                </ng-container>
             </div>
-            <div *ngIf="store.length > 0" class="pagination mt-4">
-                <app-pagination class="pagination" *ngIf="!this.fetchingStore && this.totalStore > 0"
-                    [totalItems]="this.totalStore" [(pageSize)]="this.storeLimit" [(currentPage)]="this.storePage"
-                    (pageSizeChange)="this.refreshList()" (currentPageChange)="this.getStore()"></app-pagination>
-            </div>
-        </ng-container>
-    </div>
+        </nz-tab>
+        <nz-tab>
+            <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'production' }"
+                queryParamsHandling="merge">Production Records</a>
+            <nz-tab>
+                <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'production' }"
+                    queryParamsHandling="merge">Production Record</a>
+                <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                    <div class="left">
+                        <div class="select-container">
+                            <select class="ng-pristine ng-valid ng-touched">
+                                <option selected>All Production</option>
+                                <!-- <option>Pulmologist</option>
+                                            <option>Pediatricians</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="password-container">
+                            <input type="text" placeholder="Search" [(ngModel)]="searchActiveTerm" (blur)="search()" />
+                            <img src="assets/images/search.svg" alt="">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
+                    <ng-container *ngIf="fetchingProduction">
+                        <table class="data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="10%">Quantity</th>
+                                    <th nzWidth="10%">Unit</th>
+                                    <th nzWidth="10%">Raw Materials</th>
+                                    <th nzWidth="10%">Damages</th>
+                                    <th nzWidth="10%">Cost</th>
+                                    <th nzWidth="10%">Date Added</th>
+                                    <th nzWidth="10%">Status</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Accepted By</th>
+                                    <th nzWidth="10%">Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of [1,2,3]">
+                                    <td *ngFor="let item of [1,2,3,4,5,6,1,2,3,4,5,6]">
+                                        <ngx-skeleton-loader style="width: 100%;"
+                                            [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
+                                            appearance="line">
+                                        </ngx-skeleton-loader>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-container>
+                    <ng-container *ngIf="!fetchingProduction">
+                        <div class="top-heading">
+                            <p class="list-result">
+                                Showing
+                                <span>{{productionStart +' - '+ productionStop}}</span> of
+                                <span>{{totalProduction}}</span>
+                                {{ totalProduction > 1 ? 'Records': 'Records'}}
+                            </p>
+                        </div>
+                        <table class="data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="10%">Quantity</th>
+                                    <th nzWidth="10%">Unit</th>
+                                    <th nzWidth="10%">Raw Materials</th>
+                                    <th nzWidth="10%">Damages</th>
+                                    <th nzWidth="10%">Cost</th>
+                                    <th nzWidth="10%">Date Added</th>
+                                    <th nzWidth="10%">Status</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Accepted By</th>
+                                    <th nzWidth="10%">Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="production.length > 0">
+                                <tr class="hoverable" *ngFor="let item of production">
+                                    <td>{{item.product}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>{{item.unit}}</td>
+                                    <td>{{item.raw_materials}}</td>
+                                    <td>{{item.damages}}</td>
+                                    <td>{{item.cost}}</td>
+                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{item.status}}</td>
+                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{item?.created_by}}</td>
+                                    <td>{{item?.accepted_by}}</td>
+                                    <td>{{item?.approved_by}}</td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="production.length === 0" style="border:none">
+                                <tr>
+                                    <td colspan="12">
+                                        <app-no-result class="full-width" title="No data found"
+                                            description="You currently don't have any data.">
+                                        </app-no-result>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="production.length > 0" class="pagination">
+                            <app-pagination class="pagination"
+                                *ngIf="!this.fetchingProduction && this.totalProduction > 0"
+                                [totalItems]="this.totalProduction" [(pageSize)]="this.productionLimit"
+                                [(currentPage)]="this.productionPage" (pageSizeChange)="this.refreshProductionList()"
+                                (currentPageChange)="this.getProductionReports()"></app-pagination>
+                        </div>
+                    </ng-container>
+                </div>
+            </nz-tab>
+        </nz-tab>
+    </nz-tabset>
 </div>

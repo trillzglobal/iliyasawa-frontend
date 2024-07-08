@@ -1,6 +1,6 @@
 <div class="main-body-content dashboard account-tab accounts">
 
-    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+    <!-- <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
         style="justify-content: flex-start; column-gap: 40px;">
         <div _ngcontent-hqb-c160="" class="onequarter-width">
             <div _ngcontent-hqb-c160="" class="cards">
@@ -20,22 +20,20 @@
                 <div _ngcontent-hqb-c160="" class="description">Blocked Staff</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
         <div class="left">
             <div class="select-container">
-                <select class="ng-pristine ng-valid ng-touched">
-                    <option selected>All Staff</option>
-                    <option>Admin</option>
-                    <option>Sales Manager</option>
-                    <option>Production Manager</option>
+                <select class="ng-pristine ng-valid ng-touched" (change)="filterStaff($event)">
+                    <option value="" selected>All Staff</option>
+                    <option *ngFor="let item of roles" value="{{item.name}}">{{item.name}}</option>
                 </select>
             </div>
         </div>
         <div class="right">
             <div class="password-container">
-                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="searchStaff()" />
+                <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="searchStaff()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
             <button (click)="toggleAddModal()" class="btn-primary">
@@ -50,7 +48,7 @@
                     <tr>
                         <th>Full Name</th>
                         <th nzWidth="21%">Email</th>
-                        <th nzWidth="20%">Phone</th>
+                        <!-- <th nzWidth="20%">Phone</th> -->
                         <th nzWidth="10%">Role</th>
                         <th nzWidth="10%">Date Registered</th>
                         <th nzWidth="10%">Added By</th>
@@ -60,7 +58,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of [1,2,3]">
-                        <td *ngFor="let item of [1,2,3,4,5,6,7,8]">
+                        <td *ngFor="let item of [1,2,3,4,5,6,7]">
                             <ngx-skeleton-loader style="width: 100%;"
                                 [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
                             </ngx-skeleton-loader>
@@ -73,7 +71,7 @@
             <div class="top-heading">
                 <p class="list-result">
                     Showing
-                    <span>{{staffStart +' - '+ staffStop}}</span> of
+                    <span>{{staff.length}}</span> of
                     <span>{{totalStaff}}</span>
                     {{ totalStaff > 1 ? 'Staff': 'Staff'}}
                 </p>
@@ -84,7 +82,7 @@
                         <tr>
                             <th>Full Name</th>
                             <th nzWidth="21%">Email</th>
-                            <th nzWidth="20%">Phone</th>
+                            <!-- <th nzWidth="20%">Phone</th> -->
                             <th nzWidth="10%">Role</th>
                             <th nzWidth="10%">Date Registered</th>
                             <th nzWidth="10%">Added By</th>
@@ -94,15 +92,14 @@
                     </thead>
 
                     <tbody *ngIf="staff.length > 0">
-                        <tr class="hoverable" *ngFor="let item of staff"
-                            [routerLink]="['/dashboard/doctors', item._id]">
-                            <td>{{item?.firstName + ' ' + item?.surname + " " + item?.otherName}}</td>
-                            <td>{{item.emailAddress}}</td>
-                            <td>{{item.phoneNumber}}</td>
-                            <td>{{item.role}}</td>
+                        <tr class="hoverable" *ngFor="let item of staff">
+                            <td>{{item?.firstname + ' ' + item?.lastname}}</td>
+                            <td>{{item.email}}</td>
+                            <!-- <td>{{item.phone}}</td> -->
+                            <td><span class="roles" *ngFor="let val of item.roles">{{val.name}}</span></td>
                             <td>{{item.createdAt | date: 'medium'}}</td>
-                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
-                            <td>{{item.status | titlecase}}</td>
+                            <td>{{(item?.createdBy?.firstname ?? " ") + ' ' + (item?.createdBy?.lastname ?? "")}}</td>
+                            <td>{{item.status ? item.status : "active" | titlecase}}</td>
                             <td><button (click)="editStaff(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
@@ -110,7 +107,7 @@
                     </tbody>
                     <tbody *ngIf="staff.length === 0" style="border:none">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="9">
                                 <app-no-result class="full-width" title="No data found"
                                     description="You currently don't have any active staff.">
                                 </app-no-result>

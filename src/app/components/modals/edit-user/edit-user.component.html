@@ -15,68 +15,70 @@
                     <div class="sub-form form1">
                         <div class="half-width input-box">
                             <label>First Name</label>
-                            <input type="text" placeholder="first name" autofocus [(ngModel)]="this.user.firstName">
+                            <input disabled type="text" placeholder="first name" [(ngModel)]="this.user.firstname">
                         </div>
                         <div class="half-width input-box">
                             <label>Last Name</label>
-                            <input type="text" placeholder="last name" autofocus [(ngModel)]="this.user.surname">
+                            <input disabled type="text" placeholder="last name" [(ngModel)]="this.user.lastname">
                         </div>
-
-                        <div class="half-width input-box">
-                            <label>Other Name</label>
-                            <input type="text" placeholder="Othername (optional)" autofocus
-                                [(ngModel)]="this.user.otherName">
-                        </div>
-                        <div class="half-width input-box">
-                            <label>Phone</label>
-                            <input type="tel" placeholder="+234 806624****" autofocus
-                                [(ngModel)]="this.user.phoneNumber">
-                        </div>
+                        <!-- <div class="half-width input-box">
+                                                    <label>Phone</label>
+                                                    <input type="tel" placeholder="+234 806624****" [(ngModel)]="this.phone_number">
+                                                </div> -->
                         <div class="full-width input-box">
                             <label>Email</label>
-                            <input type="email" placeholder="user@tsb.com" autofocus
-                                [(ngModel)]="this.user.emailAddress">
+                            <input disabled type="email" placeholder="user@tsb.com" [(ngModel)]="this.user.email">
                         </div>
-                        <div class="half-width input-box">
+                        <!-- <div class="full-width input-box">
+                                                    <label>Company</label>
+                                                    <input type="text" placeholder="company name" [(ngModel)]="this.company_name">
+                                                </div>
+                                                <div class="full-width input-box">
+                                                    <label>Company Address</label>
+                                                    <input type="text" placeholder="company address" [(ngModel)]="this.company_address">
+                                                </div> -->
+                        <div class="full-width input-box">
                             <label>Role</label>
-                            <div class="select-container full-width">
-                                <select class="full-width" [(ngModel)]="this.user.role">
-                                    <option value="">Choose Role</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Sales Manager">Sales Manager</option>
-                                    <option value="Production Manager">Production Manager</option>
-                                    <option value="Procurement Officer">Procurement Officer</option>
-                                    <option value="Store Keeper">Store Keeper</option>
-                                    <option value="Outlet Manager">Outlet Manager</option>
-                                    <option value="General Manager">General Manager</option>
-                                    <option value="Outlet Sales Rep">Outlet Sales Rep</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="half-width input-box">
-                            <label>Status</label>
-                            <div class="select-container full-width">
-                                <select class="full-width" [(ngModel)]="this.user.status">
-                                    <option value="Active">Active</option>
-                                    <option value="Bloked">Blocked</option>
-                                </select>
+                            <div class="check-cont">
+                                <!-- <div>
+                                                            <input type="checkbox" [(ngModel)]="this.isSelectAll"
+                                                                (ngModelChange)="roleCheckAll(this.roles)">
+                                                            Check All
+                                                        </div> -->
+
+                                <div *ngFor="let item of this.roles">
+                                    <input type="checkbox" value="{{item.ulid}}" [(ngModel)]="item.isSelected">
+                                    {{item.name}}
+                                </div>
                             </div>
                         </div>
                         <!-- <div class="full-width input-box">
-                            <label>Permissions</label>
-                            <div class="check-cont">
-                                <div>
-                                    <input type="checkbox" [(ngModel)]="this.isSelectAll"
-                                        (ngModelChange)="permissionCheckAll(this.permissions)">
-                                    SELECT ALL PERMISSIONS
-                                </div>
-
-                                <div class="permission" *ngFor="let item of this.permissions">
-                                    <input type="checkbox" value="{{item.id}}" [(ngModel)]="item.isSelected">
-                                    {{item.name | uppercase}}
-                                </div>
-                            </div>
-                        </div> -->
+                                                    <label>Password</label>
+                                                    <div class="password-container">
+                                                        <input type="password" style="border: none" #passwordField1 placeholder="********"
+                                                            [(ngModel)]="this.password" />
+                                                        <i nz-icon nzType="eye-invisible" nzTheme="outline"
+                                                            *ngIf="passwordField1.type == 'text'"
+                                                            (click)="passwordField1.type = 'password'"></i>
+                                                        <i nz-icon nzType="eye" nzTheme="outline" *ngIf="passwordField1.type == 'password'"
+                                                            (click)="passwordField1.type = 'text'"></i>
+                                                    </div>
+                                                </div> -->
+                        <!-- <div class="full-width input-box">
+                                                    <label>Permissions</label>
+                                                    <div class="check-cont">
+                                                        <div>
+                                                            <input type="checkbox" [(ngModel)]="this.isSelectAll"
+                                                                (ngModelChange)="permissionCheckAll(this.permissions)">
+                                                            SELECT ALL PERMISSIONS
+                                                        </div>
+                        
+                                                        <div class="permission" *ngFor="let item of this.permissions">
+                                                            <input type="checkbox" value="{{item.id}}" [(ngModel)]="item.isSelected">
+                                                            {{item.name | uppercase}}
+                                                        </div>
+                                                    </div>
+                                                </div> -->
                     </div>
 
                     <button (click)="updateUser()" class="btn-primary full-width" style="margin-top:25px"

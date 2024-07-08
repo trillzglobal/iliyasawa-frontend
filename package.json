@@ -25,6 +25,7 @@
     "@ngx-loading-bar/core": "^6.0.2",
     "@ngx-loading-bar/http-client": "^6.0.2",
     "@ngx-loading-bar/router": "^6.0.2",
+    "angular-highcharts": "^17.0.1",
     "angular2-ladda": "^5.0.0",
     "encrypt-storage": "^2.13.2",
     "express": "^4.19.2",

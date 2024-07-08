@@ -86,4 +86,25 @@ export class GeneralService {
   getUserData() {
     return this.encryptStorage.getItem('user')
   }
+
+  getUniqueTwelveDigits() {
+    const timestamp = Date.now().toString();
+    return timestamp.substr(timestamp.length - 12);
+  };
+
+  async getNthUniqueIds(repetition: any, interval: number) {
+    return await new Promise(resolve => {
+      let x = 0;
+      let arr = [];
+      const intervalID = setInterval(() => {
+        const rand = this.getUniqueTwelveDigits();
+        arr.push(rand)
+        if (++x === repetition) {
+          resolve(arr);
+          clearInterval(intervalID);
+        };
+      }, interval);
+    });
+
+  }
 }
