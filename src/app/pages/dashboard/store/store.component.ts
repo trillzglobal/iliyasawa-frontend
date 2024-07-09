@@ -48,68 +48,6 @@ export class StoreComponent {
   totalProduction: number = 0;
   searchActiveTerm: string = ""
 
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "WUSE 2 ",
-      "quantity": "123",
-      "description": "Very good product",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Outlet 123",
-      "quantity": "1234",
-      "description": "some good product 3",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "name": "Albert place",
-      "quantity": "2222222",
-      "description": "some good product 1",
-      "status": "Available",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -187,18 +125,12 @@ export class StoreComponent {
       }
     )
 
-    this.store = this.sample
-    this.totalStore = 50;
-    this.storePage = 1;
-
-    this.fetchingStore = false;
-
   }
 
   getProcurementTransaction() {
     this.fetchingProcurements = true;
 
-    this.salesService.getAllSalesTransaction(this.procurementPage, this.status, this.searchTerm).subscribe(
+    this.salesService.getAllSalesTransaction(this.procurementPage, this.status, this.searchTerm, "PROCUREMENT").subscribe(
       async (res: any) => {
         console.log(res);
         if (res.status === 'success') {

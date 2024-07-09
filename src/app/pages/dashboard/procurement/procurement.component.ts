@@ -85,9 +85,9 @@ export class ProcurementComponent {
   getProcurementTransaction() {
     this.fetchingRecords = true;
 
-    this.salesService.getAllSalesTransaction(this.recordPage, this.status, this.searchTerm).subscribe(
+    this.salesService.getAllSalesTransaction(this.recordPage, this.status, this.searchTerm, "PROCUREMENT").subscribe(
       async (res: any) => {
-        console.log(res);
+        console.log('res', res);
         if (res.status === 'success') {
           this.fetchingRecords = false;
 

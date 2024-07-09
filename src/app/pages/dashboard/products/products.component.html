@@ -102,7 +102,7 @@
                             <td>{{item.measurement_unit}}</td>
                             <td>{{item.type}}</td>
                             <td>{{item.created_at | date: 'medium'}}</td>
-                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
+                            <td>{{item?.creator?.firstname + ' ' + item?.creator?.lastname}}</td>
                             <td>{{item.status | titlecase}}</td>
                             <td><button (click)="editProduct(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>

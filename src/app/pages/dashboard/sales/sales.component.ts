@@ -86,7 +86,7 @@ export class SalesComponent {
 
     this.fetchingSales = true;
 
-    this.salesService.getAllSalesTransaction(this.salesPage, this.status, this.searchTerm).subscribe(
+    this.salesService.getAllSalesTransaction(this.salesPage, this.status, this.searchTerm, "SALES").subscribe(
       async (res: any) => {
         console.log(res);
         if (res.status === 'success') {

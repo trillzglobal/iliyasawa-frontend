@@ -201,7 +201,7 @@ export class AddSalesComponent implements OnInit {
     console.log(payload)
 
 
-    this.salesService.createSales(payload).subscribe(
+    this.salesService.createTransactions(payload).subscribe(
       (res: any) => {
 
         if (res.status == 'success') {

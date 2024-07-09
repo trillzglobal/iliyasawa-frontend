@@ -8,14 +8,13 @@ export class SalesService {
 
   constructor(private readonly apiService: ApiService) { }
 
-  createSales(data: any) {
+  createTransactions(data: any) {
     return this.apiService.post(`transactions/initiate`, data);
   }
 
-  getAllSalesTransaction(page: any, status: string = "", search: string = "") {
-    return this.apiService.get(`transactions?page=${page}&status=${status}&search=${search}`);
+  getAllSalesTransaction(page: any, status: string = "", search: string = "", subtype = "") {
+    return this.apiService.get(`transactions?page=${page}&status=${status}&search=${search}&subtype=${subtype}`);
   }
-
 
   getSalesSummary() {
     return this.apiService.get(`transactions/summary`);

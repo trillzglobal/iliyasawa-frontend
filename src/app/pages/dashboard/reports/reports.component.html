@@ -100,7 +100,7 @@
                                     <td>{{item.measurement_unit}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
-                                    <td>{{(item?.createdBy?.firstName ?? "") + ' ' + (item?.createdBy?.surname ?? "")}}
+                                    <td>{{(item?.creator?.firstname ?? "") + ' ' + (item?.creator?.lastname ?? "")}}
                                     </td>
                                     <td>{{item.status | titlecase}}</td>
                                 </tr>
@@ -186,40 +186,41 @@
                             {{ totalActive > 1 ? 'Records': 'Records'}}
                         </p>
                     </div>
-                    <table class="data-table mt-4">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th nzWidth="21%">Description</th>
-                                <th nzWidth="10%">Quantity</th>
-                                <th nzWidth="10%">Unit</th>
-                                <th nzWidth="10%">Raw Materials</th>
-                                <th nzWidth="10%">Damages</th>
-                                <th nzWidth="10%">Cost</th>
-                                <th nzWidth="10%">Date Added</th>
-                                <th nzWidth="10%">Status</th>
-                                <th nzWidth="10%">Added By</th>
-                                <th nzWidth="10%">Accepted By</th>
-                                <th nzWidth="10%">Approved By</th>
-                            </tr>
-                        </thead>
-                        <tbody *ngIf="active.length > 0">
-                            <tr class="hoverable" *ngFor="let item of active">
-                                <td>{{item.product}}</td>
-                                <td>{{item.quantity}}</td>
-                                <td>{{item.unit}}</td>
-                                <td>{{item.raw_materials}}</td>
-                                <td>{{item.damages}}</td>
-                                <td>{{item.cost}}</td>
-                                <td>{{item.created_at | date: 'medium'}}</td>
-                                <td>{{item.status}}</td>
-                                <td>{{item.created_at | date: 'medium'}}</td>
-                                <td>{{item?.created_by}}</td>
-                                <td>{{item?.accepted_by}}</td>
-                                <td>{{item?.approved_by}}</td>
-                            </tr>
-                        </tbody>
-                        <tbody *ngIf="active.length === 0" style="border:none">
+                    <div class="table-responsive">
+                        <table class="data-table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th nzWidth="21%">Description</th>
+                                    <th nzWidth="10%">Quantity</th>
+                                    <th nzWidth="10%">Unit</th>
+                                    <th nzWidth="10%">Raw Materials</th>
+                                    <th nzWidth="10%">Damages</th>
+                                    <th nzWidth="10%">Cost</th>
+                                    <th nzWidth="10%">Date Added</th>
+                                    <th nzWidth="10%">Status</th>
+                                    <th nzWidth="10%">Added By</th>
+                                    <th nzWidth="10%">Accepted By</th>
+                                    <th nzWidth="10%">Approved By</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="active.length > 0">
+                                <tr class="hoverable" *ngFor="let item of active">
+                                    <td>{{item.product}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>{{item.unit}}</td>
+                                    <td>{{item.raw_materials}}</td>
+                                    <td>{{item.damages}}</td>
+                                    <td>{{item.cost}}</td>
+                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{item.status}}</td>
+                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{item?.created_by}}</td>
+                                    <td>{{item?.accepted_by}}</td>
+                                    <td>{{item?.approved_by}}</td>
+                                </tr>
+                            </tbody>
+                            <!-- <tbody *ngIf="active.length === 0" style="border:none">
                             <tr>
                                 <td colspan="12">
                                     <app-no-result class="full-width" title="No data found"
@@ -227,8 +228,18 @@
                                     </app-no-result>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        </tbody> -->
+                        </table>
+
+                        <ng-container *ngIf="active.length === 0" style="border:none">
+                            <div>
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any data.">
+                                </app-no-result>
+                            </div>
+                        </ng-container>
+                    </div>
+
                     <div *ngIf="active.length > 0" class="pagination">
                         <app-pagination class="pagination" *ngIf="!this.fetchingActive && this.totalActive > 0"
                             [totalItems]="this.totalActive" [(pageSize)]="this.activeLimit"

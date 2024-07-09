@@ -61,113 +61,6 @@ export class ReportsComponent {
   totalRequests: number = 0;
   searchRequestTerm: string = ""
 
-
-
-  sample = [
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Umar",
-      "surname": "Farooq",
-      "otherName": "",
-      "emailAddress": "umaryusufkd@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249688",
-      "gender": "Male",
-      "role": "Sales Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Jane Smith",
-      "surname": "Faroow",
-      "otherName": "",
-      "emailAddress": "janesmith@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249681",
-      "gender": "Male",
-      "role": "Production Manager",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    },
-    {
-      "_id": "6600981563d8474d278f8920",
-      "firstName": "Albert",
-      "surname": "Brown",
-      "otherName": "",
-      "emailAddress": "albertbrown@gmail.com",
-      "emailAddressVerified": false,
-      "phoneNumber": "+2348066249622",
-      "gender": "Male",
-      "role": "Admin",
-      "address": {
-        "street": "123 Main Road",
-        "city": "Barnawa",
-        "state": "Kaduna",
-        "country": "Nigeria",
-        "zipCode": "800232",
-        "_id": "6600981563d8474d278f8921"
-      },
-      "isBlocked": false,
-      "status": "Active",
-      "isDeleted": false,
-      "createdAt": "2024-03-24T21:16:05.669Z",
-      "updatedAt": "2024-04-07T21:22:42.883Z",
-      "__v": 0,
-      "approvedAt": "2024-04-07T21:21:04.415Z",
-      "createdBy": {
-        "firstName": "Super",
-        "surname": "Admin",
-        "otherName": "",
-        "emailAddress": "admin@healmemedconsult.org",
-        "gender": "Male",
-        "role": "SUPER_ADMIN",
-      }
-    }
-  ]
-
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
@@ -254,11 +147,11 @@ export class ReportsComponent {
     //   }
     // )
 
-    this.reports = this.sample
-    this.totalReport = 50;
-    this.reportPage = 1;
+    // this.reports = this.sample
+    // this.totalReport = 50;
+    // this.reportPage = 1;
 
-    this.fetchingReport = false;
+    // this.fetchingReport = false;
 
   }
 
@@ -294,12 +187,6 @@ export class ReportsComponent {
         this.storeStop = 0;
       }
     )
-
-    this.store = this.sample
-    this.totalStore = 50;
-    this.storePage = 1;
-
-    this.fetchingStore = false;
 
   }
 
