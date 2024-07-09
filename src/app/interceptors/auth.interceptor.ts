@@ -29,7 +29,9 @@ export class AuthInterceptor implements HttpInterceptor {
     let secureReq;
     // Don't add header to external APIs
     if (
-      !request.url.includes("http://157.245.119.74/api/v1") && !request.url.includes("http://127.0.0.1:8000/api/v1")
+      !request.url.includes("http://157.245.119.74/api/v1")
+      && !request.url.includes("http://127.0.0.1:8000/api/v1")
+      && !request.url.includes(".onrender.com")
       && !request.url.includes("localhost")
     ) {
       secureReq = request.clone();
