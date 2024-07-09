@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://157.245.119.74/api/v1/",
+  apiUrl: "https://iliyasawa.cropxchange.africa/api/v1/",
   privateKey: 'fkdjgodjfkjgvdpfjkpdogijeoirhjsfgjacverdf'
 };
 
