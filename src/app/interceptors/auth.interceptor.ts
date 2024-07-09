@@ -31,6 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (
       !request.url.includes("http://157.245.119.74/api/v1")
       && !request.url.includes("http://127.0.0.1:8000/api/v1")
+      && !request.url.includes('https://iliyasawa.cropxchange.africa')
       && !request.url.includes(".onrender.com")
       && !request.url.includes("localhost")
     ) {
