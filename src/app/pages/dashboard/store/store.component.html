@@ -347,15 +347,14 @@
                         <table class="data-table mt-4">
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
+                                    <th>Product Type</th>
                                     <th nzWidth="21%">Description</th>
-                                    <th nzWidth="10%">Quantity</th>
-                                    <th nzWidth="10%">Unit</th>
-                                    <th nzWidth="10%">Raw Materials</th>
-                                    <th nzWidth="10%">Damages</th>
-                                    <th nzWidth="10%">Cost</th>
-                                    <th nzWidth="10%">Date Added</th>
+                                    <th nzWidth="10%">Reference</th>
+                                    <th nzWidth="10%">Total Price</th>
+                                    <th nzWidth="10%">Type</th>
+                                    <th nzWidth="10%">Sub Type</th>
                                     <th nzWidth="10%">Status</th>
+                                    <th nzWidth="10%">Date Added</th>
                                     <th nzWidth="10%">Added By</th>
                                     <th nzWidth="10%">Accepted By</th>
                                     <th nzWidth="10%">Approved By</th>
@@ -363,29 +362,46 @@
                             </thead>
                             <tbody *ngIf="production.length > 0">
                                 <tr class="hoverable" *ngFor="let item of production">
-                                    <td>{{item.product}}</td>
-                                    <td>{{item.quantity}}</td>
-                                    <td>{{item.unit}}</td>
-                                    <td>{{item.raw_materials}}</td>
-                                    <td>{{item.damages}}</td>
-                                    <td>{{item.cost}}</td>
-                                    <td>{{item.created_at | date: 'medium'}}</td>
+                                    <td>{{item.product_type}}</td>
+                                    <td>{{item.description}}</td>
+                                    <td>{{item.reference}}</td>
+                                    <td>{{item.total_amount}}</td>
+                                    <td>{{item.type}}</td>
+                                    <td>{{item.subtype}}</td>
                                     <td>{{item.status}}</td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
                                     <td>{{item?.created_by}}</td>
-                                    <td>{{item?.accepted_by}}</td>
-                                    <td>{{item?.approved_by}}</td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.accepted_by">
+                                            <button class="btn-primary-outline-small">Accept</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.accepted_by">
+                                            {{(item?.accepted_by ?? "") + ' ' + (item?.accepted_by
+                                            ?? "")}}
+                                        </ng-container>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.approved_by">
+                                            <button class="btn-primary-outline-small">Approved</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.approved_by">
+                                            {{(item?.approved_by ?? "") + ' ' + (item?.approved_by
+                                            ?? "")}}
+                                        </ng-container>
+                                    </td>
                                 </tr>
                             </tbody>
                             <!-- <tbody *ngIf="production.length === 0" style="border:none">
-                                                    <tr>
-                                                        <td colspan="12">
-                                                            <app-no-result class="full-width" title="No data found"
-                                                                description="You currently don't have any data.">
-                                                            </app-no-result>
-                                                        </td>
-                                                    </tr>
-                                                </tbody> -->
+                                                <tr>
+                                                    <td colspan="12">
+                                                        <app-no-result class="full-width" title="No data found"
+                                                            description="You currently don't have any data.">
+                                                        </app-no-result>
+                                                    </td>
+                                                </tr>
+                                            </tbody> -->
                         </table>
                         <ng-container *ngIf="production.length === 0" style="border:none">
                             <div>
@@ -399,7 +415,7 @@
                     <div *ngIf="production.length > 0" class="pagination">
                         <app-pagination class="pagination" *ngIf="!this.fetchingProduction && this.totalProduction > 0"
                             [totalItems]="this.totalProduction" [(pageSize)]="this.productionLimit"
-                            [(currentPage)]="this.productionPage" (pageSizeChange)="this.refreshProductionList()"
+                            [(currentPage)]="this.productionPage" (pageSizeChange)="this.refreshList()"
                             (currentPageChange)="this.getProductionReports()"></app-pagination>
                     </div>
                 </ng-container>

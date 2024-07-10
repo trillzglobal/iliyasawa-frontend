@@ -58,7 +58,7 @@ export class SigninComponent implements OnInit {
             this.processLoading = false;
             this.notification.success(
               'Account signin successful.',
-              '' + "Success",
+              '' + (res.message ?? "Success"),
               { nzClass: 'notification1' }
             );
 

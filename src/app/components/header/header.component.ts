@@ -83,6 +83,48 @@ export class HeaderComponent implements OnInit {
 
   switch(role: any) {
     console.log(role)
+
+    const payload = {
+      role_id: role.ulid
+    }
+
+    this.staffService.switchAccount(payload).subscribe(
+      (res: any) => {
+        console.log(res)
+        if (res.status === "success") {
+          this.processLoading = false;
+          this.notification.success(
+            'Role switch successful.',
+            '' + (res.message ?? "Success"),
+            { nzClass: 'notification1' }
+          );
+
+          this.generalService.setUserData(res.data);
+
+          // add user data to localstorage
+          this.generalService.setData('user-data', res.data);
+
+          console.log('token', res.data.access_token);
+          this.generalService.setToken(res.data.access_token);
+
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 500);
+        } else {
+          this.notification.warning(
+            'Error signin successful.',
+            '' + res.message,
+            { nzClass: 'notification1' }
+          );
+          this.errorMessage = '' + res.message;
+          this.processLoading = false;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 
   getAllRoles() {

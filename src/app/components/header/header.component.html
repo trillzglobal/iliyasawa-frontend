@@ -111,7 +111,7 @@
     <li nz-menu-divider></li>
     <ng-container *ngIf="this.roles.length > 1">
       <li *ngFor="let item of this.roles; let i = index;" nz-menu-item class="action" (click)="switch(item)">
-        <img class="small-icons" src="assets/images/user.svg" />Switch to {{item}}
+        <img class="small-icons" src="assets/images/user.svg" />Switch to {{item.name}}
       </li>
     </ng-container>
 

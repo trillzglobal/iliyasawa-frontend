@@ -33,8 +33,8 @@ export class StaffService {
     return this.apiService.post(`admin/create/role`, data);
   }
 
-  switchAccount() {
-    return this.apiService.get(`switch-role`);
+  switchAccount(payload: any) {
+    return this.apiService.post(`switch-role`, payload);
   }
 
 }

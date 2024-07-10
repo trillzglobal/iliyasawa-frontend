@@ -3,6 +3,7 @@ import { StoreService } from '../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SalesService } from '../../../services/sales.service';
+import { ProductionService } from '../../../services/production.service';
 
 @Component({
   selector: 'app-store',
@@ -53,7 +54,8 @@ export class StoreComponent {
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private storeService: StoreService,
-    private salesService: SalesService
+    private salesService: SalesService,
+    private productionService: ProductionService
   ) {
     this.route.queryParams.subscribe(p => {
       this.setTabView(p);
@@ -73,7 +75,7 @@ export class StoreComponent {
       this.getProcurementTransaction();
     } else if (p.tab == 'production') {
       this.selectedIndex = 2;
-      // this.getReports();
+      this.getProductionReports()
     } else {
       this.selectedIndex = 0;
       this.getStore();
@@ -161,7 +163,33 @@ export class StoreComponent {
   }
 
   getProductionReports() {
+    this.productionService.getAllSalesTransaction(this.productionPage, this.status, this.searchTerm, "USAGE").subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === "success") {
 
+          this.fetchingProduction = false;
+
+          this.production = res.data.data
+          this.totalProduction = res.total;
+          this.productionStart = (this.productionPage - 1) * this.productionLimit;
+          this.productionStop = this.productionStart + this.production.length;
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+
+          this.fetchingProduction = false;
+
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+
+        this.fetchingProduction = false;
+
+      }
+    )
   }
   toggleAddModal() {
     this.showAddModal = !this.showAddModal;
