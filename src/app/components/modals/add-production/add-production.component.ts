@@ -2,13 +2,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { GeneralService } from '../../../services/general.service';
 import { StaffService } from '../../../services/staff.service';
+import { OutletService } from '../../../services/outlet.service';
+import { ProductsService } from '../../../services/products.service';
+import { SalesService } from '../../../services/sales.service';
 
 @Component({
-  selector: 'app-add-customer',
-  templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.scss']
+  selector: 'app-add-production',
+  templateUrl: './add-production.component.html',
+  styleUrls: ['./add-production.component.scss']
 })
-export class AddCustomerComponent implements OnInit {
+export class AddProductionComponent implements OnInit {
   errorMessage: string = "";
   processLoading: boolean = false;
   firstName: string = "";
@@ -17,27 +20,49 @@ export class AddCustomerComponent implements OnInit {
   email: string = "";
   phone: string = "";
   type: string = "";
-  password: string = "";
-  address: string = "";
+  outlet_id: string = "";
+  description: string = "";
+
+
   isSelectAll: boolean = false;
-  permissions: any = []
+  fetchingProducts: boolean = false
+  outlets: any = []
+  products: any = []
+  choosenProducts: any = [
+    {
+      product_id: "",
+      price: 0,
+      quantity: 1
+    }
+  ]
+
 
   @Input() visible: boolean = false;
+  @Input() tab: string = "production";
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() createdUser: EventEmitter<any> = new EventEmitter();
+  @Output() created: EventEmitter<any> = new EventEmitter();
   constructor(
     private generalService: GeneralService,
     private staffService: StaffService,
+    private productsService: ProductsService,
+    private outletService: OutletService,
+    private salesService: SalesService,
     private notification: NzNotificationService
   ) { }
 
   ngOnInit(): void {
-    this.getAllPermissions()
+    this.getAllOutlets()
+    this.getAllProducts()
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: any) {
+    console.log(changes)
     this.errorMessage = "";
     this.processLoading = false;
+
+    if (changes?.tab?.currentValue == "raw") {
+      this.getAllProducts('RAW_MATERIAL')
+    }
   }
 
   handleCancel() {
@@ -45,109 +70,154 @@ export class AddCustomerComponent implements OnInit {
     this.visibleChange.emit(this.visible);
   }
 
-  permissionCheckAll(data: any) {
-    data.forEach((el: any) => {
-      el.isSelected = this.isSelectAll
-    });
+
+  addProduct() {
+    this.choosenProducts.unshift(
+      {
+        product_id: "",
+        price: 0,
+        quantity: 1
+      }
+    )
   }
 
-  getAllPermissions() {
-    // this.settingsService.getAllPermissions().subscribe(
-    //   (res: any) => {
+  removeProduct(index: any) {
+    console.log(index)
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+    if (index > 0) { // only splice roles when item is found
+      this.choosenProducts.splice(index, 1); // 2nd parameter means remove one item only
+    }
 
-    //       res.data.forEach((el: any) => {
-    //         el.isSelected = false
-    //       })
-
-    //       this.permissions = res.data
-    //       this.errorMessage = ''
-
-    //     } else {
-    //       this.processLoading = false;
-    //       this.permissions = [];
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
   }
 
-  createUser() {
-    this.processLoading = false;
+  getAllProducts(type: string = "FINISHED_PRODUCT") {
+    this.fetchingProducts = true;
 
-    if (this.firstName === '') {
-      this.errorMessage = "First name is required";
-      this.processLoading = false;
-      return
+    this.productsService.getAllProducts(1, type).subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === "success") {
+          this.fetchingProducts = false;
+          this.products = res.data.data
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+          this.fetchingProducts = false;
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingProducts = false;
+      }
+    )
+
+  }
+
+  getAllOutlets() {
+    this.outletService.getOutlets().subscribe(
+      (res: any) => {
+
+        if (res.status == 'success') {
+          this.processLoading = false;
+
+          this.outlets = res.data
+          this.errorMessage = ''
+
+        } else {
+          this.processLoading = false;
+          this.outlets = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
+  }
+
+  create() {
+    if (this.processLoading) return
+
+    this.processLoading = true;
+
+    if (this.choosenProducts.length > 0) {
+      let error = false
+      this.choosenProducts.forEach((item: any) => {
+        if (item.product_id == "") {
+          error = true
+          this.processLoading = false;
+          this.errorMessage = "Item product is not selected"
+        }
+
+        if (item.quantity <= 0) {
+          error = true
+          this.processLoading = false;
+          this.errorMessage = "Item quantity must be atleast 1"
+        }
+      })
+
+      if (error) return
     }
 
-    if (this.lastName === '') {
-      this.errorMessage = "Last name is required";
+
+    if (this.description === '') {
+      this.errorMessage = "Description is required";
       this.processLoading = false;
       return
+    } else {
+      this.errorMessage = "";
     }
 
-    if (this.email === '') {
-      this.errorMessage = "Email address is required";
-      this.processLoading = false;
-      return
-    } else if (!this.generalService.validateEmailAddress(this.email)) {
-      this.errorMessage = "Invalid email address provided";
-      this.processLoading = false;
-      return
-    }
-
-    if (this.phone === '') {
-      this.errorMessage = "Phone number is required";
-      this.processLoading = false;
-      return
-    }
-
-    if (this.type === '') {
-      this.errorMessage = "Type is required";
-      this.processLoading = false;
-      return
-    }
 
     const payload = {
-      firstName: this.firstName.trim(),
-      surname: this.lastName,
-      otherName: this.otherName.trim(),
-      emailAddress: this.email.trim(),
-      phoneNumber: this.phone.trim(),
-      address: this.address.trim(),
-      type: this.type
+      products: this.choosenProducts,
+      reference: "PRODTN_" + this.generalService.getUniqueTwelveDigits(),
+      product_type: this.tab == "production" ? "FINISHED_PRODUCT" : "RAW_MATERIAL",
+      subtype: this.tab == "production" ? "STORING" : "USAGE",
+      type: this.tab == "production" ? "INCOME" : "EXPENSE",
+      description: this.description,
     }
 
-    // this.staffService.createUser(payload).subscribe(
-    //   (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+    console.log(payload)
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
 
-    //       this.createdUser.emit();
+    this.salesService.createTransactions(payload).subscribe(
+      (res: any) => {
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+        if (res.status == 'success') {
+          this.processLoading = false;
+
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
+          this.choosenProducts = [
+            {
+              product_id: "",
+              price: 0,
+              quantity: 1
+            }
+          ]
+          this.outlet_id = ""
+          this.type = ""
+          this.description = ""
+
+          this.created.emit();
+
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        console.log(error)
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 }

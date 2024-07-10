@@ -26,7 +26,7 @@
                         <th>Outlet Name</th>
                         <th nzWidth="21%">Description</th>
                         <th nzWidth="10%">Date Registered</th>
-                        <th nzWidth="10%">Added By</th>
+                        <th nzWidth="10%">Outlet Staff</th>
                         <th nzWidth="10%">Status</th>
                         <th nzWidth="10%">Action</th>
                     </tr>
@@ -58,7 +58,7 @@
                             <th>Outlet Name</th>
                             <th nzWidth="21%">Description</th>
                             <th nzWidth="10%">Date Registered</th>
-                            <th nzWidth="10%">Added By</th>
+                            <th nzWidth="10%">Outlet Staff</th>
                             <th nzWidth="10%">Status</th>
                             <th nzWidth="10%">Action</th>
                         </tr>
@@ -69,14 +69,14 @@
                             <td>{{item?.name}}</td>
                             <td>{{item.description}}</td>
                             <td>{{item.created_at | date: 'medium'}}</td>
-                            <td></td>
-                            <td>{{item.is_active == 1 ? "Active" : "Inactive" | titlecase}}</td>
+                            <td>{{item.user}}</td>
+                            <td>{{item.active == 1 ? "Active" : "Inactive" | titlecase}}</td>
                             <td><button (click)="editOutlet(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
                         </tr>
                     </tbody>
-                    <tbody *ngIf="outlets.length === 0" style="border:none">
+                    <!-- <tbody *ngIf="outlets.length === 0" style="border:none">
                         <tr>
                             <td colspan="7">
                                 <app-no-result class="full-width" title="No data found"
@@ -84,8 +84,15 @@
                                 </app-no-result>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
+                <ng-container *ngIf="outlets.length === 0" style="border:none">
+                    <div>
+                        <app-no-result class="full-width" title="No data found"
+                            description="You currently don't have any active outlets.">
+                        </app-no-result>
+                    </div>
+                </ng-container>
             </div>
             <div *ngIf="outlets.length > 0" class="pagination mt-4">
                 <app-pagination class="pagination" *ngIf="!this.fetchingOutlet && this.totalOutlet > 0"

@@ -122,12 +122,12 @@ export class EditUserComponent implements OnInit {
       return
     }
 
-    this.userRoles.forEach((el: any) => {
-      const index = roles.indexOf(el.ulid);
-      if (index > -1) { // only splice roles when item is found
-        roles.splice(index, 1); // 2nd parameter means remove one item only
-      }
-    })
+    // this.userRoles.forEach((el: any) => {
+    //   const index = roles.indexOf(el.ulid);
+    //   if (index > -1) { // only splice roles when item is found
+    //     roles.splice(index, 1); // 2nd parameter means remove one item only
+    //   }
+    // })
 
     const payload = {
       user_id: this.user.ulid,

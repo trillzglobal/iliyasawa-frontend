@@ -178,7 +178,7 @@ export class AddSalesComponent implements OnInit {
     }
 
     if (this.description === '') {
-      this.errorMessage = "Phone number is required";
+      this.errorMessage = "description is required";
       this.processLoading = false;
       return
     } else {
@@ -197,9 +197,7 @@ export class AddSalesComponent implements OnInit {
       description: this.description,
     }
 
-
     console.log(payload)
-
 
     this.salesService.createTransactions(payload).subscribe(
       (res: any) => {

@@ -1,6 +1,6 @@
 <div class="main-body-content dashboard account-tab accounts">
 
-    <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
+    <!-- <div _ngcontent-hqb-c160="" class="full-width sub-form ng-star-inserted head mb-4"
         style="justify-content: flex-start; column-gap: 40px;">
         <div _ngcontent-hqb-c160="" class="onequarter-width">
             <div _ngcontent-hqb-c160="" class="cards">
@@ -20,16 +20,16 @@
                 <div _ngcontent-hqb-c160="" class="description">Other Customers</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
         <div class="left">
             <div class="select-container">
                 <select class="ng-pristine ng-valid ng-touched">
-                    <option selected>All Customer</option>
+                    <option selected>All Customers</option>
+                    <option>Company Customers</option>
                     <option>Loyal Customers</option>
-                    <option>Other Manager</option>
-
+                    <option>Other Customers</option>
                 </select>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     <tr>
                         <th>Full Name</th>
                         <th nzWidth="21%">Email</th>
-                        <th nzWidth="20%">Phone</th>
+                        <!-- <th nzWidth="20%">Phone</th> -->
                         <th nzWidth="10%">Role</th>
                         <th nzWidth="10%">Date Registered</th>
                         <th nzWidth="10%">Added By</th>
@@ -73,9 +73,8 @@
             <div class="top-heading">
                 <p class="list-result">
                     Showing
-                    <span>{{customersStart +' - '+ customersStop}}</span> of
                     <span>{{totalCustomers}}</span>
-                    {{ totalCustomers > 1 ? 'Active': 'Active'}}
+                    {{ totalCustomers > 1 ? 'Customers': 'Customer'}}
                 </p>
             </div>
             <div class="table-responsive">
@@ -84,7 +83,7 @@
                         <tr>
                             <th>Full Name</th>
                             <th nzWidth="21%">Email</th>
-                            <th nzWidth="20%">Phone</th>
+                            <!-- <th nzWidth="20%">Phone</th> -->
                             <th nzWidth="10%">Role</th>
                             <th nzWidth="10%">Date Registered</th>
                             <th nzWidth="10%">Added By</th>
@@ -94,30 +93,36 @@
                     </thead>
 
                     <tbody *ngIf="customers.length > 0">
-                        <tr class="hoverable" *ngFor="let item of customers"
-                            [routerLink]="['/dashboard/doctors', item._id]">
-                            <td>{{item?.firstName + ' ' + item?.surname + " " + item?.otherName}}</td>
-                            <td>{{item.emailAddress}}</td>
-                            <td>{{item.phoneNumber}}</td>
-                            <td>{{item.role}}</td>
-                            <td>{{item.createdAt | date: 'medium'}}</td>
-                            <td>{{item?.createdBy?.firstName + ' ' + item?.createdBy?.surname}}</td>
-                            <td>{{item.status | titlecase}}</td>
+                        <tr class="hoverable" *ngFor="let item of customers">
+                            <td>{{item?.firstname + ' ' + item?.lastname}}</td>
+                            <td>{{item.email}}</td>
+                            <!-- <td>{{item.phone}}</td> -->
+                            <td><span class="roles" *ngFor="let val of item.roles">{{val.name}}</span></td>
+                            <td>{{item.created_at | date: 'medium'}}</td>
+                            <td>{{(item?.created_by ?? " ") + ' ' + (item?.created_by ?? "")}}</td>
+                            <td>{{item.status ? item.status : "active" | titlecase}}</td>
                             <td><button (click)="editCustomer(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
                         </tr>
                     </tbody>
-                    <tbody *ngIf="customers.length === 0" style="border:none">
-                        <tr>
-                            <td colspan="6">
-                                <app-no-result class="full-width" title="No data found"
-                                    description="You currently don't have any active customer.">
-                                </app-no-result>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <!-- <tbody *ngIf="staff.length === 0" style="border:none">
+                                        <tr>
+                                            <td colspan="9">
+                                                <app-no-result class="full-width" title="No data found"
+                                                    description="You currently don't have any active staff.">
+                                                </app-no-result>
+                                            </td>
+                                        </tr>
+                                    </tbody> -->
                 </table>
+                <ng-container *ngIf="customers.length === 0" style="border:none">
+                    <div>
+                        <app-no-result class="full-width" title="No data found"
+                            description="You currently don't have any customer.">
+                        </app-no-result>
+                    </div>
+                </ng-container>
             </div>
             <div *ngIf="customers.length > 0" class="pagination mt-4">
                 <app-pagination class="pagination" *ngIf="!this.fetchingCustomers && this.totalCustomers > 0"

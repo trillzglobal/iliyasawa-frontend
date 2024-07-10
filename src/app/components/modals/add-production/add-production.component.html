@@ -2,60 +2,83 @@
     (nzOnCancel)="handleCancel()" [nzClosable]="false">
     <ng-template #modalContent class="modal">
         <div class="modal-container">
-            <div class="form-modal">
+            <div class="form-modal-wider">
                 <div class="top">
-                    <h1 class="form-heading">Add Production Record</h1>
+                    <h1 class="form-heading">
+                        {{ tab != "production" ? "Request Raw Materials" : "Add New Production Record"}}
+                    </h1>
                     <div class="close" (click)="this.handleCancel()">
                         <span>&times;</span>
                     </div>
                 </div>
                 <div class="form-box full-width">
-                    <p class="form-subheading">Fill the form to add new record.</p>
+                    <p class="form-subheading">Fill the form to add a new production record.</p>
                     <app-error-message [message]="this.errorMessage"></app-error-message>
                     <div class="sub-form form1">
-                        <div class="half-width input-box">
-                            <label>First Name</label>
-                            <input type="text" placeholder="first name" autofocus [(ngModel)]="this.firstName">
-                        </div>
-                        <div class="half-width input-box">
-                            <label>Last Name</label>
-                            <input type="text" placeholder="last name" autofocus [(ngModel)]="this.lastName">
-                        </div>
-
-                        <div class="half-width input-box">
-                            <label>Other Name</label>
-                            <input type="text" placeholder="Othername (optional)" autofocus
-                                [(ngModel)]="this.otherName">
-                        </div>
-                        <div class="half-width input-box">
-                            <label>Phone</label>
-                            <input type="tel" placeholder="+234 806624****" autofocus [(ngModel)]="this.phone">
-                        </div>
                         <div class="full-width input-box">
-                            <label>Email</label>
-                            <input type="email" placeholder="user@tsb.com" autofocus [(ngModel)]="this.email">
-                        </div>
-                        <div class="full-width input-box">
-                            <label>Type</label>
-                            <div class="select-container full-width">
-                                <select class="full-width" [(ngModel)]="this.type">
-                                    <option value="">Choose Customer Type</option>
-                                    <option value="Loyal">Company Customer</option>
-                                    <option value="Loyal">Loyal Customer</option>
-                                    <option value="other">Other Customer</option>
-                                </select>
+                            <div class="d-flex">
+                                <span></span>
+                                <button (click)="addProduct()" class="btn-primary-outline-sm">+ Add More
+                                    Product</button>
                             </div>
                         </div>
+
+                        <ng-container *ngFor="let item of choosenProducts; let i = index;">
+                            <div class="half-width input-box">
+                                <label>Product </label>
+                                <div class="select-container full-width">
+                                    <select class="full-width" [(ngModel)]="item.product_id">
+                                        <option value="">Choose Product</option>
+                                        <option *ngFor="let item of products" value="{{item.ulid}}">{{item.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="small-width input-box">
+                                <label>Quantity</label>
+                                <input type="number" [(ngModel)]="item.quantity" min="1">
+                            </div>
+                            <div class="small-width input-box">
+                                <label>Price</label>
+                                <input type="number" [(ngModel)]="item.price">
+                            </div>
+                            <div class="sm-width input-box">
+                                <label>Remove</label>
+                                <button (click)="removeProduct(i)" class="btn-danger-outline">x</button>
+                            </div>
+                        </ng-container>
+
+                        <!-- <div class="full-width input-box">
+                            <label>Transaction Type</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.type">
+                                    <option value="">Choose Type</option>
+                                    <option value="EXPENSE">EXPENSE</option>
+                                    <option value="INCOME">INCOME</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <!-- 
                         <div class="full-width input-box">
-                            <label>Address</label>
-                            <textarea type="text" placeholder="address" autofocus [(ngModel)]="this.address"></textarea>
+                            <label>Outlet</label>
+                            <div class="select-container full-width">
+                                <select class="full-width" [(ngModel)]="this.outlet_id">
+                                    <option value="" selected>Choose Outlet</option>
+                                    <option *ngFor="let item of outlets" value="{{item.ulid}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div> -->
+
+                        <div class="full-width input-box">
+                            <label>Description</label>
+                            <textarea type="text" placeholder="description" [(ngModel)]="this.description"></textarea>
                         </div>
 
                     </div>
 
-                    <button (click)="createUser()" class="btn-primary full-width" style="margin-top:25px"
+                    <button (click)="create()" class="btn-primary full-width" style="margin-top:25px"
                         [ladda]="processLoading">
-                        Add Record
+                        Add Production Record
                     </button>
                 </div>
             </div>

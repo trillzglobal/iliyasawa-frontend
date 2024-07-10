@@ -7,4 +7,13 @@ import { ApiService } from './api.service';
 export class CustomersService {
 
   constructor(private readonly apiService: ApiService) { }
+
+  createUser(data: any) {
+    return this.apiService.post(`customers`, data);
+  }
+
+  getAllUsers() {
+    return this.apiService.get(`customers`);
+  }
+
 }

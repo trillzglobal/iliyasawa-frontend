@@ -38,6 +38,8 @@ export class ProductionComponent {
   reportLimit: number = 25;
   totalReport: number = 0;
   searchTermReport: string = ""
+  tab: string = "production"
+  status: string = ""
 
 
   constructor(
@@ -51,77 +53,94 @@ export class ProductionComponent {
   }
 
   ngOnInit(): void {
-    this.getProduction()
+    this.getTransactions()
   }
 
   setTabView(p: any) {
-    if (p.tab == 'sales') {
+    this.tab = p.tab;
+
+    if (p.tab == 'production') {
       this.selectedIndex = 0;
-      this.getProduction();
+      this.getTransactions();
     } else if (p.tab == 'raw') {
       this.selectedIndex = 1;
+      this.getTransactions();
     } else {
       this.selectedIndex = 0;
-      this.getProduction();
+      this.getTransactions();
     }
   }
 
 
   search() {
 
-    this.getProduction()
+    this.getTransactions()
 
   }
 
 
-  getProduction() {
+  getTransactions() {
 
-    this.fetchingProduction = true;
-
-    // this.productionService.getAllOutlet(this.productionPage - 1, this.productionLimit, 'active', this.searchTerm, this.fromDate, this.toDate).subscribe(
-    //   async (res: any) => {
-    //     // console.log(res);
-    //     if (res.statusCode === 200) {
-    //       this.fetchingProduction = false;
-
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-
-    //       this.production = res.data
-    //       this.totalProduction = res.pagination.total;
-    //       this.productionStart = (this.productionPage - 1) * this.productionLimit;
-    //       this.productionStop = this.productionStart + this.production.length;
-
-    //     } else {
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-    //       this.errorMessage = '' + res.message;
-    //       this.fetchingProduction = false;
-    //       this.totalProduction = 0;
-    //       this.productionStart = 0;
-    //       this.productionStop = 0;
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.fetchingProduction = false;
-    //     this.totalProduction = 0;
-    //     this.productionStart = 0;
-    //     this.productionStop = 0;
-    //   }
-    // )
+    if (this.tab == 'production') {
+      this.fetchingProduction = true;
+    } else {
+      this.fetchingReport = true
+    }
 
 
-    this.fetchingProduction = false;
+    this.productionService.getAllSalesTransaction(this.productionPage, this.status, this.searchTerm, this.tab == "production" ? "STORING" : "USAGE").subscribe(
+      async (res: any) => {
+        console.log(res);
+        if (res.status === "success") {
+          if (this.tab == 'production') {
+            this.fetchingProduction = false;
+          } else {
+            this.fetchingReport = false
+          }
+
+          if (this.tab == 'production') {
+
+            this.production = res.data.data
+            this.totalProduction = res.total;
+            this.productionStart = (this.productionPage - 1) * this.productionLimit;
+            this.productionStop = this.productionStart + this.production.length;
+          } else {
+
+            this.reports = res.data.data
+            this.totalReport = res.total;
+            this.reportStart = (this.reportPage - 1) * this.reportLimit;
+            this.reportStop = this.reportStart + this.reports.length;
+          }
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+          if (this.tab == 'production') {
+            this.fetchingProduction = false;
+          } else {
+            this.fetchingReport = false
+          }
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        if (this.tab == 'production') {
+          this.fetchingProduction = false;
+        } else {
+          this.fetchingReport = false
+        }
+      }
+    )
+
+
   }
 
-  toggleAddModal() {
+  toggleAddModal(tab: string = "") {
+
+    if (tab != "") {
+      this.tab = tab;
+    }
+
     this.showAddModal = !this.showAddModal;
   }
 
@@ -132,7 +151,13 @@ export class ProductionComponent {
   refreshList() {
     this.productionPage = 1;
 
-    this.getProduction()
+    this.getTransactions()
+  }
+
+  refresRawList() {
+    this.reportPage = 1;
+
+    this.getTransactions()
   }
 
   editProduction(data: any) {
@@ -141,8 +166,11 @@ export class ProductionComponent {
     this.toggleEditModal();
   }
 
-  onCreated() {
+  onCreated(event: any) {
+    console.log(event)
 
+    this.toggleAddModal()
+    this.getTransactions()
   }
 
   onUpdated() {

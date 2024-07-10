@@ -109,7 +109,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody *ngIf="products.length === 0" style="border:none">
+                    <!-- <tbody *ngIf="products.length === 0" style="border:none">
                         <tr>
                             <td colspan="8">
                                 <app-no-result class="full-width" title="No data found"
@@ -117,8 +117,16 @@
                                 </app-no-result>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
+
+                <ng-container *ngIf="products.length === 0" style="border:none">
+                    <div>
+                        <app-no-result class="full-width" title="No data found"
+                            description="You currently don't have any active products.">
+                        </app-no-result>
+                    </div>
+                </ng-container>
             </div>
             <div *ngIf="products.length > 0" class="pagination mt-4">
                 <app-pagination class="pagination" *ngIf="!this.fetchingProducts && this.totalProducts > 0"

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { GeneralService } from '../../../services/general.service';
 import { StaffService } from '../../../services/staff.service';
+import { CustomersService } from '../../../services/customers.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -11,8 +12,8 @@ import { StaffService } from '../../../services/staff.service';
 export class AddCustomerComponent implements OnInit {
   errorMessage: string = "";
   processLoading: boolean = false;
-  firstName: string = "";
-  lastName: string = "";
+  first_name: string = "";
+  last_name: string = "";
   otherName: string = "";
   email: string = "";
   phone: string = "";
@@ -21,6 +22,7 @@ export class AddCustomerComponent implements OnInit {
   address: string = "";
   isSelectAll: boolean = false;
   permissions: any = []
+  roles: any = []
 
   @Input() visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -28,11 +30,12 @@ export class AddCustomerComponent implements OnInit {
   constructor(
     private generalService: GeneralService,
     private staffService: StaffService,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    private customersService: CustomersService
   ) { }
 
   ngOnInit(): void {
-    this.getAllPermissions()
+    this.getAllRoles()
   }
 
   ngOnChanges() {
@@ -51,42 +54,48 @@ export class AddCustomerComponent implements OnInit {
     });
   }
 
-  getAllPermissions() {
-    // this.settingsService.getAllPermissions().subscribe(
-    //   (res: any) => {
+  getAllRoles() {
+    this.staffService.getAllRoles().subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        console.log(res)
 
-    //       res.data.forEach((el: any) => {
-    //         el.isSelected = false
-    //       })
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.permissions = res.data
-    //       this.errorMessage = ''
+          if (res.data.length > 0) {
+            const result = res.data.filter((el: any) => el.name.toLowerCase().includes("customer"));
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.permissions = [];
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+            this.roles = result;
+          } else {
+            this.roles = res.data
+            this.errorMessage = ''
+          }
+
+        } else {
+          this.processLoading = false;
+          this.roles = [];
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
+
+
 
   createUser() {
     this.processLoading = false;
 
-    if (this.firstName === '') {
+    if (this.first_name === '') {
       this.errorMessage = "First name is required";
       this.processLoading = false;
       return
     }
 
-    if (this.lastName === '') {
+    if (this.last_name === '') {
       this.errorMessage = "Last name is required";
       this.processLoading = false;
       return
@@ -102,52 +111,40 @@ export class AddCustomerComponent implements OnInit {
       return
     }
 
-    if (this.phone === '') {
-      this.errorMessage = "Phone number is required";
+    if (this.type === '') {
+      this.errorMessage = "Role is required";
       this.processLoading = false;
       return
     }
 
-    if (this.type === '') {
-      this.errorMessage = "Type is required";
-      this.processLoading = false;
-      return
-    }
 
     const payload = {
-      firstName: this.firstName.trim(),
-      surname: this.lastName,
-      otherName: this.otherName.trim(),
-      emailAddress: this.email.trim(),
-      phoneNumber: this.phone.trim(),
-      address: this.address.trim(),
-      type: this.type
+      firstname: this.first_name.trim(),
+      lastname: this.last_name,
+      email: this.email.trim(),
+      roles: [this.type]
     }
 
-    // this.staffService.createUser(payload).subscribe(
-    //   (res: any) => {
+    this.customersService.createUser(payload).subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        if (res.status == 'success') {
+          this.processLoading = false;
+          this.errorMessage = ''
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
+          this.createdUser.emit();
 
-    //       this.createdUser.emit();
-
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 }

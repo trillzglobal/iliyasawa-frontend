@@ -12,6 +12,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
+import { AddProductionModule } from '../../../components/modals/add-production/add-production.module';
 
 
 
@@ -36,6 +37,7 @@ import { PaginationModule } from '../../../components/common/pagination/paginati
     NzTabsModule,
     NoResultModule,
     PaginationModule,
+    AddProductionModule,
     NgxSkeletonLoaderModule
   ]
 })

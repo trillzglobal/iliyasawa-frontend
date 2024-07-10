@@ -105,7 +105,7 @@
                                     <td>{{item.status | titlecase}}</td>
                                 </tr>
                             </tbody>
-                            <tbody *ngIf="store.length === 0" style="border:none">
+                            <!-- <tbody *ngIf="store.length === 0" style="border:none">
                                 <tr>
                                     <td colspan="8">
                                         <app-no-result class="full-width" title="No data found"
@@ -113,8 +113,16 @@
                                         </app-no-result>
                                     </td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
+
+                        <ng-container *ngIf="store.length === 0" style="border:none">
+                            <div>
+                                <app-no-result class="full-width" title="No data found"
+                                    description="You currently don't have any product in store.">
+                                </app-no-result>
+                            </div>
+                        </ng-container>
                     </div>
                     <div *ngIf="store.length > 0" class="pagination mt-4">
                         <app-pagination class="pagination" *ngIf="!this.fetchingStore && this.totalStore > 0"

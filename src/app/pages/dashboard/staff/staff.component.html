@@ -97,15 +97,15 @@
                             <td>{{item.email}}</td>
                             <!-- <td>{{item.phone}}</td> -->
                             <td><span class="roles" *ngFor="let val of item.roles">{{val.name}}</span></td>
-                            <td>{{item.createdAt | date: 'medium'}}</td>
-                            <td>{{(item?.createdBy?.firstname ?? " ") + ' ' + (item?.createdBy?.lastname ?? "")}}</td>
+                            <td>{{item.created_at | date: 'medium'}}</td>
+                            <td>{{(item?.created_by ?? " ") + ' ' + (item?.created_by ?? "")}}</td>
                             <td>{{item.status ? item.status : "active" | titlecase}}</td>
                             <td><button (click)="editStaff(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
                         </tr>
                     </tbody>
-                    <tbody *ngIf="staff.length === 0" style="border:none">
+                    <!-- <tbody *ngIf="staff.length === 0" style="border:none">
                         <tr>
                             <td colspan="9">
                                 <app-no-result class="full-width" title="No data found"
@@ -113,8 +113,15 @@
                                 </app-no-result>
                             </td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
+                <ng-container *ngIf="staff.length === 0" style="border:none">
+                    <div>
+                        <app-no-result class="full-width" title="No data found"
+                            description="You currently don't have any active staff.">
+                        </app-no-result>
+                    </div>
+                </ng-container>
             </div>
             <div *ngIf="staff.length > 0" class="pagination mt-4">
                 <app-pagination class="pagination" *ngIf="!this.fetchingStaff && this.totalStaff > 0"

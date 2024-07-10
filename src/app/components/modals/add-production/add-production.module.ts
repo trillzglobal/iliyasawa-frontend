@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddCustomerComponent } from './add-customer.component';
+import { AddProductionComponent } from './add-production.component';
 import { FormsModule } from '@angular/forms';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ErrorMessageModule } from '../../error-message/error-message.module';
@@ -10,7 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 @NgModule({
-  declarations: [AddCustomerComponent],
+  declarations: [AddProductionComponent],
   imports: [
     FormsModule,
     NzIconModule,
@@ -24,6 +24,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       spinnerLines: 12
     }),
   ],
-  exports: [AddCustomerComponent]
+  exports: [AddProductionComponent]
 })
-export class AddCustomerModule { }
+export class AddProductionModule { }
