@@ -85,7 +85,7 @@ export class HeaderComponent implements OnInit {
     console.log(role)
 
     const payload = {
-      role_id: role.ulid
+      role: role.ulid
     }
 
     this.staffService.switchAccount(payload).subscribe(
@@ -107,9 +107,7 @@ export class HeaderComponent implements OnInit {
           console.log('token', res.data.access_token);
           this.generalService.setToken(res.data.access_token);
 
-          setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 500);
+          window.location.reload()
         } else {
           this.notification.warning(
             'Error signin successful.',
@@ -127,22 +125,31 @@ export class HeaderComponent implements OnInit {
     )
   }
 
+  remove(array: any, key: any, value: any) {
+    const index = array.findIndex((obj: any) => obj[key] === value);
+    return index >= 0 ? [
+      ...array.slice(0, index),
+      ...array.slice(index + 1)
+    ] : array;
+  }
+
   getAllRoles() {
     this.staffService.getUserRoles().subscribe(
       (res: any) => {
-
         if (res.status == 'success') {
           this.processLoading = false;
 
-          if (res.data.length > 0) {
-            const index = res.data.indexOf(this.currentUser.current_role);
-            if (index > -1) { // only splice roles when item is found
-              res.data.splice(index, 1); // 2nd parameter means remove one item only
-            }
+          if (res.data.roles.length > 0) {
 
+            const result = this.remove(res.data.roles, 'name', this.currentUser.current_role)
+
+            this.roles = result
+            return
+          } else {
+            console.log('hiii')
+            this.roles = res.data.roles
+            this.errorMessage = ''
           }
-          this.roles = res.data
-          this.errorMessage = ''
 
         } else {
           this.processLoading = false;

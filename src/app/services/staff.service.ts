@@ -34,7 +34,7 @@ export class StaffService {
   }
 
   switchAccount(payload: any) {
-    return this.apiService.post(`switch-role`, payload);
+    return this.apiService.post(`switch-roles`, payload);
   }
 
 }

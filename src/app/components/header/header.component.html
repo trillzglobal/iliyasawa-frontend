@@ -105,16 +105,15 @@
 <!-- Dropdown -->
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item class="action logout">
-      <img class="small-icons" src="assets/images/user.svg" />{{this.currentUser.current_role}}
+    <li nz-menu-item class="action logout" style="color: var(--primary-color); font-weight: bold;">
+      <img class="small-icons" src="assets/images/user-active.svg" />{{this.currentUser.current_role}}
     </li>
     <li nz-menu-divider></li>
-    <ng-container *ngIf="this.roles.length > 1">
-      <li *ngFor="let item of this.roles; let i = index;" nz-menu-item class="action" (click)="switch(item)">
+    <ng-container *ngIf="this.roles.length > 0">
+      <li *ngFor="let item of this.roles" nz-menu-item class="action" (click)="switch(item)">
         <img class="small-icons" src="assets/images/user.svg" />Switch to {{item.name}}
       </li>
     </ng-container>
-
     <li nz-menu-divider></li>
     <li nz-menu-item class="action logout" (click)="this.generalService.logoutUser()"><img class="small-icons"
         src="assets/images/log-out.svg" />Sign out </li>
