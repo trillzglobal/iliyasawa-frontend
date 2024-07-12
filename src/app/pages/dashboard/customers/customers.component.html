@@ -38,7 +38,8 @@
                 <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (blur)="search()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
-            <button (click)="toggleAddModal()" class="btn-primary">
+            <button *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'" (click)="toggleAddModal()"
+                class="btn-primary">
                 + Add Customer
             </button>
         </div>

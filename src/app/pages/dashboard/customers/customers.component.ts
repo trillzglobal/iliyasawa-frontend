@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CustomersService } from '../../../services/customers.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-customers',
@@ -20,7 +21,6 @@ export class CustomersComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
   fetchingCustomers: boolean = false;
   customers: Array<any> = [];
   customersStart: number = 0;
@@ -30,10 +30,15 @@ export class CustomersComponent {
   totalCustomers: number = 0;
   searchTerm: string = ""
 
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private customersService: CustomersService,
+    private generalService: GeneralService,
   ) {
     // this.route.queryParams.subscribe(p => {
     //   this.setTabView(p);
@@ -42,6 +47,7 @@ export class CustomersComponent {
 
   ngOnInit(): void {
     this.getAllCustomers()
+    this.getUserData()
   }
 
 
@@ -58,7 +64,6 @@ export class CustomersComponent {
 
     this.customersService.getAllUsers().subscribe(
       async (res: any) => {
-        console.log(res);
         if (res.status === "success") {
           this.fetchingCustomers = false;
 
@@ -108,5 +113,12 @@ export class CustomersComponent {
 
   onUpdated() {
 
+  }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

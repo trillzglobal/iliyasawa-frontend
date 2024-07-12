@@ -53,7 +53,7 @@ export class SigninComponent implements OnInit {
 
       this.authService.login(data).subscribe(
         async (res: any) => {
-          console.log(res);
+
           if (res.status === "success") {
             this.processLoading = false;
             this.notification.success(
@@ -67,7 +67,6 @@ export class SigninComponent implements OnInit {
             // add user data to localstorage
             this.generalService.setData('user-data', res.data);
 
-            console.log('token', res.data.access_token);
             this.generalService.setToken(res.data.access_token);
 
             setTimeout(() => {
@@ -84,7 +83,6 @@ export class SigninComponent implements OnInit {
           }
         },
         (error: any) => {
-          console.log(error);
           this.errorMessage = 'An error occured. Please try again later';
           this.processLoading = false;
         }

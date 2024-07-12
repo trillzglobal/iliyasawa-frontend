@@ -59,8 +59,6 @@ export class AddUserComponent implements OnInit {
     this.staffService.getAllRoles().subscribe(
       (res: any) => {
 
-        console.log(res)
-
         if (res.status == 'success') {
           this.processLoading = false;
 
@@ -128,8 +126,6 @@ export class AddUserComponent implements OnInit {
       email: this.email.trim(),
       roles: roles
     }
-
-    console.log(payload)
 
     this.staffService.createUser(payload).subscribe(
       (res: any) => {

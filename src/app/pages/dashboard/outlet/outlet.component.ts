@@ -22,7 +22,6 @@ export class OutletComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
   fetchingOutlet: boolean = false;
   outlets: Array<any> = [];
   outletsCopy: Array<any> = [];
@@ -37,6 +36,7 @@ export class OutletComponent {
 
   fetchingStaff: boolean = false
   staff: any = []
+  userRole: any = "";
 
 
   constructor(
@@ -54,6 +54,7 @@ export class OutletComponent {
   ngOnInit(): void {
     this.getOutlet()
     this.getStaff()
+    this.getUserData()
   }
 
 
@@ -70,7 +71,6 @@ export class OutletComponent {
     }
   }
 
-
   getOutlet() {
     this.fetchingOutlet = true;
 
@@ -80,45 +80,22 @@ export class OutletComponent {
         if (res.status === 'success') {
           this.fetchingOutlet = false;
 
-          this.notification.success(
-            res.message,
-            "",
-            { nzClass: 'notification1' }
-          );
 
           this.outlets = res.data
           this.outletsCopy = res.data
           this.totalOutlet = res.data.length;
-          // this.outletStart = (this.outletPage - 1) * this.outletLimit;
-          // this.outletStop = this.outletStart + this.outlets.length;
 
         } else {
-          this.notification.success(
-            res.message,
-            "",
-            { nzClass: 'notification1' }
-          );
+
           this.errorMessage = '' + res.message;
           this.fetchingOutlet = false;
-          // this.totalOutlet = 0;
-          // this.outletStart = 0;
-          // this.outletStop = 0;
         }
       },
       (error: any) => {
         this.errorMessage = 'An error occured. Please try again later';
         this.fetchingOutlet = false;
-        // this.totalOutlet = 0;
-        // this.outletStart = 0;
-        // this.outletStop = 0;
       }
     )
-
-    // this.outlets = this.sample
-    // this.totalOutlet = 50;
-    // this.outletPage = 1;
-
-    // this.fetchingOutlet = false;
 
   }
 
@@ -158,7 +135,7 @@ export class OutletComponent {
 
     this.staffService.getAllUsers().subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === 'success') {
           this.fetchingStaff = false;
 
@@ -173,8 +150,6 @@ export class OutletComponent {
                 result.push(el)
               }
             })
-
-            console.log('filter result', result)
 
             this.staff = result;
           } else {
@@ -194,11 +169,12 @@ export class OutletComponent {
       }
     )
 
-    // this.staff = this.sample
-    // this.totalStaff = 50;
-    // this.staffPage = 1;
+  }
 
-    // this.fetchingStaff = false;
-
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

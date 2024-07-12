@@ -24,6 +24,7 @@ export class EditUserComponent implements OnInit {
   isSelectAll: boolean = false;
   permissions: any = []
 
+
   @Input() visible: boolean = false;
   @Input() user: any = {};
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -76,8 +77,6 @@ export class EditUserComponent implements OnInit {
   getAllRoles() {
     this.staffService.getAllRoles().subscribe(
       (res: any) => {
-
-        console.log(res)
 
         if (res.status == 'success') {
           this.processLoading = false;
@@ -134,11 +133,8 @@ export class EditUserComponent implements OnInit {
       roles: roles
     }
 
-    console.log(payload)
-
     this.staffService.updateUserRole(payload).subscribe(
       (res: any) => {
-
         if (res.status == 'success') {
           this.processLoading = false;
 

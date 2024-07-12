@@ -36,7 +36,8 @@
                 <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="searchStaff()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
-            <button (click)="toggleAddModal()" class="btn-primary">
+            <button *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'" (click)="toggleAddModal()"
+                class="btn-primary">
                 + Add Staff
             </button>
         </div>
@@ -100,7 +101,8 @@
                             <td>{{item.created_at | date: 'medium'}}</td>
                             <td>{{(item?.created_by ?? " ") + ' ' + (item?.created_by ?? "")}}</td>
                             <td>{{item.status ? item.status : "active" | titlecase}}</td>
-                            <td><button (click)="editStaff(item)" class="btn-primary-outline2"><img
+                            <td><button *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'"
+                                    (click)="editStaff(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
                         </tr>

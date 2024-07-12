@@ -50,7 +50,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(secureReq).pipe(
       catchError((error) => {
-        console.log(error);
         if (error.status === 403) {
           // this.generalService.logoutUser();
           this.notification.warning(

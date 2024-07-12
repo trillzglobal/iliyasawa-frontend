@@ -81,7 +81,6 @@ export class AddProcurementComponent implements OnInit {
   }
 
   removeProduct(index: any) {
-    console.log(index)
 
     if (index > 0) { // only splice roles when item is found
       this.choosenProducts.splice(index, 1); // 2nd parameter means remove one item only
@@ -94,7 +93,6 @@ export class AddProcurementComponent implements OnInit {
 
     this.productsService.getAllProducts(1, "RAW_MATERIAL").subscribe(
       async (res: any) => {
-        console.log(res);
         if (res.status === "success") {
           this.fetchingProducts = false;
           this.products = res.data.data
@@ -176,7 +174,6 @@ export class AddProcurementComponent implements OnInit {
       this.errorMessage = "";
     }
 
-
     const payload = {
       products: this.choosenProducts,
       reference: "PROCMT_" + this.generalService.getUniqueTwelveDigits(),
@@ -185,10 +182,6 @@ export class AddProcurementComponent implements OnInit {
       type: this.type,
       description: this.description,
     }
-
-
-    console.log(payload)
-
 
     this.salesService.createTransactions(payload).subscribe(
       (res: any) => {
@@ -221,7 +214,6 @@ export class AddProcurementComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.log(error)
         this.errorMessage = 'An error occured. Please try again later';
         this.processLoading = false;
       }

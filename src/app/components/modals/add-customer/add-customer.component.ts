@@ -58,8 +58,6 @@ export class AddCustomerComponent implements OnInit {
     this.staffService.getAllRoles().subscribe(
       (res: any) => {
 
-        console.log(res)
-
         if (res.status == 'success') {
           this.processLoading = false;
 

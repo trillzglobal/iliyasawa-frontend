@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ProductsService } from '../../../services/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-products',
@@ -20,7 +21,6 @@ export class ProductsComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // Available doctors
   fetchingProducts: boolean = false;
   products: Array<any> = [];
   productsStart: number = 0;
@@ -30,10 +30,16 @@ export class ProductsComponent {
   totalProducts: number = 0;
   searchTerm: string = ""
   type: string = ""
+
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private productsService: ProductsService,
+    private generalService: GeneralService,
   ) {
     // this.route.queryParams.subscribe(p => {
     //   this.setTabView(p);
@@ -42,6 +48,7 @@ export class ProductsComponent {
 
   ngOnInit(): void {
     this.getAllProducts()
+    this.getUserData()
   }
 
 
@@ -116,5 +123,12 @@ export class ProductsComponent {
   onUpdated() {
     this.toggleEditModal()
     this.getAllProducts()
+  }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

@@ -19,7 +19,8 @@
                         <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
                         <img src="assets/images/search.svg" alt="">
                     </div>
-                    <button (click)="toggleAddModal()" class="btn-primary">
+                    <button *ngIf="userRole == 'SALES_RAW' || userRole == 'SALES_FINISHED'" (click)="toggleAddModal()"
+                        class="btn-primary">
                         + Add Record
                     </button>
                 </div>
@@ -105,7 +106,8 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by?.firstname">
-                                            <button class="btn-primary-outline-small">Approve</button>
+                                            <button *ngIf="userRole == 'MANAGER'"
+                                                class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
                                         <ng-container *ngIf="item?.approved_by?.firstname">
@@ -213,8 +215,7 @@
                             </tr>
                         </thead>
                         <tbody *ngIf="reports.length > 0">
-                            <tr class="hoverable" *ngFor="let item of reports"
-                                [routerLink]="['/dashboard/doctors', item._id]">
+                            <tr class="hoverable" *ngFor="let item of reports">
                                 <td>Dr. {{item.firstName + ' ' + item.surname + " " + item.otherName}}</td>
                                 <td>{{item.emailAddress}}</td>
                                 <td>{{item.phoneNumber}}</td>

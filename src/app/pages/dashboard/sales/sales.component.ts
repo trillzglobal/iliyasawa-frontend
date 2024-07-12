@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SalesService } from '../../../services/sales.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-sales',
@@ -20,7 +21,6 @@ export class SalesComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
   fetchingSales: boolean = false;
   sales: Array<any> = [];
   salesStart: number = 0;
@@ -30,8 +30,6 @@ export class SalesComponent {
   totalSales: number = 0;
   searchTerm: string = ""
 
-
-  // active doctors
   fetchingReport: boolean = false;
   reports: Array<any> = [];
   reportStart: number = 0;
@@ -43,10 +41,15 @@ export class SalesComponent {
   status: string = ""
   fetchingProducts: boolean = false;
 
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private salesService: SalesService,
+    private generalService: GeneralService,
   ) {
     this.route.queryParams.subscribe(p => {
       this.setTabView(p);
@@ -55,6 +58,7 @@ export class SalesComponent {
 
   ngOnInit(): void {
     this.getSales()
+    this.getUserData()
   }
 
   setTabView(p: any) {
@@ -88,7 +92,7 @@ export class SalesComponent {
 
     this.salesService.getAllSalesTransaction(this.salesPage, this.status, this.searchTerm, "SALES").subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === 'success') {
           this.fetchingSales = false;
 
@@ -144,5 +148,12 @@ export class SalesComponent {
 
   onUpdated() {
 
+  }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

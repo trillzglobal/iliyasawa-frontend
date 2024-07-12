@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SalesService } from '../../../services/sales.service';
 import { ProductionService } from '../../../services/production.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-store',
@@ -48,6 +49,9 @@ export class StoreComponent {
   productionLimit: number = 25;
   totalProduction: number = 0;
   searchActiveTerm: string = ""
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: string = ""
 
 
   constructor(
@@ -55,6 +59,7 @@ export class StoreComponent {
     private notification: NzNotificationService,
     private storeService: StoreService,
     private salesService: SalesService,
+    private generalService: GeneralService,
     private productionService: ProductionService
   ) {
     this.route.queryParams.subscribe(p => {
@@ -64,6 +69,7 @@ export class StoreComponent {
 
   ngOnInit(): void {
     this.getStore()
+    this.getUserData()
   }
 
   setTabView(p: any) {
@@ -100,7 +106,7 @@ export class StoreComponent {
 
     this.storeService.getStoreProducts("RAW_MATERIAL").subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === "success") {
           this.fetchingStore = false;
 
@@ -134,7 +140,7 @@ export class StoreComponent {
 
     this.salesService.getAllSalesTransaction(this.procurementPage, this.status, this.searchTerm, "PROCUREMENT").subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === 'success') {
           this.fetchingProcurements = false;
 
@@ -165,7 +171,7 @@ export class StoreComponent {
   getProductionReports() {
     this.productionService.getAllSalesTransaction(this.productionPage, this.status, this.searchTerm, "USAGE").subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === "success") {
 
           this.fetchingProduction = false;
@@ -222,11 +228,10 @@ export class StoreComponent {
     this.toggleEditModal();
   }
 
-  onCreated() {
-
-  }
-
-  onUpdated() {
-
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

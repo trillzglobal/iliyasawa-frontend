@@ -7,13 +7,21 @@
                     <option selected>All Outlets</option>
                 </select>
             </div> -->
+            <div class="top-heading">
+                <p class="list-result">
+                    Showing
+                    <span>{{outlets.length}}</span>
+                    {{ totalOutlet > 1 ? 'Outlets': 'Outlet'}}
+                </p>
+            </div>
         </div>
         <div class="right">
             <div class="password-container">
                 <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
                 <img src="assets/images/search.svg" alt="">
             </div>
-            <button (click)="toggleAddModal()" class="btn-primary">
+            <button *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'" (click)="toggleAddModal()"
+                class="btn-primary">
                 + Add Outlet
             </button>
         </div>
@@ -43,14 +51,7 @@
             </table>
         </ng-container>
         <ng-container *ngIf="!fetchingOutlet">
-            <div class="top-heading">
-                <p class="list-result">
-                    Showing
-                    <span>{{outlets.length}}</span> of
-                    <span>{{totalOutlet}}</span>
-                    {{ totalOutlet > 1 ? 'Outlets': 'Outlet'}}
-                </p>
-            </div>
+
             <div class="table-responsive">
                 <table class="table data-table mt-4">
                     <thead>
@@ -71,7 +72,8 @@
                             <td>{{item.created_at | date: 'medium'}}</td>
                             <td>{{item.user}}</td>
                             <td>{{item.active == 1 ? "Active" : "Inactive" | titlecase}}</td>
-                            <td><button (click)="editOutlet(item)" class="btn-primary-outline2"><img
+                            <td><button *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'"
+                                    (click)="editOutlet(item)" class="btn-primary-outline2"><img
                                         src="assets/images/edit-icon.svg" alt=""></button>
                             </td>
                         </tr>

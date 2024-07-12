@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   @Input() currentUser: any = {};
   @Input() fetchingData: boolean = false;
   @Input() title: string = "";
-  @Input() showBackButton: boolean = true;
+  @Input() showBackButton: boolean = false;
   @Input() backUrl: string = "";
   @Input() urlQuery: any = {};
   @Output() openCompliance: EventEmitter<boolean> = new EventEmitter();
@@ -82,7 +82,6 @@ export class HeaderComponent implements OnInit {
 
 
   switch(role: any) {
-    console.log(role)
 
     const payload = {
       role: role.ulid
@@ -90,11 +89,10 @@ export class HeaderComponent implements OnInit {
 
     this.staffService.switchAccount(payload).subscribe(
       (res: any) => {
-        console.log(res)
         if (res.status === "success") {
           this.processLoading = false;
           this.notification.success(
-            'Role switch successful.',
+            'Role switched successful.',
             '' + (res.message ?? "Success"),
             { nzClass: 'notification1' }
           );
@@ -104,7 +102,6 @@ export class HeaderComponent implements OnInit {
           // add user data to localstorage
           this.generalService.setData('user-data', res.data);
 
-          console.log('token', res.data.access_token);
           this.generalService.setToken(res.data.access_token);
 
           window.location.reload()
@@ -146,7 +143,7 @@ export class HeaderComponent implements OnInit {
             this.roles = result
             return
           } else {
-            console.log('hiii')
+
             this.roles = res.data.roles
             this.errorMessage = ''
           }

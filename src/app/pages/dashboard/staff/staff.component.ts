@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { StaffService } from '../../../services/staff.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-staff',
   templateUrl: './staff.component.html',
   styleUrl: './staff.component.scss'
 })
+
 export class StaffComponent {
 
   errorMessage: string = "";
@@ -23,7 +25,6 @@ export class StaffComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
   fetchingStaff: boolean = false;
   staff: Array<any> = [];
   staffCopy: Array<any> = [];
@@ -34,9 +35,14 @@ export class StaffComponent {
   totalStaff: number = 0;
   searchTerm: string = ""
 
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
+
   constructor(
     private notification: NzNotificationService,
     private staffService: StaffService,
+    private generalService: GeneralService,
   ) {
 
   }
@@ -44,6 +50,7 @@ export class StaffComponent {
   ngOnInit(): void {
     this.getStaff()
     this.getAllRoles()
+    this.getUserData()
   }
 
 
@@ -118,23 +125,12 @@ export class StaffComponent {
         if (res.status === 'success') {
           this.fetchingStaff = false;
 
-          this.notification.success(
-            res.message,
-            "",
-            { nzClass: 'notification1' }
-          );
-
           this.staff = res.data
           this.staffCopy = res.data
           this.totalStaff = res.data.length;
 
         } else {
 
-          this.notification.success(
-            res.message,
-            "",
-            { nzClass: 'notification1' }
-          );
           this.errorMessage = '' + res.message;
           this.fetchingStaff = false;
         }
@@ -142,9 +138,6 @@ export class StaffComponent {
       (error: any) => {
         this.errorMessage = 'An error occured. Please try again later';
         this.fetchingStaff = false;
-        this.totalStaff = 0;
-        this.staffStart = 0;
-        this.staffStop = 0;
       }
     )
 
@@ -179,4 +172,12 @@ export class StaffComponent {
     this.toggleEditModal()
     this.getStaff()
   }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
+  }
+
 }

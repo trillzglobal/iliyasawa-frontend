@@ -3,6 +3,8 @@ import { ReportService } from '../../../services/report.service';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { StoreService } from '../../../services/store.service';
+import { GeneralService } from '../../../services/general.service';
+import { ProductionService } from '../../../services/production.service';
 
 @Component({
   selector: 'app-reports',
@@ -40,40 +42,28 @@ export class ReportsComponent {
   totalReport: number = 0;
   searchTerm: string = ""
 
+  status: string = ""
 
-  // active 
-  fetchingActive: boolean = false;
-  active: Array<any> = [];
-  activeStart: number = 0;
-  activeStop: number = 0;
-  activePage: number = 1;
-  activeLimit: number = 25;
-  totalActive: number = 0;
-  searchActiveTerm: string = ""
-
-
-  fetchingRequests: boolean = false;
-  requests: Array<any> = [];
-  requestsStart: number = 0;
-  requestsStop: number = 0;
-  requestsPage: number = 1;
-  requestsLimit: number = 25;
-  totalRequests: number = 0;
-  searchRequestTerm: string = ""
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
 
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private reportsService: ReportService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private generalService: GeneralService,
+    private productionService: ProductionService
   ) {
-    // this.route.queryParams.subscribe(p => {
-    //   this.setTabView(p);
-    // });
+    this.route.queryParams.subscribe(p => {
+      this.setTabView(p);
+    });
   }
 
   ngOnInit(): void {
     this.getStore()
+    this.getUserData()
   }
 
   setTabView(p: any) {
@@ -83,20 +73,14 @@ export class ReportsComponent {
     } else if (p.tab == 'production') {
       this.selectedIndex = 1;
       this.getReports();
-    } else if (p.tab == 'income') {
-      this.selectedIndex = 2;
-      this.getReports();
     } else {
       this.selectedIndex = 0;
-      this.getReports();
+      this.getStore();
     }
   }
 
-
   search() {
-
     this.getReports()
-
   }
 
   searchStore() {
@@ -108,50 +92,31 @@ export class ReportsComponent {
 
     this.fetchingReport = true;
 
-    // this.reportsService.getAllOutlet(this.reportPage - 1, this.reportLimit, 'active', this.searchTerm, this.fromDate, this.toDate).subscribe(
-    //   async (res: any) => {
-    //     // console.log(res);
-    //     if (res.statusCode === 200) {
-    //       this.fetchingReport = false;
+    this.productionService.getAllSalesTransaction(this.reportPage, this.status, this.searchTerm, "STORING").subscribe(
+      async (res: any) => {
 
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
+        if (res.status === "success") {
 
-    //       this.reports = res.data
-    //       this.totalReport = res.pagination.total;
-    //       this.reportStart = (this.reportPage - 1) * this.reportLimit;
-    //       this.reportStop = this.reportStart + this.reports.length;
+          this.fetchingReport = false
 
-    //     } else {
-    //       this.notification.success(
-    //         res.message,
-    //         "",
-    //         { nzClass: 'notification1' }
-    //       );
-    //       this.errorMessage = '' + res.message;
-    //       this.fetchingReport = false;
-    //       this.totalReport = 0;
-    //       this.reportStart = 0;
-    //       this.reportStop = 0;
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.fetchingReport = false;
-    //     this.totalReport = 0;
-    //     this.reportStart = 0;
-    //     this.reportStop = 0;
-    //   }
-    // )
+          this.reports = res.data.data
+          this.totalReport = res.total;
+          this.reportStart = (this.reportPage - 1) * this.reportLimit;
+          this.reportStop = this.reportStart + this.reports.length;
 
-    // this.reports = this.sample
-    // this.totalReport = 50;
-    // this.reportPage = 1;
+        } else {
 
-    // this.fetchingReport = false;
+          this.errorMessage = '' + res.message;
+          this.fetchingReport = false
+
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.fetchingReport = false
+
+      }
+    )
 
   }
 
@@ -161,7 +126,7 @@ export class ReportsComponent {
 
     this.storeService.getStoreProducts("FINISHED_PRODUCT").subscribe(
       async (res: any) => {
-        console.log(res);
+
         if (res.status === "success") {
           this.fetchingStore = false;
 
@@ -216,5 +181,12 @@ export class ReportsComponent {
 
   onUpdated() {
 
+  }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

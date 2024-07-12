@@ -72,8 +72,6 @@ export class AddOutletComponent implements OnInit {
       outlet_description: this.description,
     }
 
-    console.log(payload)
-
     this.outletService.createOulet(payload).subscribe(
       (res: any) => {
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SalesService } from '../../../services/sales.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-procurement',
@@ -20,7 +21,6 @@ export class ProcurementComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
-  // active doctors
   fetchingRecords: boolean = false;
   record: Array<any> = [];
   recordStart: number = 0;
@@ -31,7 +31,6 @@ export class ProcurementComponent {
   searchTerm: string = ""
 
 
-  // active doctors
   fetchingReport: boolean = false;
   reports: Array<any> = [];
   reportStart: number = 0;
@@ -43,10 +42,16 @@ export class ProcurementComponent {
   status: string = ""
   fetchingProducts: boolean = false;
 
+  fetchingData: boolean = false;
+  currentUser: any = {};
+  userRole: any = "";
+
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
     private salesService: SalesService,
+    private generalService: GeneralService,
   ) {
     this.route.queryParams.subscribe(p => {
       this.setTabView(p);
@@ -55,6 +60,7 @@ export class ProcurementComponent {
 
   ngOnInit(): void {
     this.getProcurementTransaction()
+    this.getUserData()
   }
 
   setTabView(p: any) {
@@ -81,13 +87,12 @@ export class ProcurementComponent {
 
   }
 
-
   getProcurementTransaction() {
     this.fetchingRecords = true;
 
     this.salesService.getAllSalesTransaction(this.recordPage, this.status, this.searchTerm, "PROCUREMENT").subscribe(
       async (res: any) => {
-        console.log('res', res);
+
         if (res.status === 'success') {
           this.fetchingRecords = false;
 
@@ -143,5 +148,12 @@ export class ProcurementComponent {
 
   onUpdated() {
 
+  }
+
+  async getUserData() {
+    this.fetchingData = true;
+    this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
+    this.fetchingData = false;
   }
 }

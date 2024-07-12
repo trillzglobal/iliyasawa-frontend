@@ -14,17 +14,17 @@ export class LayoutComponent {
 
   fetchingData: boolean = false;
   currentUser: any = {};
-  currentUserRole: string = "Support";
   emailVerified: any;
   checkStatus: string = "";
-  headerTitle: string = ""
+  headerTitle: string = "DASHBOARD"
   showHeaderBackButton: boolean = false;
-  totalTransfersRequiringApproval: number = 0;
   openSideBar!: boolean;
   backUrl: string = "";
   urlQuery: any = {};
   business: any = {};
   env!: string;
+
+  userRole: string = "";
 
   constructor(
     public message: NzMessageService,
@@ -100,40 +100,40 @@ export class LayoutComponent {
       this.urlQuery = {};
       this.titleService.setTitle('Store | Iliyasawa');
     }
+    else if (url.includes("/dashboard/reports") && !url.includes("/dashboard/reports/")) {
+      this.headerTitle = "Store";
+      this.showHeaderBackButton = false;
+      this.backUrl = "";
+      this.urlQuery = {};
+      this.titleService.setTitle('Store | Iliyasawa');
+    }
     else if (url.includes("/dashboard/staff") && !url.includes("/dashboard/staff/")) {
-      this.headerTitle = "STAFF";
+      this.headerTitle = "Staff";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
       this.titleService.setTitle('Staff | Iliyasawa');
     }
     else if (url === "/dashboard/settings" || url === "/dashboard/settings/") {
-      this.headerTitle = "SETTINGS";
+      this.headerTitle = "Settings";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
       this.titleService.setTitle('Settings | Iliyasawa');
     }
     else if (url.includes("/dashboard/settings?tab=")) {
-      this.headerTitle = "SETTINGS";
+      this.headerTitle = "settings";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
       this.titleService.setTitle('Settings | Iliyasawa');
     }
-    else if (url === "/dashboard/logs" || url === "/dashboard/logs/") {
-      this.headerTitle = "LOGS";
+    else if (url === "/dashboard/notifications" || url === "/dashboard/notifications/") {
+      this.headerTitle = "Notifications";
       this.showHeaderBackButton = false;
       this.backUrl = "";
       this.urlQuery = {};
-      this.titleService.setTitle('LOGS | Iliyasawa');
-    }
-    else if (url === "/dashboard/notification" || url === "/dashboard/notification/") {
-      this.headerTitle = "NOTIFICATION";
-      this.showHeaderBackButton = false;
-      this.backUrl = "";
-      this.urlQuery = {};
-      this.titleService.setTitle('NOTIFICATION  | Iliyasawa');
+      this.titleService.setTitle('Notifications  | Iliyasawa');
     }
 
   }
@@ -141,6 +141,7 @@ export class LayoutComponent {
   async getUserData() {
     this.fetchingData = true;
     this.currentUser = await this.generalService.getUserData();
+    this.userRole = this.currentUser.current_role;
     this.fetchingData = false;
   }
 }

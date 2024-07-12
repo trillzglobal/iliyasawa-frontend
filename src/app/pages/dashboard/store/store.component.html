@@ -34,6 +34,13 @@
                             <option selected>All Product</option>
                         </select>
                     </div> -->
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{store.length}}</span>
+                            {{ store.length > 1 ? 'Items': 'Items'}}
+                        </p>
+                    </div>
                 </div>
                 <div class="right">
                     <div class="password-container">
@@ -62,7 +69,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of [1,2,3]">
-                                <td *ngFor="let item of [1,2,3,4,5]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8]">
                                     <ngx-skeleton-loader style="width: 100%;"
                                         [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
                                         appearance="line">
@@ -73,14 +80,7 @@
                     </table>
                 </ng-container>
                 <ng-container *ngIf="!fetchingStore">
-                    <div class="top-heading">
-                        <p class="list-result">
-                            Showing
-                            <span>{{storeStart +' - '+ storeStop}}</span> of
-                            <span>{{totalStore}}</span>
-                            {{ totalStore > 1 ? 'Items': 'Items'}}
-                        </p>
-                    </div>
+
                     <div class="table-responsive">
                         <table class="table data-table mt-4">
                             <thead>
@@ -150,6 +150,12 @@
                                     <option>Pediatricians</option>
                                 </select>
                             </div> -->
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing <strong>{{procurement.length}} </strong> {{ procurement.length > 1 ? 'Records':
+                            'Records'}}
+                        </p>
+                    </div>
                 </div>
                 <div class="right">
                     <div class="password-container">
@@ -191,12 +197,7 @@
                     </table>
                 </ng-container>
                 <ng-container *ngIf="!fetchingProcurements">
-                    <div class="top-heading">
-                        <p class="list-result">
-                            Showing <strong>{{procurement.length}} </strong> {{ procurement.length > 1 ? 'Records':
-                            'Records'}}
-                        </p>
-                    </div>
+
                     <div class="table-responsive">
                         <table class="table data-table mt-4">
                             <thead>
@@ -240,7 +241,8 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by?.firstname">
-                                            <button class="btn-primary-outline-small">Approve</button>
+                                            <button *ngIf="userRole == 'MANAGER'"
+                                                class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
                                         <ng-container *ngIf="item?.approved_by?.firstname">
@@ -287,12 +289,19 @@
                 queryParamsHandling="merge">Production Record</a>
             <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
                 <div class="left">
-                    <div class="select-container">
+                    <!-- <div class="select-container">
                         <select class="ng-pristine ng-valid ng-touched">
                             <option selected>All Production</option>
-                            <!-- <option>Pulmologist</option>
-                                        <option>Pediatricians</option> -->
+                            <option>Pulmologist</option>
+                                        <option>Pediatricians</option>
                         </select>
+                    </div> -->
+                    <div class="top-heading">
+                        <p class="list-result">
+                            Showing
+                            <span>{{production.length}}</span>
+                            {{ production.length > 1 ? 'Records': 'Records'}}
+                        </p>
                     </div>
                 </div>
                 <div class="right">
@@ -335,14 +344,7 @@
                     </table>
                 </ng-container>
                 <ng-container *ngIf="!fetchingProduction">
-                    <div class="top-heading">
-                        <p class="list-result">
-                            Showing
-                            <span>{{productionStart +' - '+ productionStop}}</span> of
-                            <span>{{totalProduction}}</span>
-                            {{ totalProduction > 1 ? 'Records': 'Records'}}
-                        </p>
-                    </div>
+
                     <div class="table-responsive">
                         <table class="data-table mt-4">
                             <thead>
@@ -383,7 +385,8 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by">
-                                            <button class="btn-primary-outline-small">Approved</button>
+                                            <button *ngIf="userRole == 'MANAGER'"
+                                                class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
                                         <ng-container *ngIf="item?.approved_by">
