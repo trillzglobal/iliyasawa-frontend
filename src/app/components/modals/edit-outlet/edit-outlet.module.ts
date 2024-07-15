@@ -18,7 +18,7 @@ import { LaddaModule } from 'angular2-ladda';
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
   ],

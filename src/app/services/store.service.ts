@@ -10,7 +10,7 @@ export class StoreService {
 
 
   createMainStore(data: any) {
-    return this.apiService.post(`/create/main-store-product`, data);
+    return this.apiService.post(`create/main-store-product`, data);
   }
 
   getStoreProducts(type: string = "") {

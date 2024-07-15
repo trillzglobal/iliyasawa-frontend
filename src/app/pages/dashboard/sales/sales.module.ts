@@ -30,7 +30,7 @@ import { AddSalesModule } from '../../../components/modals/add-sales/add-sales.m
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     AddSalesModule,

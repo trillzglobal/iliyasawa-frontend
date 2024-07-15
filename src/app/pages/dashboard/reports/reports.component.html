@@ -220,8 +220,33 @@
                                     <td>{{item.status}}</td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
                                     <td>{{item?.created_by}}</td>
-                                    <td>{{item?.accepted_by}}</td>
-                                    <td>{{item?.approved_by}}</td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.accepted_by">
+                                            <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
+                                                (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
+                                                class="btn-primary-outline-small">Accept</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.accepted_by">
+                                            {{(item?.accepted_by ?? "") + ' ' + (item?.accepted_by
+                                            ?? "")}}
+                                        </ng-container>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="!item?.approved_by">
+                                            <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
+                                                nzPopconfirmTitle="Are you sure approve this?"
+                                                (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processApprove" nz-button
+                                                class="btn-primary-outline-small">Approve</button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item?.approved_by">
+                                            {{(item?.approved_by ?? "") + ' ' + (item?.approved_by
+                                            ?? "")}}
+                                        </ng-container>
+                                    </td>
                                 </tr>
                             </tbody>
                             <!-- <tbody *ngIf="active.length === 0" style="border:none">

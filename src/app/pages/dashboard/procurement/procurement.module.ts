@@ -31,7 +31,7 @@ import { AddProcurementModule } from '../../../components/modals/add-procurement
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     NoResultModule,

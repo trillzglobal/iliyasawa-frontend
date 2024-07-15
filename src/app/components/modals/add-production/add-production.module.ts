@@ -20,7 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
   ],

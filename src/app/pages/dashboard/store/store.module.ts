@@ -12,6 +12,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 
 
@@ -32,9 +33,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
+    NzPopconfirmModule,
     StoreRoutingModule,
     NgxSkeletonLoaderModule
   ]

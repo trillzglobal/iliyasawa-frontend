@@ -29,8 +29,8 @@ export class StaffService {
     return this.apiService.post(`user/update-roles`, data);
   }
 
-  addRole(data: any) {
-    return this.apiService.post(`admin/create/role`, data);
+  resetPassword(data: any) {
+    return this.apiService.post(`password/email`, data);
   }
 
   switchAccount(payload: any) {

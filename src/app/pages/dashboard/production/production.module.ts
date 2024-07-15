@@ -13,7 +13,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { AddProductionModule } from '../../../components/modals/add-production/add-production.module';
-
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 
 @NgModule({
@@ -30,12 +30,13 @@ import { AddProductionModule } from '../../../components/modals/add-production/a
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     ProductionRoutingModule,
     NzTabsModule,
     NoResultModule,
+    NzPopconfirmModule,
     PaginationModule,
     AddProductionModule,
     NgxSkeletonLoaderModule

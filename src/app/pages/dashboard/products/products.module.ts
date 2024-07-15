@@ -33,7 +33,7 @@ import { EditProductModule } from '../../../components/modals/edit-product/edit-
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     PaginationModule,

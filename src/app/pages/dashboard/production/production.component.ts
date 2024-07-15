@@ -45,6 +45,9 @@ export class ProductionComponent {
   currentUser: any = {};
   userRole: any = "";
 
+  processApprove: boolean = false;
+  processAccept: boolean = false;
+
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -187,5 +190,75 @@ export class ProductionComponent {
     this.currentUser = await this.generalService.getUserData();
     this.userRole = this.currentUser.current_role;
     this.fetchingData = false;
+  }
+
+  accept(id: string) {
+    console.log(id)
+    if (this.processAccept) return
+
+    this.processAccept = true
+    this.generalService.acceptTransaction(id).subscribe(
+      async (res: any) => {
+
+        this.processAccept = false
+        if (res.status === "success") {
+
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+
+        } else {
+
+          this.errorMessage = '' + res.message;
+
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+
+        this.processAccept = false;
+      }
+    )
+  }
+
+  cancelAccept() {
+
+  }
+
+  approve(id: string) {
+    console.log(id)
+    if (this.processApprove) return
+
+    this.processApprove = true
+    this.generalService.approveTransaction(id).subscribe(
+      async (res: any) => {
+
+        this.processApprove = false
+
+        if (res.status === "success") {
+
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+
+        } else {
+
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+
+          this.errorMessage = '' + res.message;
+
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processApprove = false;
+      }
+    )
   }
 }

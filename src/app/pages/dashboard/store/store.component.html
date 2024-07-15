@@ -230,7 +230,10 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.accepted_by?.firstname">
-                                            <button class="btn-primary-outline-small">Accept</button>
+                                            <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
+                                                (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
+                                                class="btn-primary-outline-small">Accept</button>
                                         </ng-container>
 
                                         <ng-container *ngIf="item?.accepted_by?.firstname">
@@ -241,7 +244,10 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by?.firstname">
-                                            <button *ngIf="userRole == 'MANAGER'"
+                                            <button nz-popconfirm nzPopconfirmTitle="Are you sure approve this?"
+                                                (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processApprove" nz-button
+                                                *ngIf="userRole == 'MANAGER'"
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
@@ -375,7 +381,10 @@
                                     <td>{{item?.created_by}}</td>
                                     <td>
                                         <ng-container *ngIf="!item?.accepted_by">
-                                            <button class="btn-primary-outline-small">Accept</button>
+                                            <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
+                                                (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
+                                                class="btn-primary-outline-small">Accept</button>
                                         </ng-container>
 
                                         <ng-container *ngIf="item?.accepted_by">
@@ -385,7 +394,10 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by">
-                                            <button *ngIf="userRole == 'MANAGER'"
+                                            <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
+                                                nzPopconfirmTitle="Are you sure approve this?"
+                                                (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processApprove" nz-button
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 

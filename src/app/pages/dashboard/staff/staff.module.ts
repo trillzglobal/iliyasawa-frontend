@@ -33,7 +33,7 @@ import { EditUserModule } from '../../../components/modals/edit-user/edit-user.m
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     PaginationModule,

@@ -12,6 +12,7 @@ import { PaginationModule } from '../../../components/common/pagination/paginati
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 
 @NgModule({
@@ -24,12 +25,13 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     NzTabsModule,
     NzMessageModule,
     NzIconModule,
+    NzPopconfirmModule,
     NzNotificationModule,
     ErrorMessageModule,
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     NoResultModule,

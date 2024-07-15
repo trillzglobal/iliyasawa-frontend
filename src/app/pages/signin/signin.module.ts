@@ -25,7 +25,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
   ]

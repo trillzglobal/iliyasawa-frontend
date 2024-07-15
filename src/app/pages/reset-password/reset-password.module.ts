@@ -24,7 +24,7 @@ import { ResetPasswordComponent } from './reset-password.component';
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
   ]

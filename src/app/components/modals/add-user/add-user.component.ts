@@ -21,6 +21,7 @@ export class AddUserComponent implements OnInit {
   password: string = "";
   isSelectAll: boolean = false;
   roles: any = []
+  processReset: boolean = false
 
   @Input() visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -160,4 +161,6 @@ export class AddUserComponent implements OnInit {
     )
 
   }
+
+
 }

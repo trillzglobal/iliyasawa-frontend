@@ -23,6 +23,7 @@ export class EditUserComponent implements OnInit {
 
   isSelectAll: boolean = false;
   permissions: any = []
+  processReset: boolean = false
 
 
   @Input() visible: boolean = false;
@@ -155,6 +156,38 @@ export class EditUserComponent implements OnInit {
       (error: any) => {
         this.errorMessage = 'An error occured. Please try again later';
         this.processLoading = false;
+      }
+    )
+  }
+
+  resetPassword() {
+    if (this.processReset) return
+    this.processReset = true
+
+    const payload = {
+      email: this.user.email
+    }
+
+    this.staffService.resetPassword(payload).subscribe(
+      (res: any) => {
+        if (res.status == 'success') {
+          this.processReset = false;
+
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
+
+        } else {
+          this.processReset = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processReset = false;
       }
     )
   }

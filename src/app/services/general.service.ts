@@ -107,4 +107,12 @@ export class GeneralService {
     });
 
   }
+
+  acceptTransaction(id: string) {
+    return this.apiService.post(`transactions/accept/${id}`, {});
+  }
+
+  approveTransaction(id: string) {
+    return this.apiService.post(`transactions/approve/${id}`, {});
+  }
 }

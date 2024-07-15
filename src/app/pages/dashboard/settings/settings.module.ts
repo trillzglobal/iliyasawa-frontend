@@ -25,7 +25,7 @@ import { ErrorMessageModule } from '../../../components/error-message/error-mess
     LaddaModule.forRoot({
       style: "zoom-out",
       spinnerSize: 33,
-      spinnerColor: "white",
+      spinnerColor: "green",
       spinnerLines: 12
     }),
     SettingsRoutingModule

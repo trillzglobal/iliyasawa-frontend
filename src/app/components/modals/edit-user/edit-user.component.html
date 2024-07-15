@@ -13,6 +13,13 @@
                     <p class="form-subheading">Fill the form to update user.</p>
                     <app-error-message [message]="this.errorMessage"></app-error-message>
                     <div class="sub-form form1">
+                        <div class="half-width"></div>
+                        <div class="half-width">
+                            <button (click)="resetPassword()" class="btn-primary-outline-small full-width"
+                                style="margin:25px 0" [ladda]="processReset">
+                                Send Reset password
+                            </button>
+                        </div>
                         <div class="half-width input-box">
                             <label>First Name</label>
                             <input disabled type="text" placeholder="first name" [(ngModel)]="this.user.firstname">

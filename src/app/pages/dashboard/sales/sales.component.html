@@ -106,7 +106,10 @@
                                     </td>
                                     <td>
                                         <ng-container *ngIf="!item?.approved_by?.firstname">
-                                            <button *ngIf="userRole == 'MANAGER'"
+                                            <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
+                                                nzPopconfirmTitle="Are you sure accept this?"
+                                                (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
+                                                nzPopconfirmPlacement="bottomRight" [ladda]="processApprove" nz-button
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 

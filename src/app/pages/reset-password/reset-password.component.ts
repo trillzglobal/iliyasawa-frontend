@@ -50,14 +50,14 @@ export class ResetPasswordComponent implements OnInit {
     }
     else {
       let data = {
-        resetToken: this.token,
-        emailAddress: this.email.toLowerCase(),
+        token: this.token,
+        email: this.email.toLowerCase(),
         password: this.password,
-        userAgent: navigator.userAgent
+        password_confirmation: this.confirmPassword
       }
       this.authService.resetPassword(data).subscribe(
         (res: any) => {
-          if (res.statusCode === 200) {
+          if (res.status === "success") {
             this.processLoading = false;
             this.notification.success(
               'Password reset successful.',
