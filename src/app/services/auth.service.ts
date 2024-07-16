@@ -13,7 +13,7 @@ export class AuthService {
   }
 
   resetPassword(data: any) {
-    return this.apiService.post(`password/verify`, data)
+    return this.apiService.post(`password/reset`, data)
   }
 
 }

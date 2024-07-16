@@ -24,7 +24,9 @@ export class ResetPasswordComponent implements OnInit {
     private notification: NzNotificationService,
     private generalService: GeneralService
   ) {
-    this.token = this.route.snapshot.params['token'];
+    console.log(this.route.snapshot.queryParams)
+    this.token = this.route.snapshot.queryParams['token'];
+    this.email = this.route.snapshot.queryParams['email'];
   }
 
   ngOnInit(): void {
@@ -72,7 +74,7 @@ export class ResetPasswordComponent implements OnInit {
           }
         },
         (error: any) => {
-          this.errorMessage = 'An error occured. Please try again later';
+          this.errorMessage = error;
           this.processLoading = false;
         }
       )
