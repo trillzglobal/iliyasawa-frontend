@@ -199,6 +199,7 @@ export class StoreComponent {
       }
     )
   }
+
   toggleAddModal() {
     this.showAddModal = !this.showAddModal;
   }
@@ -235,6 +236,12 @@ export class StoreComponent {
     this.currentUser = await this.generalService.getUserData();
     this.userRole = this.currentUser.current_role;
     this.fetchingData = false;
+  }
+
+  onCreated(data: any) {
+    this.toggleAddModal()
+
+    this.getProductionReports()
   }
 
   accept(id: string) {

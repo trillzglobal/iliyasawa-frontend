@@ -13,6 +13,7 @@ import { NoResultModule } from '../../../components/common/no-result/no-result.m
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { AddProductionModule } from '../../../components/modals/add-production/add-production.module';
 
 
 
@@ -38,6 +39,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     }),
     NzPopconfirmModule,
     StoreRoutingModule,
+    AddProductionModule,
     NgxSkeletonLoaderModule
   ]
 })

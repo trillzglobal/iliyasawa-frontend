@@ -26,28 +26,6 @@
                     </div>
                 </div>
 
-                <div *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'" class="link" routerLink="/dashboard/staff"
-                    routerLinkActive="active-link" #staffLink="routerLinkActive">
-                    <div class="left">
-                        <div class="small-icon"><img
-                                [src]="staffLink.isActive ? 'assets/images/staff-active.svg' : 'assets/images/staff.svg'" />
-                        </div>
-                        <p>Staff</p>
-                    </div>
-                </div>
-
-                <!-- Accounts Page Link -->
-                <div *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN' || userRole == 'OUTLET_ADMIN' || userRole =='MANAGER'"
-                    class="link" routerLink="/dashboard/outlets" routerLinkActive="active-link"
-                    #outletsLink="routerLinkActive">
-                    <div class="left">
-                        <div class="small-icon"><img
-                                [src]="outletsLink.isActive ? 'assets/images/schools-active.svg' : 'assets/images/schools.svg'" />
-                        </div>
-                        <p>Outlets</p>
-                    </div>
-                </div>
-
                 <div *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN' || userRole =='MANAGER'" class="link"
                     routerLink="/dashboard/products" routerLinkActive="active-link" #productLink="routerLinkActive">
                     <div class="left">
@@ -110,6 +88,27 @@
                                 [src]="salesLink.isActive ? 'assets/images/sales1-active.svg' : 'assets/images/sales1.svg'" />
                         </div>
                         <p>Sales</p>
+                    </div>
+                </div>
+
+                <div *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN' || userRole == 'OUTLET_ADMIN' || userRole =='MANAGER'"
+                    class="link" routerLink="/dashboard/outlets" routerLinkActive="active-link"
+                    #outletsLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="outletsLink.isActive ? 'assets/images/schools-active.svg' : 'assets/images/schools.svg'" />
+                        </div>
+                        <p>Outlets</p>
+                    </div>
+                </div>
+
+                <div *ngIf="userRole == 'ADMIN' || userRole == 'SUPER_ADMIN'" class="link" routerLink="/dashboard/staff"
+                    routerLinkActive="active-link" #staffLink="routerLinkActive">
+                    <div class="left">
+                        <div class="small-icon"><img
+                                [src]="staffLink.isActive ? 'assets/images/staff-active.svg' : 'assets/images/staff.svg'" />
+                        </div>
+                        <p>Staff</p>
                     </div>
                 </div>
 

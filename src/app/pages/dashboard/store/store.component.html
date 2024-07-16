@@ -315,7 +315,9 @@
                         <input type="text" placeholder="Search" [(ngModel)]="searchActiveTerm" (blur)="search()" />
                         <img src="assets/images/search.svg" alt="">
                     </div>
-
+                    <button class="btn-primary" (click)="toggleAddModal()">
+                        + Add Record
+                    </button>
                 </div>
             </div>
             <div class="full-width sub-form ng-star-inserted head mt-4" style="align-items: center;">
@@ -438,3 +440,7 @@
         </nz-tab>
     </nz-tabset>
 </div>
+
+
+<app-add-production [visible]="this.showAddModal" tab="production" (created)="onCreated($event)"
+    (visibleChange)="toggleAddModal()"></app-add-production>
