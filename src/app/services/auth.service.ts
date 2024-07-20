@@ -16,4 +16,8 @@ export class AuthService {
     return this.apiService.post(`password/reset`, data)
   }
 
+  forgotPassword(data: any) {
+    return this.apiService.post(`password/email`, data);
+  }
+
 }

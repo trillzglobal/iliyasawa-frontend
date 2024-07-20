@@ -83,7 +83,7 @@ export class SigninComponent implements OnInit {
           }
         },
         (error: any) => {
-          this.errorMessage = 'An error occured. Please try again later';
+          this.errorMessage = error;
           this.processLoading = false;
         }
       )

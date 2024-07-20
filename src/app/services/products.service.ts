@@ -12,6 +12,10 @@ export class ProductsService {
     return this.apiService.post(`products`, data);
   }
 
+  updateProduct(data: any, id: string) {
+    return this.apiService.patch(`products/${id}`, data);
+  }
+
   getAllProducts(page: any, type: string = "", search: string = "") {
     return this.apiService.get(`products?page=${page}&type=${type}&search=${search}`);
   }

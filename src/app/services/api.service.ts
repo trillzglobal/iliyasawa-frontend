@@ -65,6 +65,6 @@ export class ApiService {
   }
 
   patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.getUrl() + endpoint, body, reqOpts);
+    return this.http.patch(this.getUrl() + endpoint, body, reqOpts);
   }
 }

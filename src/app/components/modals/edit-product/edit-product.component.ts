@@ -51,35 +51,30 @@ export class EditProductComponent implements OnInit {
       description: this.product.description.trim(),
     }
 
-    // this.outletService.updateSchool(payload, this.school.id).subscribe(
-    //   (res: any) => {
+    this.productService.updateProduct(payload, this.product.ulid).subscribe(
+      (res: any) => {
 
-    //     if (res.status == 'success') {
-    //       this.processLoading = false;
+        if (res.status == 'success') {
+          this.processLoading = false;
 
-    //       this.notification.success(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //       this.errorMessage = ''
-    //       this.schoolName = '';
-    //       this.selectedZone = '';
-    //       this.principalName = '';
-    //       this.address = '';
-    //       this.noOfTeachers = '';
-    //       this.updatedProduct.emit();
+          this.notification.success(res.message, '', {
+            nzClass: 'notification1',
+          });
+          this.errorMessage = ''
+          this.updatedProduct.emit();
 
-    //     } else {
-    //       this.processLoading = false;
-    //       this.notification.error(res.message, '', {
-    //         nzClass: 'notification1',
-    //       });
-    //     }
-    //   },
-    //   (error: any) => {
-    //     this.errorMessage = 'An error occured. Please try again later';
-    //     this.processLoading = false;
-    //   }
-    // )
+        } else {
+          this.processLoading = false;
+          this.notification.error(res.message, '', {
+            nzClass: 'notification1',
+          });
+        }
+      },
+      (error: any) => {
+        this.errorMessage = 'An error occured. Please try again later';
+        this.processLoading = false;
+      }
+    )
   }
 
   ngOnChanges(changes: any) {

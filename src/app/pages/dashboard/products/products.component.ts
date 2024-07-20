@@ -110,9 +110,10 @@ export class ProductsComponent {
   }
 
   editProduct(data: any) {
+    console.log(data)
     this.selectedProduct = data;
 
-    // this.toggleEditModal();
+    this.toggleEditModal();
   }
 
   onCreated() {

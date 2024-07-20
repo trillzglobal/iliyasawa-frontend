@@ -9,13 +9,39 @@
                         <span>&times;</span>
                     </div>
                 </div>
-                <div class="form-box full-width">
+                <div class="form-box full-width sub-form form1">
                     <p class="form-subheading">Fill the form to update outlet information.</p>
                     <app-error-message [message]="this.errorMessage"></app-error-message>
 
                     <div class="full-width input-box">
                         <label>Product Name</label>
-                        <input type="text" placeholder="producy name" autofocus [(ngModel)]="this.product.name">
+                        <input type="text" placeholder="product name" autofocus [(ngModel)]="this.product.name">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Quantity</label>
+                        <input type="text" placeholder="quantity" [(ngModel)]="this.product.quantity">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Measurement Unit</label>
+                        <input type="text" placeholder="measurement unit" [(ngModel)]="this.product.measurement_unit">
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Product Type</label>
+                        <div class="select-container full-width">
+                            <select class="ng-pristine ng-valid ng-touched" [(ngModel)]="this.product.type">
+                                <option value="" selected>Choose Product Type</option>
+                                <option value="FINISHED_PRODUCT">FINISHED PRODUCT</option>
+                                <option value="RAW_MATERIAL">RAW MATERIAL</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="half-width input-box">
+                        <label>Price</label>
+                        <input type="text" placeholder="price" disabled [(ngModel)]="this.product.price">
                     </div>
 
                     <div class="full-width input-box">
