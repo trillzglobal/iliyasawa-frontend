@@ -46,6 +46,8 @@ export class ProcurementComponent {
   currentUser: any = {};
   userRole: any = "";
 
+  viewTransactionModal: boolean = false;
+  selectedTransaction: any = {}
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -155,5 +157,16 @@ export class ProcurementComponent {
     this.currentUser = await this.generalService.getUserData();
     this.userRole = this.currentUser.current_role;
     this.fetchingData = false;
+  }
+
+  toggleTransactionModal() {
+    this.viewTransactionModal = !this.viewTransactionModal
+  }
+
+  showTransaction(transaction: any) {
+    console.log(transaction)
+    this.selectedTransaction = transaction;
+
+    this.toggleTransactionModal()
   }
 }

@@ -14,6 +14,7 @@ import { NoResultModule } from '../../../components/common/no-result/no-result.m
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { AddProductionModule } from '../../../components/modals/add-production/add-production.module';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { TransactionDetailsModule } from '../../../components/modals/transaction-details/transaction-details.module';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NzPopconfirmModule,
     PaginationModule,
     AddProductionModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    TransactionDetailsModule
   ]
 })
 export class ProductionModule { }

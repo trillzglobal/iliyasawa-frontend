@@ -48,6 +48,10 @@ export class SalesComponent {
   processApprove: boolean = false;
   processAccept: boolean = false;
 
+  viewTransactionModal: boolean = false;
+  selectedTransaction: any = {}
+
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
@@ -228,5 +232,16 @@ export class SalesComponent {
         this.processAccept = false;
       }
     )
+  }
+
+  toggleTransactionModal() {
+    this.viewTransactionModal = !this.viewTransactionModal
+  }
+
+  showTransaction(transaction: any) {
+    console.log(transaction)
+    this.selectedTransaction = transaction;
+
+    this.toggleTransactionModal()
   }
 }

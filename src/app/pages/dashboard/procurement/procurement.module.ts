@@ -13,6 +13,7 @@ import { NoResultModule } from '../../../components/common/no-result/no-result.m
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { ErrorMessageModule } from '../../../components/error-message/error-message.module';
 import { AddProcurementModule } from '../../../components/modals/add-procurement/add-procurement.module';
+import { TransactionDetailsModule } from '../../../components/modals/transaction-details/transaction-details.module';
 
 
 
@@ -38,7 +39,8 @@ import { AddProcurementModule } from '../../../components/modals/add-procurement
     PaginationModule,
     AddProcurementModule,
     NgxSkeletonLoaderModule,
-    ProcurementRoutingModule
+    ProcurementRoutingModule,
+    TransactionDetailsModule
   ]
 })
 export class ProcurementModule { }

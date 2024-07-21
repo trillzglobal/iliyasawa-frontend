@@ -40,11 +40,12 @@
                                 <th nzWidth="10%">Added By</th>
                                 <th nzWidth="10%">Accepted By</th>
                                 <th nzWidth="10%">Approved By</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of [1,2,3]">
-                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]">
                                     <ngx-skeleton-loader style="width: 100%;"
                                         [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
                                         appearance="line">
@@ -77,6 +78,7 @@
                                     <th nzWidth="10%">Added By</th>
                                     <th nzWidth="10%">Accepted By</th>
                                     <th nzWidth="10%">Approved By</th>
+                                    <th>View</th>
                                 </tr>
                             </thead>
 
@@ -121,6 +123,10 @@
                                             ??
                                             "")}}
                                         </ng-container>
+                                    </td>
+                                    <td>
+                                        <span (click)="showTransaction(item)"><img src="assets/images/eye.svg"
+                                                alt=""></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -256,3 +262,7 @@
 
 <app-add-sales [visible]="this.showAddModal" (createdSales)="onCreated()"
     (visibleChange)="this.toggleAddModal()"></app-add-sales>
+
+<app-transaction-details [(visible)]="this.viewTransactionModal" title="Sales" [transaction]="this.selectedTransaction"
+    (visibleChange)="toggleTransactionModal()">
+</app-transaction-details>

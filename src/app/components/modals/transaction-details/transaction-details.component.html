@@ -1,0 +1,57 @@
+<nz-modal [nzZIndex]="300" [nzStyle]="{ top: '20px' }" [(nzVisible)]="this.visible" nzWidth="700px"
+  [nzContent]="modalContent" [nzFooter]="null" [nzClassName]="'modal'" (nzOnCancel)="handleCancel()">
+  <ng-template #modalContent class="modal user-details-modal">
+    <div class="modal-container">
+      <div class="form-modal1">
+        <div class="top">
+          <img src="assets/images/logo.png" alt="">
+          <div class="close" (click)="this.handleCancel()">
+            <span class="close">&times;</span>
+          </div>
+        </div>
+        <main class="main">
+          <div class="doctor-info">
+            <div class="head">
+              <h2 class="bolded">Transaction Details</h2>
+              <div>{{title | titlecase}} - <span>{{transaction?.status}}</span></div>
+            </div>
+            <div class="full-width body">
+              <div>
+                <p><span class="label">Transaction ref: </span>{{transaction.reference}}</p>
+                <p><span class="label">Product Type: </span>{{transaction.product_type}}</p>
+                <p><span class="label">Tranx Type: </span> {{transaction?.type}}</p>
+                <p><span class="label">Total Quantity: </span>{{transaction?.total_quantity}}</p>
+                <p><span class="label">Total Amount: </span> ₦{{transaction?.total_amount | number}}</p>
+                <p><span class="label">Description: </span>{{transaction?.description}}</p>
+                <p><span class="label">Date Created: </span>{{transaction?.created_at}}</p>
+                <p><span class="label">Accepted By: </span>{{transaction?.created_by}}</p>
+                <p><span class="label">Approved By: </span>{{transaction?.approved_by}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="full-width mb-4">
+            <h3 class="text-center bolded">Transaction Items</h3>
+            <div class="patient-info full-width">
+
+              <div class="full-width sub-form1" *ngFor="let item of transaction.transaction_details">
+                <p class="onequarter-width"><span class="label">Product: </span><span
+                    class="dotted">{{item.product_id}}</span></p>
+                <p class="onequarter-width"><span class="label">Quantity: </span><span
+                    class="dotted">{{item.quantity}}</span></p>
+                <p class="onequarter-width"><span class="label">Unit Price: </span> <span
+                    class="dotted">₦{{item.unit_price}}</span></p>
+                <p class="onequarter-width"><span class="label">Total Price: </span> <span
+                    class="dotted">₦{{item.total_price}}</span></p>
+              </div>
+
+            </div>
+          </div>
+
+        </main>
+
+
+      </div>
+    </div>
+  </ng-template>
+</nz-modal>

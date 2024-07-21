@@ -56,6 +56,11 @@ export class StoreComponent {
   processAccept: boolean = false;
   processApprove: boolean = false;
 
+  viewTransactionModal: boolean = false;
+  selectedTransaction: any = {}
+  title: string = ""
+
+
   constructor(
     private readonly route: ActivatedRoute,
     private notification: NzNotificationService,
@@ -80,9 +85,11 @@ export class StoreComponent {
       this.getStore();
     } else if (p.tab == 'procurement') {
       this.selectedIndex = 1;
+      this.title = "procurement"
       this.getProcurementTransaction();
     } else if (p.tab == 'production') {
       this.selectedIndex = 2;
+      this.title = "production"
       this.getProductionReports()
     } else {
       this.selectedIndex = 0;
@@ -312,5 +319,16 @@ export class StoreComponent {
         this.processApprove = false;
       }
     )
+  }
+
+  toggleTransactionModal() {
+    this.viewTransactionModal = !this.viewTransactionModal
+  }
+
+  showTransaction(transaction: any) {
+    console.log(transaction)
+    this.selectedTransaction = transaction;
+
+    this.toggleTransactionModal()
   }
 }

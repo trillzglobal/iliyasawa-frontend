@@ -13,6 +13,7 @@ import { NoResultModule } from '../../../components/common/no-result/no-result.m
 import { PaginationModule } from '../../../components/common/pagination/pagination.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { AddSalesModule } from '../../../components/modals/add-sales/add-sales.module';
+import { TransactionDetailsModule } from '../../../components/modals/transaction-details/transaction-details.module';
 
 
 
@@ -38,7 +39,8 @@ import { AddSalesModule } from '../../../components/modals/add-sales/add-sales.m
     NoResultModule,
     PaginationModule,
     SalesRoutingModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    TransactionDetailsModule
   ]
 })
 export class SalesModule { }

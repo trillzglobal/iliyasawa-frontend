@@ -1551,6 +1551,10 @@ iframe {
     margin-top: 34px;
 }
 
+.mb-4 {
+    margin-bottom: 34px;
+}
+
 .mt-3 {
     margin-top: 24px;
 }
@@ -2176,4 +2180,12 @@ input[type=checkbox]:checked {
     color: #9fa6b2;
     font-size: 14px;
     font-weight: 500;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.bolded {
+    font-weight: 800;
 }

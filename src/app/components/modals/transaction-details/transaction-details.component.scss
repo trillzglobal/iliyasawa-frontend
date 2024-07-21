@@ -1,0 +1,123 @@
+.ant-modal-wrap .ant-modal {
+    width: 800px !important;
+}
+
+.form-modal1 {
+    padding: 10px;
+    width: 100%;
+
+    .top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        img {
+            height: 90px;
+        }
+
+        .close {
+            font-size: 35px;
+            color: red;
+            // margin-right: 8px;
+        }
+    }
+}
+
+h2,
+h3 {
+    color: var(--primary-color);
+}
+
+.main {
+    // margin-right: 20px;
+}
+
+.doctor-info {
+    width: 100%;
+    padding: 10px 45px;
+
+    .head {
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+    }
+
+    .body {
+        margin-top: 30px;
+        font-size: 13px;
+    }
+
+    p {
+        margin-bottom: 5px;
+        border-bottom: 1px solid #ececec;
+
+        .label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    }
+
+}
+
+.patient-info {
+    padding: 10px 45px;
+    font-size: 13px;
+
+    .sub-form1 {
+        width: 100%;
+        display: flex;
+    }
+
+    p {
+        margin-bottom: 5px;
+        width: 100%;
+        display: flex;
+
+        .label {
+            white-space: nowrap;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .dotted {
+            width: 100%;
+            // border-bottom: 3px dotted #333333;
+        }
+    }
+
+}
+
+
+.details {
+    padding: 0 15px;
+    width: 100%;
+    display: flex;
+    column-gap: 10px;
+    align-items: flex-start;
+
+    textarea {
+        width: 100%;
+        background-color: #ffffff;
+        border: 1px solid #333333;
+        resize: none;
+        padding: 10px;
+
+        &::placeholder {
+            color: var(--color-6);
+            font-size: 13px;
+            font-weight: 400;
+        }
+    }
+}
+
+.signature {
+    margin-top: 25px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    p {
+        margin-top: 20px;
+    }
+}

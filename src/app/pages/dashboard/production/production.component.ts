@@ -48,6 +48,11 @@ export class ProductionComponent {
   processApprove: boolean = false;
   processAccept: boolean = false;
 
+  viewTransactionModal: boolean = false;
+  selectedTransaction: any = {}
+  title: string = ""
+
+
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -70,9 +75,11 @@ export class ProductionComponent {
 
     if (p.tab == 'production') {
       this.selectedIndex = 0;
+      this.title = "production"
       this.getTransactions();
     } else if (p.tab == 'raw') {
       this.selectedIndex = 1;
+      this.title = "production raw material"
       this.getTransactions();
     } else {
       this.selectedIndex = 0;
@@ -260,5 +267,16 @@ export class ProductionComponent {
         this.processApprove = false;
       }
     )
+  }
+
+  toggleTransactionModal() {
+    this.viewTransactionModal = !this.viewTransactionModal
+  }
+
+  showTransaction(transaction: any) {
+    console.log(transaction)
+    this.selectedTransaction = transaction;
+
+    this.toggleTransactionModal()
   }
 }

@@ -13,6 +13,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NoResultModule } from '../../../components/common/no-result/no-result.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { TransactionDetailsModule } from '../../../components/modals/transaction-details/transaction-details.module';
 
 
 @NgModule({
@@ -37,8 +38,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NoResultModule,
     PaginationModule,
     ReportsRoutingModule,
-    NgxSkeletonLoaderModule
-
+    NgxSkeletonLoaderModule,
+    TransactionDetailsModule
   ]
 })
 export class ReportsModule { }
