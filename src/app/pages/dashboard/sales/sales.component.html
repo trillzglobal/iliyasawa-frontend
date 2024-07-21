@@ -19,8 +19,8 @@
                         <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="search()" />
                         <img src="assets/images/search.svg" alt="">
                     </div>
-                    <button *ngIf="userRole == 'SALES_RAW' || userRole == 'SALES_FINISHED'" (click)="toggleAddModal()"
-                        class="btn-primary">
+                    <button *ngIf="userRole == 'SALES_KEEPER_RAW' || userRole == 'SALES_KEEPER_FINISHED'"
+                        (click)="toggleAddModal()" class="btn-primary">
                         + Add Record
                     </button>
                 </div>
