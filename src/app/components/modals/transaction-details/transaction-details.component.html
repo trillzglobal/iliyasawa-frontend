@@ -36,7 +36,7 @@
 
               <div class="full-width sub-form1" *ngFor="let item of transaction.transaction_details">
                 <p class="onequarter-width"><span class="label">Product: </span><span
-                    class="dotted">{{item.product_id}}</span></p>
+                    class="dotted">{{item.product.name}}</span></p>
                 <p class="onequarter-width"><span class="label">Quantity: </span><span
                     class="dotted">{{item.quantity}}</span></p>
                 <p class="onequarter-width"><span class="label">Unit Price: </span> <span
