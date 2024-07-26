@@ -219,24 +219,24 @@
                                     <td>{{item.total_amount}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.subtype}}</td>
-                                    <td>{{item.status}}</td>
+                                    <td><span class="status">{{item.status}}</span></td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
                                     <td>{{item?.created_by}}</td>
                                     <td>
-                                        <ng-container *ngIf="!item?.accepted_by">
+                                        <ng-container *ngIf="item?.status == 'INITIATED'">
                                             <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
                                                 (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
                                                 nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
                                                 class="btn-primary-outline-small">Accept</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.accepted_by">
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
                                             {{(item?.accepted_by ?? "") + ' ' + (item?.accepted_by
                                             ?? "")}}
                                         </ng-container>
                                     </td>
                                     <td>
-                                        <ng-container *ngIf="!item?.approved_by">
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
                                             <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
                                                 nzPopconfirmTitle="Are you sure approve this?"
                                                 (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
@@ -244,7 +244,7 @@
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.approved_by">
+                                        <ng-container *ngIf="item?.status == 'APPROVED'">
                                             {{(item?.approved_by ?? "") + ' ' + (item?.approved_by
                                             ?? "")}}
                                         </ng-container>

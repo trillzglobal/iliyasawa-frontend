@@ -104,7 +104,7 @@
                                     <td>{{item.measurement_unit}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
-                                    <td>{{(item?.creator?.firstname ?? "") + ' ' + (item?.createdBy?.lastname ?? "")}}
+                                    <td>{{(item?.creator?.firstname ?? "") + ' ' + (item?.creator?.lastname ?? "")}}
                                     </td>
                                     <td>{{item.status | titlecase}}</td>
                                 </tr>
@@ -177,6 +177,7 @@
                                 <th nzWidth="21%">Total Quantity</th>
                                 <th nzWidth="20%">Total Amount</th>
                                 <th nzWidth="10%">Reference</th>
+                                <th nzWidth="10%">Status</th>
                                 <th nzWidth="10%">Trnx Type</th>
                                 <th nzWidth="10%">Date Sold</th>
                                 <th nzWidth="10%">Added By</th>
@@ -187,7 +188,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of [1,2,3]">
-                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]">
                                     <ngx-skeleton-loader style="width: 100%;"
                                         [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
                                         appearance="line">
@@ -208,6 +209,7 @@
                                     <th nzWidth="21%">Total Quantity</th>
                                     <th nzWidth="20%">Total Amount</th>
                                     <th nzWidth="10%">Reference</th>
+                                    <th nzWidth="10%">Status</th>
                                     <th nzWidth="10%">Trnx Type</th>
                                     <th nzWidth="10%">Date Sold</th>
                                     <th nzWidth="10%">Added By</th>
@@ -223,40 +225,38 @@
                                     <td>{{item?.description}}</td>
                                     <td>{{item?.total_quantity}}</td>
                                     <td>{{item?.total_amount}}</td>
-
                                     <td>{{item?.reference}}</td>
+                                    <td><span class="status">{{item?.status}}</span></td>
                                     <td>{{item?.type}}</td>
                                     <td>{{item?.created_at | date: 'medium'}}</td>
-                                    <td>{{(item?.created_by?.firstname ?? "") + ' ' + (item?.created_by?.lastname ??
+                                    <td>{{(item?.creator?.firstname ?? "") + ' ' + (item?.creator?.lastname ??
                                         "")}}
                                     </td>
                                     <td>
-                                        <ng-container *ngIf="!item?.accepted_by?.firstname">
+                                        <ng-container *ngIf="item?.status == 'INITIATED'">
                                             <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
                                                 (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
                                                 nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
                                                 class="btn-primary-outline-small">Accept</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.accepted_by?.firstname">
-                                            {{(item?.accepted_by?.firstname ?? "") + ' ' + (item?.accepted_by?.lastname
-                                            ??
-                                            "")}}
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
+                                            {{(item?.accepted_by ?? "") + ' ' + (item?.accepted_by
+                                            ?? "")}}
                                         </ng-container>
                                     </td>
                                     <td>
-                                        <ng-container *ngIf="!item?.approved_by?.firstname">
-                                            <button nz-popconfirm nzPopconfirmTitle="Are you sure approve this?"
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
+                                            <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
+                                                nzPopconfirmTitle="Are you sure approve this?"
                                                 (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
                                                 nzPopconfirmPlacement="bottomRight" [ladda]="processApprove" nz-button
-                                                *ngIf="userRole == 'MANAGER'"
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.approved_by?.firstname">
-                                            {{(item?.approved_by?.firstname ?? "") + ' ' + (item?.approved_by?.lastname
-                                            ??
-                                            "")}}
+                                        <ng-container *ngIf="item?.status == 'APPROVED'">
+                                            {{(item?.approved_by ?? "") + ' ' + (item?.approved_by
+                                            ?? "")}}
                                         </ng-container>
                                     </td>
                                     <td>
@@ -338,8 +338,8 @@
                                 <th nzWidth="10%">Raw Materials</th>
                                 <th nzWidth="10%">Damages</th>
                                 <th nzWidth="10%">Cost</th>
-                                <th nzWidth="10%">Date Added</th>
                                 <th nzWidth="10%">Status</th>
+                                <th nzWidth="10%">Date Added</th>
                                 <th nzWidth="10%">Added By</th>
                                 <th nzWidth="10%">Accepted By</th>
                                 <th nzWidth="10%">Approved By</th>
@@ -386,24 +386,24 @@
                                     <td>{{item.total_amount}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.subtype}}</td>
-                                    <td>{{item.status}}</td>
+                                    <td><span class="status">{{item.status}}</span></td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
-                                    <td>{{item?.created_by}}</td>
+                                    <td>{{(item?.creator.firstname ?? "") + " " + (item?.creator.lastname ?? "")}}</td>
                                     <td>
-                                        <ng-container *ngIf="!item?.accepted_by">
+                                        <ng-container *ngIf="item?.status == 'INITIATED'">
                                             <button nz-popconfirm nzPopconfirmTitle="Are you sure accept this?"
                                                 (nzOnConfirm)="accept(item.ulid)" (nzOnCancel)="cancelAccept()"
                                                 nzPopconfirmPlacement="bottomRight" [ladda]="processAccept" nz-button
                                                 class="btn-primary-outline-small">Accept</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.accepted_by">
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
                                             {{(item?.accepted_by ?? "") + ' ' + (item?.accepted_by
                                             ?? "")}}
                                         </ng-container>
                                     </td>
                                     <td>
-                                        <ng-container *ngIf="!item?.approved_by">
+                                        <ng-container *ngIf="item?.status == 'ACCEPTED'">
                                             <button *ngIf="userRole == 'MANAGER'" nz-popconfirm
                                                 nzPopconfirmTitle="Are you sure approve this?"
                                                 (nzOnConfirm)="approve(item.ulid)" (nzOnCancel)="cancelAccept()"
@@ -411,7 +411,7 @@
                                                 class="btn-primary-outline-small">Approve</button>
                                         </ng-container>
 
-                                        <ng-container *ngIf="item?.approved_by">
+                                        <ng-container *ngIf="item?.status == 'APPROVED'">
                                             {{(item?.approved_by ?? "") + ' ' + (item?.approved_by
                                             ?? "")}}
                                         </ng-container>
@@ -454,7 +454,7 @@
 </div>
 
 
-<app-add-production [visible]="this.showAddModal" tab="production" (created)="onCreated($event)"
+<app-add-production [visible]="this.showAddModal" tab="raw" (created)="onCreated($event)"
     (visibleChange)="toggleAddModal()"></app-add-production>
 
 <app-transaction-details [(visible)]="this.viewTransactionModal" [title]="title"

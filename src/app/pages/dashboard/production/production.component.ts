@@ -21,6 +21,10 @@ export class ProductionComponent {
   showAddModal: boolean = false;
   showEditModal: boolean = false;
 
+  showAddDetailsModal: boolean = false;
+  selectedTransanction: any = {};
+  selectedRecord: any = {}
+
   fetchingProduction: boolean = false;
   production: Array<any> = [];
   productionStart: number = 0;
@@ -51,7 +55,6 @@ export class ProductionComponent {
   viewTransactionModal: boolean = false;
   selectedTransaction: any = {}
   title: string = ""
-
 
 
   constructor(
@@ -278,5 +281,17 @@ export class ProductionComponent {
     this.selectedTransaction = transaction;
 
     this.toggleTransactionModal()
+  }
+
+  toggleAddDetailsModal() {
+    this.showAddDetailsModal = !this.showAddDetailsModal;
+  }
+
+  addRecord(data: any) {
+    console.log(data);
+
+    this.selectedRecord = data;
+
+    this.toggleAddDetailsModal()
   }
 }

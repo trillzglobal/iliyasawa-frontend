@@ -15,6 +15,7 @@ import { PaginationModule } from '../../../components/common/pagination/paginati
 import { AddProductionModule } from '../../../components/modals/add-production/add-production.module';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { TransactionDetailsModule } from '../../../components/modals/transaction-details/transaction-details.module';
+import { AddProductionDetailsModule } from '../../../components/modals/add-production-details/add-production-details.module';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { TransactionDetailsModule } from '../../../components/modals/transaction
     PaginationModule,
     AddProductionModule,
     NgxSkeletonLoaderModule,
-    TransactionDetailsModule
+    TransactionDetailsModule,
+    AddProductionDetailsModule
   ]
 })
 export class ProductionModule { }

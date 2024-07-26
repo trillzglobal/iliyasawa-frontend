@@ -4,13 +4,15 @@
         <div class="modal-container">
             <div class="form-modal-wider">
                 <div class="top">
-                    <h1 class="form-heading">Add New Sales Record</h1>
+                    <h1 class="form-heading">
+                        {{ tab != "production" ? "Request Raw Materials" : "Add New Production Record"}}
+                    </h1>
                     <div class="close" (click)="this.handleCancel()">
                         <span>&times;</span>
                     </div>
                 </div>
                 <div class="form-box full-width">
-                    <p class="form-subheading">Fill the form to add a new sales record.</p>
+                    <p class="form-subheading">Fill the form to add a new production record.</p>
                     <app-error-message [message]="this.errorMessage"></app-error-message>
                     <div class="sub-form form1">
                         <div class="full-width input-box">
@@ -46,17 +48,17 @@
                             </div>
                         </ng-container>
 
-                        <div class="full-width input-box">
+                        <!-- <div class="full-width input-box">
                             <label>Transaction Type</label>
                             <div class="select-container full-width">
                                 <select class="full-width" [(ngModel)]="this.type">
                                     <option value="">Choose Type</option>
-                                    <option selected value="EXPENSE">EXPENSE</option>
+                                    <option value="EXPENSE">EXPENSE</option>
                                     <option value="INCOME">INCOME</option>
                                 </select>
                             </div>
-                        </div>
-
+                        </div> -->
+                        <!-- 
                         <div class="full-width input-box">
                             <label>Outlet</label>
                             <div class="select-container full-width">
@@ -65,7 +67,8 @@
                                     <option *ngFor="let item of outlets" value="{{item.ulid}}">{{item.name}}</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
+
                         <div class="full-width input-box">
                             <label>Description</label>
                             <textarea type="text" placeholder="description" [(ngModel)]="this.description"></textarea>
@@ -73,9 +76,9 @@
 
                     </div>
 
-                    <button (click)="createSales()" class="btn-primary full-width" style="margin-top:25px"
+                    <button (click)="create()" class="btn-primary full-width" style="margin-top:25px"
                         [ladda]="processLoading">
-                        Add Sales Record
+                        Add Production Record
                     </button>
                 </div>
             </div>

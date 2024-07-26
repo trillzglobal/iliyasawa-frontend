@@ -24,6 +24,8 @@
                 <p><span class="label">Total Amount: </span> ₦{{transaction?.total_amount | number}}</p>
                 <p><span class="label">Description: </span>{{transaction?.description}}</p>
                 <p><span class="label">Date Created: </span>{{transaction?.created_at}}</p>
+                <p><span class="label">Created By: </span>{{(transaction?.creator.firstname ?? "") + ' ' +
+                  (transaction?.creator.lastname ?? "")}}</p>
                 <p><span class="label">Accepted By: </span>{{transaction?.created_by}}</p>
                 <p><span class="label">Approved By: </span>{{transaction?.approved_by}}</p>
               </div>

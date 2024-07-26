@@ -37,6 +37,7 @@
                         <th nzWidth="20%">Total Amount</th>
                         <th nzWidth="10%">Reference</th>
                         <th nzWidth="10%">Trnx Type</th>
+                        <th>Status</th>
                         <th nzWidth="10%">Date Created</th>
                         <th nzWidth="10%">Added By</th>
                         <th nzWidth="10%">Accepted By</th>
@@ -46,7 +47,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of [1,2,3]">
-                        <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]">
+                        <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]">
                             <ngx-skeleton-loader style="width: 100%;"
                                 [theme]="{'width':'100%','height':'20px','border-radius':'7px'}" appearance="line">
                             </ngx-skeleton-loader>
@@ -67,6 +68,7 @@
                             <th nzWidth="20%">Total Amount</th>
                             <th nzWidth="10%">Reference</th>
                             <th nzWidth="10%">Trnx Type</th>
+                            <th>Status</th>
                             <th nzWidth="10%">Date Created</th>
                             <th nzWidth="10%">Added By</th>
                             <th nzWidth="10%">Accepted By</th>
@@ -82,8 +84,9 @@
                             <td>{{item?.total_amount}}</td>
                             <td>{{item?.reference}}</td>
                             <td>{{item?.type}}</td>
+                            <td><span class="status">{{item.status}}</span></td>
                             <td>{{item?.created_at | date: 'medium'}}</td>
-                            <td>{{(item?.created_by?.firstname ?? "") + ' ' + (item?.created_by?.lastname ??
+                            <td>{{(item?.creator?.firstname ?? "") + ' ' + (item?.creator?.lastname ??
                                 "")}}
                             </td>
                             <td>

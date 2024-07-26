@@ -19,9 +19,9 @@
                         <input type="text" placeholder="Search" [(ngModel)]="searchTermReport" (blur)="search()" />
                         <img src="assets/images/search.svg" alt="">
                     </div>
-                    <button (click)="toggleAddModal('production')" class="btn-primary">
+                    <!-- <button (click)="toggleAddModal('production')" class="btn-primary">
                         + Add Record
-                    </button>
+                    </button> -->
 
                 </div>
             </div>
@@ -91,7 +91,7 @@
                                     <td>{{item.total_amount}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.subtype}}</td>
-                                    <td>{{item.status}}</td>
+                                    <td><span class="status">{{item.status}}</span></td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
                                     <td>{{item?.created_by}}</td>
                                     <td>{{item?.accepted_by}}</td>
@@ -172,11 +172,12 @@
                                 <th nzWidth="10%">Accepted By</th>
                                 <th nzWidth="10%">Approved By</th>
                                 <th nzWidth="10%">View</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of [1,2,3]">
-                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12]">
+                                <td *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12,13]">
                                     <ngx-skeleton-loader style="width: 100%;"
                                         [theme]="{'width':'100%','height':'20px','border-radius':'7px'}"
                                         appearance="line">
@@ -209,6 +210,7 @@
                                     <th nzWidth="10%">Accepted By</th>
                                     <th nzWidth="10%">Approved By</th>
                                     <th nzWidth="10%">View</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -220,14 +222,18 @@
                                     <td>{{item.total_amount}}</td>
                                     <td>{{item.type}}</td>
                                     <td>{{item.subtype}}</td>
-                                    <td>{{item.status}}</td>
+                                    <td><span class="status">{{item.status}}</span></td>
                                     <td>{{item.created_at | date: 'medium'}}</td>
-                                    <td>{{item?.created_by}}</td>
+                                    <td>{{(item?.creator.firstname ?? "") + " " + (item?.creator.lastname ?? "")}}</td>
                                     <td>{{item?.accepted_by}}</td>
                                     <td>{{item?.approved_by}}</td>
                                     <td>
                                         <span (click)="showTransaction(item)"><img src="assets/images/eye.svg"
                                                 alt=""></span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn-primary-outline-small"
+                                            (click)="addRecord(item)">Add Production</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -266,8 +272,12 @@
 
 </div>
 
-<app-add-production [visible]="this.showAddModal" [tab]="this.tab" (created)="onCreated($event)"
-    (visibleChange)="toggleAddModal()"></app-add-production>
+<!-- <app-add-production [visible]="this.showAddModal" [tab]="this.tab" (created)="onCreated($event)"
+    (visibleChange)="toggleAddModal()"></app-add-production> -->
+
+
+<app-add-production-details [visible]="this.showAddDetailsModal" [tab]="this.tab" [transaction]="this.selectedRecord"
+    (created)="onCreated($event)" (visibleChange)="toggleAddDetailsModal()"></app-add-production-details>
 
 
 <app-transaction-details [(visible)]="this.viewTransactionModal" [title]="title"

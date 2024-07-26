@@ -681,3 +681,13 @@ select {
         color: var(--text-color-4);
     }
 }
+
+input[disabled],
+select[disabled],
+textarea[disabled] {
+    background-color: #f0f3f8 !important;
+
+    &:hover {
+        cursor: not-allowed;
+    }
+}

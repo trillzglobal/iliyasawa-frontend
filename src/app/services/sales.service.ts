@@ -23,4 +23,8 @@ export class SalesService {
   acceptSalesTransaction(id: any) {
     return this.apiService.post(`transactions/accept/${id}`, {});
   }
+
+  createTransactionReport(data: any) {
+    return this.apiService.post(`transactions/report`, data);
+  }
 }
